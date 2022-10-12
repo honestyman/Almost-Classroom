@@ -34,5 +34,14 @@ Route::controller(GoogleController::class)->group(function(){
 
 });
 
-Route::get('/test', [HomeController::class, 'index']);
-Route::get('/add', [HomeController::class, 'add']);
+/*
+Ro*ute::get('/test', [HomeController::class, 'index']);
+Route::post('/add', [HomeController::class, 'add']);
+Route::post('/join', [HomeController::class, 'join']);
+*/
+
+Route::controller(HomeController::class)->group(function () {
+    Route::get('/test', 'index');
+    Route::post('/add', 'add');
+    Route::post('/join', 'join');
+});
