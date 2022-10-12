@@ -12,9 +12,8 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-      $user = User::find(1);
-      $user_id = Auth::user()->id;
-      
+        //zobrazovani obsahu pouze ze skupin do kterych patri uzivatel
+      $user = User::find(Auth::user()->id);
       foreach ($user->groups as $group) {
         echo "<div><h2>$group->name</h2>";
         $posts = Post::where('group_id', $group->id)->get();
@@ -24,5 +23,6 @@ class HomeController extends Controller
         }
         echo "</div>";
       }
+
     }
 }
