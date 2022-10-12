@@ -10,7 +10,22 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     You're logged in!
-                    
+                    <form action="add" method="get">
+                        <label for="name">Group name:</label><br>
+                        <input type="text" id="name" name="name"><br>
+                        <input type="hidden" id="user_id" name="user_id" value="{{Auth::user()->id}}">
+                        <input type="submit" value="Submit">
+                    </form>
+                    <form action="add" method="get">
+                        <label for="name">Post name:</label><br>
+                        <input type="text" id="name" name="name"><br>
+                        <label for="content">Post content:</label><br>
+                        <input type="text" id="content" name="content"><br>
+                        <label for="group_id">Group id:</label><br>
+                        <input type="number" id="group_id" name="group_id"><br><br>
+                        <input type="hidden" id="user_id" name="user_id" value="{{Auth::user()->id}}">
+                        <input type="submit" value="Submit">
+                    </form>
                 </div>
             </div>
         </div>

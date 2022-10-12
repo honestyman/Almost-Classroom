@@ -23,6 +23,25 @@ class HomeController extends Controller
         }
         echo "</div>";
       }
+    }
 
+    public function add(Request $request) {
+        $user = User::find(Auth::user()->id);
+        if($request->group_id == "") {
+            $newGroup = Group::updateOrCreate(
+                ['name' => $request->name,
+                'user_id'=> $request->user_id,]);
+                $user->groups()->attach(Group::all()->count());
+                //$user->roles()->attach($roleId);
+
+        }
+        else {
+            $newPost = Post::updateOrCreate(
+                ['name' => $request->name,
+                'content' => $request->content,
+                'group_id' => $request->group_id,
+                'user_id'=> $request->user_id,]);
+        }
+        return $this->index($request);
     }
 }

@@ -17,4 +17,8 @@ class Group extends Model
         return $this->hasMany(Post::class);
     }
 
+    protected $fillable = [
+        'name',
+        'user_id',
+    ];
 }

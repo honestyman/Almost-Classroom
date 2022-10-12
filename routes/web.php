@@ -35,3 +35,4 @@ Route::controller(GoogleController::class)->group(function(){
 });
 
 Route::get('/test', [HomeController::class, 'index']);
+Route::get('/add', [HomeController::class, 'add']);

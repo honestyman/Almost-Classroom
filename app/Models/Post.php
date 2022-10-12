@@ -17,5 +17,11 @@ class Post extends Model
         return $this->belongsTo(Group::class);
     }
 
+    protected $fillable = [
+        'name',
+        'content',
+        'user_id',
+        'group_id',
+    ];
     
 }
