@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
   
-
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GoogleController;
 
 /*
@@ -33,3 +33,5 @@ Route::controller(GoogleController::class)->group(function(){
     Route::get('auth/google/callback', 'handleGoogleCallback');
 
 });
+
+Route::get('/test', [HomeController::class, 'index']);
