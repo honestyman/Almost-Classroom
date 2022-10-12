@@ -13,12 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('groups', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->string('name');
-            $table->foreignId('user_id')->constrained();
-            $table->boolean('public')->default(false);
-            $table->timestamps();
+        Schema::create('group_post', function (Blueprint $table) {
+            $table->foreignId('group_id')->constrained('groups');
+            $table->foreignId('post_id')->constrained('posts');
         });
     }
 
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('groups');
+        Schema::dropIfExists('group_post');
     }
 };
