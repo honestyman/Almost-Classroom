@@ -13,7 +13,11 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
     public function groups() {
-        return $this->hasMany(Group::class);
+        return $this->belongsToMany(Group::class, 'group_user', 'user_id', 'group_id');
+    }
+
+    public function posts() {
+        return $this->hasMany(Post::class);
     }
     
     /**
