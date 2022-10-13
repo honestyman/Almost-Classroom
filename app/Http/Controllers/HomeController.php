@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Group;
 use App\Models\Post;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -22,6 +23,10 @@ class HomeController extends Controller
         foreach ($posts as $post) {
             echo "<p><b>$post->name</b></p>";
             echo "<p><i>$post->content</i></p>";
+            $comments = Comment::where('post_id', $post->id)->get();
+            foreach ($comments as $comment) {
+                echo "<p><u>$comment->content</u></p>";
+            }
         }
         echo "</div>";
       }
