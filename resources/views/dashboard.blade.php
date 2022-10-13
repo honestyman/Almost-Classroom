@@ -26,7 +26,6 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     You're logged in!
-                    <i class="fa-solid fa-gear"></i>
                     <form action="add" method="POST">
                         @csrf
                         <label for="name">Group name:</label><br>
@@ -73,7 +72,9 @@
                                     eaque consectetur deserunt ea nemo. Distinctio, molestias! Voluptas exercitationem
                                     minima distinctio modi ullam in?</div>
                                 <div class="row-start-6">
-                                    {{ now()->toDateTimeString() }}
+                                    <p class="pt-8 text-slate-600 italic">
+                                        Nahráno {{ now()->format('d. m. Y ') }} v {{ now()->format('h:m') }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -83,18 +84,22 @@
                                     <p>Komentáře</p>
                                 </div>
                                 <div class="row-span-5 row-start-2 max-h-100 h-80 overflow-auto">
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur doloremque,
-                                    aspernatur quam deserunt cupiditate commodi aliquam autem numquam quas suscipit
-                                    blanditiis eligendi ea voluptate fugiat reiciendis saepe recusandae facere est.
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur doloremque,
-                                    aspernatur quam deserunt cupiditate commodi aliquam autem numquam quas suscipit
-                                    blanditiis eligendi ea voluptate fugiat reiciendis saepe recusandae facere est.
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur doloremque,
-                                    aspernatur quam deserunt cupiditate commodi aliquam autem numquam quas suscipit
-                                    blanditiis eligendi ea voluptate fugiat reiciendis saepe recusandae facere est.
-                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Pariatur doloremque,
-                                    aspernatur quam deserunt cupiditate commodi aliquam autem numquam quas suscipit
-                                    blanditiis eligendi ea voluptate fugiat reiciendis saepe recusandae facere est.
+                                    <p>Jméno</p>
+                                    <p>Komentář</p>
+                                    <p>Jméno</p>
+                                    <p>Komentář</p>
+                                    <p>Jméno</p>
+                                    <p>Komentář</p>
+                                    <p>Jméno</p>
+                                    <p>Komentář</p>
+                                    <p>Jméno</p>
+                                    <p>Komentář</p>
+                                    <p>Jméno</p>
+                                    <p>Komentář</p>
+                                    <p>Jméno</p>
+                                    <p>Komentář</p>
+                                    <p>Jméno</p>
+                                    <p>Komentář</p>
                                 </div>
                             </div>
                         </div>
