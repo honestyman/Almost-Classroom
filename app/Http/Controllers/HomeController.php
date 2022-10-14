@@ -15,7 +15,7 @@ class HomeController extends Controller
     public function index(Request $request) {
         //echo "<button><a href='/dashboard'>Dashboard</a></button>";
         //zobrazovani obsahu pouze ze skupin do kterych patri uzivatel
-        $user = User::find(Auth::user()->id);
+        $user = User::findOrFail(Auth::user()->id);
         /*
         foreach ($user->groups as $group) {
             echo "<div><h2>$group->name - $group->invite_key</h2>";
@@ -45,7 +45,7 @@ class HomeController extends Controller
     }
 
     public function add(Request $request) {
-        $user = User::find(Auth::user()->id);
+        $user = User::findOrFail(Auth::user()->id);
         switch ($request->workingWith) {
             case 'group':
                 $newGroup = Group::updateOrCreate(
@@ -83,7 +83,7 @@ class HomeController extends Controller
     }
 
     public function del(Request $request) {
-        $user = User::find(Auth::user()->id);
+        $user = User::findOrFail(Auth::user()->id);
         switch ($request->workingWith) {
             case 'group':
                 Group::destroy($request->group_id);
@@ -102,7 +102,7 @@ class HomeController extends Controller
     }
 
     public function join(Request $request) {
-        $user = User::find(Auth::user()->id);
+        $user = User::findOrFail(Auth::user()->id);
         try {
             $group_id = Group::where('invite_key', $request->invite_key)->get('id');
             $user->groups()->attach($group_id);

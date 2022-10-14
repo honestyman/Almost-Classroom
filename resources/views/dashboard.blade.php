@@ -9,8 +9,13 @@
             <div class="flex space-x-2 justify-start py-4">
                 @foreach ($user->groups as $group)
                     <div class="px-2">
-                        <button type="button"
+                        
+                        <form action="/group/{{$group->id}}" method="POST">
+                            @csrf
+                            <input type="hidden" name="id" id="id" value="{{$group->id}}">
+                            <button type="submit"
                             class="inline-block px-6 py-2 bg-gray-200 text-gray-700 font-medium leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">{{ $group->name }}</button>
+                        </form>
                     </div>
                 @endforeach
             </div>
@@ -134,26 +139,30 @@
                                                                 </x-slot>
                                                                 <x-slot name="content">
                                                                     <x-dropdown-link>
-                                                                        <p class="flex justify-between" type="button" data-modal-toggle="popup-modal-comment-{{$comment->id}}-add">
+                                                                        <p class="flex justify-between" type="button"
+                                                                            data-modal-toggle="popup-modal-comment-{{ $comment->id }}-add">
                                                                             {{ 'Upravit' }}
                                                                             <i class="fa-solid fa-pen pr-4 pt-0.5"></i>
                                                                         </p>
                                                                     </x-dropdown-link>
                                                                     <x-dropdown-link>
-                                                                        <p class="flex justify-between" type="button" data-modal-toggle="popup-modal-comment-{{$comment->id}}-del">
+                                                                        <p class="flex justify-between" type="button"
+                                                                            data-modal-toggle="popup-modal-comment-{{ $comment->id }}-del">
                                                                             {{ 'Smazat' }}
                                                                             <i
                                                                                 class="fa-solid fa-trash pr-4 pt-0.5"></i>
                                                                         </p>
                                                                     </x-dropdown-link>
                                                                 </x-slot>
-                                                                
+
                                                             </x-dropdown>
                                                         </div>
                                                     @endif
                                                 </div>
-                                                <x-modal :id="$comment->id" type="comment" :content="$comment->content" function="add"></x-modal>
-                                                <x-modal :id="$comment->id" type="comment" :content="$comment->content" function="del"></x-modal>
+                                                <x-modal :id="$comment->id" type="comment" :content="$comment->content"
+                                                    function="add"></x-modal>
+                                                <x-modal :id="$comment->id" type="comment" :content="$comment->content"
+                                                    function="del"></x-modal>
                                                 <p>{{ $comment->content }}</p>
                                             @endforeach
 
