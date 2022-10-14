@@ -57,14 +57,5 @@ class Modal extends Component
     public function render()
     {
         return view('components.modal');
-        /*
-        switch ($function) {
-            case "add":
-                return view('components.modalAdd');
-                break;
-            case "add":
-                return view('components.modalRemove');
-                break;
-        }*/
     }
 }
