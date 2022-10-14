@@ -57,6 +57,10 @@
     </div>
 
 
+
+
+
+
     @if (isset($user))
         @foreach ($posts as $postss)
             @foreach ($postss as $post)
@@ -69,27 +73,39 @@
                                     <div class="col-span-3 ">
                                         <div class="grid grid-rows-6 max-h-100 h-80">
                                             <div class="row-start-1">
-                                                {{ $post->user->name }} ve
-                                                skupině {{ $post->group->name }}
-                                                <!-- TADY JE ROZKLIKAVACI MENU NA MAZANI & UPRAVU POSTU-->
-                                                @if ($user->id == $post->group->user_id)
-                                                    <div class="hidden sm:flex sm:items-center sm:m-1">
-                                                        <x-dropdown align="left" width="48">
-                                                            <x-slot name="trigger">
-                                                                <button
-                                                                    class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
-                                                                    <div><i class="fa-solid fa-gear"></i></div>
-                                                                </button>
-                                                            </x-slot>
+                                                <div class="flex">
+                                                    <b class="mr-1">{{ $post->user->name }}</b> ve
+                                                    skupině <b class="mr-3 ml-1">{{ $post->group->name }}</b>
+                                                    <!-- TADY JE ROZKLIKAVACI MENU NA MAZANI & UPRAVU POSTU-->
+                                                    @if ($user->id == $post->group->user_id)
+                                                        <div class="hidden sm:flex sm:items-center sm:m-1">
+                                                            <x-dropdown align="left" width="48">
+                                                                <x-slot name="trigger">
+                                                                    <button
+                                                                        class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                                                        <div><i class="fa-solid fa-gear"></i></div>
+                                                                    </button>
+                                                                </x-slot>
 
-                                                            <x-slot name="content">
-                                                                <x-dropdown-link>
-                                                                    <i class="fa-solid fa-trash pr-4"></i>{{'Smazat'}}
-                                                                </x-dropdown-link>
-                                                            </x-slot>
-                                                        </x-dropdown>
-                                                    </div>
-                                                @endif
+                                                                <x-slot name="content">
+                                                                    <x-dropdown-link>
+                                                                        <p class="flex justify-between">
+                                                                            {{ 'Upravit' }}
+                                                                            <i class="fa-solid fa-pen pr-4 pt-0.5"></i>
+                                                                        </p>
+                                                                    </x-dropdown-link>
+                                                                    <x-dropdown-link>
+                                                                        <p class="flex justify-between">
+                                                                            {{ 'Smazat' }}
+                                                                            <i
+                                                                                class="fa-solid fa-trash pr-4 pt-0.5"></i>
+                                                                        </p>
+                                                                    </x-dropdown-link>
+                                                                </x-slot>
+                                                            </x-dropdown>
+                                                        </div>
+                                                    @endif
+                                                </div>
                                             </div>
                                             <div class="row-span-4 row-start-2 py-2">{{ $post->content }}</div>
                                             <div class="row-start-6">
@@ -104,7 +120,39 @@
                                     <div class="col-span-2 max-h-100 h-80">
                                         <div class="max-h-80 h-80 overflow-auto">
                                             @foreach ($post->comments as $comment)
-                                                <p><b>{{ $comment->user->name }}</b></p>
+                                                <div class="flex">
+                                                    <b class="mr-3">{{ $comment->user->name }}</b>
+                                                    <!-- TADY JE ROZKLIKAVACI MENU NA MAZANI & UPRAVU KOMENTÁŘŮ-->
+                                                    @if ($user->id == $comment->user_id)
+                                                        <div class="hidden sm:flex sm:items-center sm:m-1">
+                                                            <x-dropdown align="left" width="48">
+                                                                <x-slot name="trigger">
+                                                                    <button
+                                                                        class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                                                        <div><i class="fa-solid fa-gear"></i></div>
+                                                                    </button>
+                                                                </x-slot>
+                                                                <x-slot name="content">
+                                                                    <x-dropdown-link>
+                                                                        <p class="flex justify-between" type="button" data-modal-toggle="popup-modal-comment-{{$comment->id}}">
+                                                                            {{ 'Upravit' }}
+                                                                            <i class="fa-solid fa-pen pr-4 pt-0.5"></i>
+                                                                        </p>
+                                                                    </x-dropdown-link>
+                                                                    <x-dropdown-link>
+                                                                        <p class="flex justify-between" type="button">
+                                                                            {{ 'Smazat' }}
+                                                                            <i
+                                                                                class="fa-solid fa-trash pr-4 pt-0.5"></i>
+                                                                        </p>
+                                                                    </x-dropdown-link>
+                                                                </x-slot>
+                                                                
+                                                            </x-dropdown>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                                <x-modal :id="$comment->id" type="comment" :content="$comment->content"></x-modal>
                                                 <p>{{ $comment->content }}</p>
                                             @endforeach
 

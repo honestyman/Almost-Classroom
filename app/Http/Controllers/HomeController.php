@@ -62,10 +62,16 @@ class HomeController extends Controller
                     'user_id'=> $request->user_id,]);
                 break;
             case 'comment':
-                $newComment = Comment::updateOrCreate(
+                if (isset($request->comment_id)) {
+                    $comment = Comment::where('id', $request->comment_id)->update(['content' => $request->content, 'updated_at' => now()]);
+
+                }
+                else {
+                    $newComment = Comment::updateOrCreate(
                     ['content' => $request->content,
                     'user_id'=> $request->user_id,
                     'post_id'=> $request->post_id,]);
+                }
                 break;
             default:
                 dd($request);

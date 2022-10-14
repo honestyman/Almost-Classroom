@@ -14,6 +14,8 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <link href="/css/app.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.3/dist/flowbite.min.css" />
+
         
 
     </head>
@@ -35,6 +37,6 @@
                 {{ $slot }}
             </main>
         </div>
-        <script src="../path/to/flowbite/dist/flowbite.js"></script>
+        <script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
     </body>
 </html>
