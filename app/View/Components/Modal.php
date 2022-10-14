@@ -29,16 +29,24 @@ class Modal extends Component
     public $content;
 
     /**
+     * funkce (uprava/mazani).
+     *
+     * @var string
+     */
+    public $function;
+
+    /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($id, $type, $content)
+    public function __construct($id, $type, $content, $function)
     {
         
         $this->item_id = $id;
         $this->type = $type;
         $this->content = $content;
+        $this->function = $function;
     }
 
     /**
@@ -49,5 +57,14 @@ class Modal extends Component
     public function render()
     {
         return view('components.modal');
+        /*
+        switch ($function) {
+            case "add":
+                return view('components.modalAdd');
+                break;
+            case "add":
+                return view('components.modalRemove');
+                break;
+        }*/
     }
 }

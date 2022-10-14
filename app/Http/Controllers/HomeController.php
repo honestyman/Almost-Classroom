@@ -62,16 +62,37 @@ class HomeController extends Controller
                     'user_id'=> $request->user_id,]);
                 break;
             case 'comment':
+                //uprava komentare
                 if (isset($request->comment_id)) {
                     $comment = Comment::where('id', $request->comment_id)->update(['content' => $request->content, 'updated_at' => now()]);
 
                 }
                 else {
+                    //vytvareni noveho komentare
                     $newComment = Comment::updateOrCreate(
                     ['content' => $request->content,
                     'user_id'=> $request->user_id,
                     'post_id'=> $request->post_id,]);
                 }
+                break;
+            default:
+                dd($request);
+                break;
+        }
+        return $this->index($request);
+    }
+
+    public function del(Request $request) {
+        $user = User::find(Auth::user()->id);
+        switch ($request->workingWith) {
+            case 'group':
+                Group::destroy($request->group_id);
+                break;
+            case 'post':
+                Post::destroy($request->post_id);
+                break;
+            case 'comment':
+                Comment::destroy($request->comment_id);
                 break;
             default:
                 dd($request);

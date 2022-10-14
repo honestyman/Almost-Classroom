@@ -43,5 +43,6 @@ Route::post('/join', [HomeController::class, 'join']);
 Route::controller(HomeController::class)->group(function () {
     Route::get('/test', 'index');
     Route::post('/add', 'add');
+    Route::post('/del', 'del');
     Route::post('/join', 'join');
 });

@@ -134,13 +134,13 @@
                                                                 </x-slot>
                                                                 <x-slot name="content">
                                                                     <x-dropdown-link>
-                                                                        <p class="flex justify-between" type="button" data-modal-toggle="popup-modal-comment-{{$comment->id}}">
+                                                                        <p class="flex justify-between" type="button" data-modal-toggle="popup-modal-comment-{{$comment->id}}-add">
                                                                             {{ 'Upravit' }}
                                                                             <i class="fa-solid fa-pen pr-4 pt-0.5"></i>
                                                                         </p>
                                                                     </x-dropdown-link>
                                                                     <x-dropdown-link>
-                                                                        <p class="flex justify-between" type="button">
+                                                                        <p class="flex justify-between" type="button" data-modal-toggle="popup-modal-comment-{{$comment->id}}-del">
                                                                             {{ 'Smazat' }}
                                                                             <i
                                                                                 class="fa-solid fa-trash pr-4 pt-0.5"></i>
@@ -152,7 +152,8 @@
                                                         </div>
                                                     @endif
                                                 </div>
-                                                <x-modal :id="$comment->id" type="comment" :content="$comment->content"></x-modal>
+                                                <x-modal :id="$comment->id" type="comment" :content="$comment->content" function="add"></x-modal>
+                                                <x-modal :id="$comment->id" type="comment" :content="$comment->content" function="del"></x-modal>
                                                 <p>{{ $comment->content }}</p>
                                             @endforeach
 
