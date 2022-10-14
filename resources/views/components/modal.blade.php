@@ -48,7 +48,7 @@
 
                     <form action="del" method="POST" class="p-4">
                         @csrf
-                        <p class="p-2 h-wax w-max rounded-md">{{ $content }}</p>
+                        <p class="p-2 mb-5 h-wax w-max rounded-md">{{ $content }}</p>
                         <input type="hidden" id="workingWith" name="workingWith" value="{{ $type }}">
                         <input type="hidden" id="{{ $type }}_id" name="{{ $type }}_id"
                             value="{{ $item_id }}">
