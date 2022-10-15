@@ -79,7 +79,8 @@ class HomeController extends Controller
                 dd($request);
                 break;
         }
-        return $this->index($request);
+        //return $this->index($request);
+        return redirect()->back();
     }
 
     public function del(Request $request) {
