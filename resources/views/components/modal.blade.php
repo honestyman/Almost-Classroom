@@ -13,9 +13,9 @@
                     <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Upravit komentář?<i
                             class="fa-solid fa-pen pl-4"></i></h3>
 
-                    <form action="add" method="POST" class="p-4">
+                    <form action="/add" method="POST" class="p-4">
                         @csrf
-                        <textarea class="p-2 h-wax w-max rounded-md mb-5" id="content" name="content" cols="30" rows="10">{{ $content }}</textarea>
+                        <textarea class="p-2 h-wax w-max rounded-md mb-5" id="content" name="content" cols="20" rows="10">{{ $content }}</textarea>
                         <input type="hidden" id="workingWith" name="workingWith" value="{{ $type }}">
                         <input type="hidden" id="{{ $type }}_id" name="{{ $type }}_id"
                             value="{{ $item_id }}">
@@ -46,7 +46,7 @@
                     <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Smazat komentář?<i
                             class="fa-solid fa-trash pl-4"></i></h3>
 
-                    <form action="del" method="POST" class="p-4">
+                    <form action="/del" method="POST" class="p-4">
                         @csrf
                         <p class="p-2 mb-5 h-wax w-max rounded-md">{{ $content }}</p>
                         <input type="hidden" id="workingWith" name="workingWith" value="{{ $type }}">

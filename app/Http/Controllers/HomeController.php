@@ -13,23 +13,7 @@ use Illuminate\Support\Str;
 class HomeController extends Controller
 {
     public function index(Request $request) {
-        //echo "<button><a href='/dashboard'>Dashboard</a></button>";
-        //zobrazovani obsahu pouze ze skupin do kterych patri uzivatel
         $user = User::findOrFail(Auth::user()->id);
-        /*
-        foreach ($user->groups as $group) {
-            echo "<div><h2>$group->name - $group->invite_key</h2>";
-            $posts = Post::where('group_id', $group->id)->get();
-            foreach ($posts as $post) {
-                echo "<p><b>$post->name</b></p>";
-                echo "<p><i>$post->content</i></p>";
-                $comments = Comment::where('post_id', $post->id)->get();
-                foreach ($comments as $comment) {
-                    echo "<p><u>$comment->content</u></p>";
-                }
-            }
-            echo "</div>";
-        }*/
         $posts_final = array();
         $comments_final = array();
         foreach ($user->groups as $group) {
@@ -79,7 +63,6 @@ class HomeController extends Controller
                 dd($request);
                 break;
         }
-        //return $this->index($request);
         return redirect()->back();
     }
 
@@ -99,7 +82,7 @@ class HomeController extends Controller
                 dd($request);
                 break;
         }
-        return $this->index($request);
+        return redirect()->back();
     }
 
     public function join(Request $request) {
@@ -111,6 +94,6 @@ class HomeController extends Controller
         catch (Exception $e) {
             dd($e->getMessage());
         }
-        return $this->index($request);
+        return redirect()->back();
     }
 }
