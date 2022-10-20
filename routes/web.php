@@ -35,11 +35,17 @@ Route::controller(GoogleController::class)->group(function(){
 
 });
 
-Route::controller(HomeController::class)->group(function () {
-    Route::get('test', 'index');
-    Route::post('add', 'add');
-    Route::post('del', 'del');
-    Route::post('join', 'join');
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('/test', [HomeController::class, 'index']);
+    Route::post('/add', [HomeController::class, 'add']);
+    Route::post('/del', [HomeController::class, 'del']);
+    Route::post('/join', [HomeController::class, 'join']);
 });
 
+
+
 Route::match(array('GET','POST'),'group/{id}', [GroupController::class, 'show']);
+
+Route::group(['middleware' => 'auth'], function() {
+    Route::post('/finished', [GroupController::class, 'finished']);
+});

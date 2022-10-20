@@ -40,6 +40,13 @@
                                 <i class="fa-solid fa-user-group pr-4 pt-0.5"></i>
                             </div>
                         </x-dropdown-link>
+                        <x-dropdown-link>
+                            <div class="flex justify-between hover:cursor-pointer" type="button"
+                                data-modal-toggle="popup-modal-group-join">
+                                {{ 'Připojit do skupiny' }}
+                                <i class="fa-solid fa-user-plus pr-4 pt-0.5"></i>
+                            </div>
+                        </x-dropdown-link>
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -95,6 +102,12 @@
                     {{ 'Vytvořit skupinu' }}
                 </div>
             </div>
+            <div class="mt-3 space-y-1 hover:cursor-pointer">
+                <div class="hover:cursor-pointer block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out" type="button"
+                    data-modal-toggle="popup-modal-group-join">
+                    {{ 'Připojit do skupiny' }}
+                </div>
+            </div>
             <div class="mt-3 space-y-1">
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
@@ -110,6 +123,7 @@
         </div>
     </div>
 
+    <!-- MODAL K VYTVÁŘENÍ SKUPIN -->
     <div id="popup-modal-group-add" tabindex="-1"
         class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 md:inset-0 h-modal md:h-full justify-center items-center"
         aria-hidden="true">
@@ -134,6 +148,40 @@
                             Ano, vytvořit
                         </button>
                         <button data-modal-toggle="popup-modal-group-add" type="button"
+                            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Ne,
+                            zrušit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL K PŘIPOJOVÁNÍ DO SKUPIN -->
+    <div id="popup-modal-group-join" tabindex="-1"
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 md:inset-0 h-modal md:h-full justify-center items-center"
+        aria-hidden="true">
+        <div class="relative p-4 w-full max-w-md h-full md:h-auto">
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <button type="button"
+                    class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                    data-modal-toggle="popup-modal-group-join">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="p-6 text-center">
+                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Připojit se do nové
+                        skupiny?<i class="fa-solid fa-people-group pl-4"></i></h3>
+
+                    <form action="/join" method="POST" class="p-4">
+                        @csrf
+                        <input type="text" id="invite_key" name="invite_key"
+                            class="mb-2 sm:mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Kód pro připojení do skupiny" required>
+                        <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user()->id }}">
+                        <button data-modal-toggle="popup-modal-group-join" type="submit"
+                            class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                            Ano, připojit se
+                        </button>
+                        <button data-modal-toggle="popup-modal-group-join" type="button"
                             class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Ne,
                             zrušit</button>
                     </form>

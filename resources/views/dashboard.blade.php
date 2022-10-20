@@ -53,7 +53,6 @@
                         <label for="invite_key">Invite key:</label><br>
                         <input type="text" id="invite_key" name="invite_key"><br>
                         <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user()->id }}">
-                        <input type="hidden" id="workingWith" name="workingWith" value="invite_key">
                         <input type="submit" value="Submit">
                     </form>
                 </div>

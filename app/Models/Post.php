@@ -13,12 +13,21 @@ class Post extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function users() {
+        return $this->belongsToMany(User::class, 'post_user', 'post_id', 'user_id');
+    }
+
     public function group() {
         return $this->belongsTo(Group::class);
     }
 
     public function comments() {
         return $this->hasMany(Comment::class);
+    }
+
+    public function postusers()
+    {
+        return $this->hasMany(PostUser::class);
     }
 
     protected $fillable = [

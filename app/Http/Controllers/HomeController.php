@@ -44,6 +44,7 @@ class HomeController extends Controller
                     'content' => $request->content,
                     'group_id' => $request->group_id,
                     'user_id'=> $request->user_id,]);
+                    $user->posts()->attach(Post::all()->count());
                 break;
             case 'comment':
                 //uprava komentare
