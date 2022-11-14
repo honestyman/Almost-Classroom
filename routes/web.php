@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +22,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 require __DIR__.'/auth.php';
 
 Route::controller(GoogleController::class)->group(function(){
@@ -36,7 +33,7 @@ Route::controller(GoogleController::class)->group(function(){
 });
 
 Route::group(['middleware' => 'auth'], function() {
-    Route::get('/test', [HomeController::class, 'index']);
+    Route::get('/dashboard', [HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
     Route::post('/add', [HomeController::class, 'add']);
     Route::post('/del', [HomeController::class, 'del']);
     Route::post('/join', [HomeController::class, 'join']);
@@ -45,7 +42,8 @@ Route::group(['middleware' => 'auth'], function() {
 
 
 Route::match(array('GET','POST'),'group/{id}', [GroupController::class, 'show']);
+Route::match(array('GET','POST'),'group/{id}/post/{id2}', [PostController::class, 'show'])->name('post_ideal');
 
 Route::group(['middleware' => 'auth'], function() {
-    Route::post('/finished', [GroupController::class, 'finished']);
+    Route::post('/finished', [PostController::class, 'finished']);
 });

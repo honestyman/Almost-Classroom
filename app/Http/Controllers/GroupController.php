@@ -22,21 +22,4 @@ class GroupController extends Controller
         
         return view('group', ['site' => $group, 'finished' => $finished_final],);
     }
-
-    public function finished(Request $request) {
-        $user = User::findOrFail(Auth::user()->id);
-        $post = Post::findOrFail($request->post_id);
-        $finished = PostUser::updateOrCreate([
-            'post_id' => $request->post_id,
-            'user_id' => $request->user_id,
-            ], [
-            'post_id' =>  $request->post_id,
-            'user_id' => $request->user_id,
-            'finished' => $request->finished,
-            ]);
-        
-        return redirect()->action(
-            [GroupController::class, 'show'], ['id' => $post->group->id]
-        );
-    }
 }

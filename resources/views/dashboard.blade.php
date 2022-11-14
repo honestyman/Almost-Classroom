@@ -1,7 +1,5 @@
 <x-app-layout>
     <x-slot name="header">
-        <!--Tady bude foreach co vypise do tlacitka vzdycky kazdou uzivatelovu private skupinu a
-            kdyz se na tlacitko klikne tak hlavni content bude jen ta skupina-->
         @if (isset($user))
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                 Vaše soukromé skupiny
