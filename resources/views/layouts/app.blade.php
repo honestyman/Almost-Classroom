@@ -12,9 +12,10 @@
 
         
         <!-- Scripts -->
+        <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.4/dist/flowbite.min.css" />
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <link href="/css/app.css" rel="stylesheet">
-        <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.3/dist/flowbite.min.css" />
+        
 
         
 
@@ -26,7 +27,7 @@
             <!-- Page Heading -->
             @if (isset($header))
                 <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+                    <div class="mx-2 sm:mx-6 md:mx-10 py-6 px-4 sm:px-6 lg:px-8">
                         {{ $header }}
                     </div>
                 </header>
@@ -37,6 +38,6 @@
                 {{ $slot }}
             </main>
         </div>
-        <script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
+        <script src="https://unpkg.com/flowbite@1.5.4/dist/flowbite.js"></script>
     </body>
 </html>

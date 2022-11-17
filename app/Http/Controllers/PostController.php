@@ -27,10 +27,12 @@ class PostController extends Controller
             'post_id' =>  $request->post_id,
             'user_id' => $request->user_id,
             'finished' => $request->finished,
+            'post_answer' => $request->post_answer,
             ]);
         
         return redirect()->action(
             [PostController::class, 'show'], ['id' => $post->group->id, 'id2' => $post->id]
         );
     }
+    
 }

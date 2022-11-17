@@ -22,4 +22,15 @@ class GroupController extends Controller
         
         return view('group', ['site' => $group, 'finished' => $finished_final],);
     }
+
+    public function users(Request $request) {
+        $group = Group::findOrFail($request->id);
+        
+        return view('users', ['site' => $group,],);
+    }
+    public function user(Request $request) {
+        $user = User::findOrFail($request->id)->first();
+        
+        return view('user', ['user' => $user,],);
+    }
 }

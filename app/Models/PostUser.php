@@ -15,6 +15,7 @@ class PostUser extends Model
         'post_id',
         'user_id',
         'finished',
+        'post_answer',
     ];
     
     public function post()

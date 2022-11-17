@@ -33,20 +33,28 @@ class Modal extends Component
      *
      * @var string
      */
-    public $function;
+    public $function; 
+
+    /**
+     * stary nazev.
+     *
+     * @var string
+     */
+    public $name;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($id, $type, $content, $function)
+    public function __construct($id, $type, $content, $function, $name = null,)
     {
         
         $this->item_id = $id;
         $this->type = $type;
         $this->content = $content;
         $this->function = $function;
+        $this->name = $name;
     }
 
     /**

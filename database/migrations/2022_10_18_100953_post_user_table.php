@@ -17,7 +17,8 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->foreignId('post_id')->constrained('posts');
             $table->foreignId('user_id')->constrained('users');
-            $table->boolean('finished')->default(false);            
+            $table->boolean('finished')->default(false);
+            $table->string('post_answer', 2048)->nullable();          
             $table->timestamps();
         });
     }

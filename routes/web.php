@@ -39,11 +39,10 @@ Route::group(['middleware' => 'auth'], function() {
     Route::post('/join', [HomeController::class, 'join']);
 });
 
-
-
-Route::match(array('GET','POST'),'group/{id}', [GroupController::class, 'show']);
-Route::match(array('GET','POST'),'group/{id}/post/{id2}', [PostController::class, 'show'])->name('post_ideal');
-
 Route::group(['middleware' => 'auth'], function() {
     Route::post('/finished', [PostController::class, 'finished']);
+    Route::match(array('GET','POST'),'group/{id}', [GroupController::class, 'show']);
+    Route::match(array('GET','POST'),'group/{id}/post/{id2}', [PostController::class, 'show'])->name('post_ideal');
+    Route::match(array('GET','POST'),'group/{id}/users', [GroupController::class, 'users']);
+    Route::match(array('GET','POST'),'users/{id}', [GroupController::class, 'user']);
 });

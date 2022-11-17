@@ -25,5 +25,6 @@ class Group extends Model
         'name',
         'user_id',
         'invite_key',
+        'public',
     ];
 }

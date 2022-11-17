@@ -1,6 +1,6 @@
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="mx-4 md:mx-6 px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
@@ -13,7 +13,7 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Název webu') }}
+                        {{ __('Stepanek Classroom') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -84,12 +84,6 @@
 
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
-        </div>
-
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
@@ -103,8 +97,8 @@
                 </div>
             </div>
             <div class="mt-3 space-y-1 hover:cursor-pointer">
-                <div class="hover:cursor-pointer block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out" type="button"
-                    data-modal-toggle="popup-modal-group-join">
+                <div class="hover:cursor-pointer block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out"
+                    type="button" data-modal-toggle="popup-modal-group-join">
                     {{ 'Připojit do skupiny' }}
                 </div>
             </div>
@@ -135,14 +129,22 @@
                     <i class="fa-solid fa-xmark"></i>
                 </button>
                 <div class="p-6 text-center">
-                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Vytvořit novou skupinu?<i
-                            class="fa-solid fa-people-group pl-4"></i></h3>
+                    <h3 class="mb-1 sm:mb-2 text-lg font-normal text-gray-500 dark:text-gray-400">Vytvořit novou
+                        skupinu?<i class="fa-solid fa-people-group pl-4"></i></h3>
 
                     <form action="/add" method="POST" class="p-4">
                         @csrf
-                        <textarea class="p-2 h-wax w-max rounded-md mb-5" id="name" name="name" cols="20" rows="10" required></textarea>
+
+                        <input
+                            class="p-2 h-12 w-max rounded-md mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            type="text" id="name" name="name" required placeholder="Název skupiny">
                         <input type="hidden" id="workingWith" name="workingWith" value="group">
                         <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user()->id }}">
+                        <div class="flex justify-center mb-4">
+                            <input type="checkbox" value="1" id="public" name="public"
+                                class="mt-1 appearance-none checked:bg-green-500" />
+                            <i class="pl-2">Veřejná skupina</i>
+                        </div>
                         <button data-modal-toggle="popup-modal-group-add" type="submit"
                             class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
                             Ano, vytvořit
@@ -168,13 +170,13 @@
                     <i class="fa-solid fa-xmark"></i>
                 </button>
                 <div class="p-6 text-center">
-                    <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Připojit se do nové
+                    <h3 class="mb-1 sm:mb-2 text-lg font-normal text-gray-500 dark:text-gray-400">Připojit se do nové
                         skupiny?<i class="fa-solid fa-people-group pl-4"></i></h3>
 
                     <form action="/join" method="POST" class="p-4">
                         @csrf
                         <input type="text" id="invite_key" name="invite_key"
-                            class="mb-2 sm:mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            class="mb-4 sm:mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Kód pro připojení do skupiny" required>
                         <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user()->id }}">
                         <button data-modal-toggle="popup-modal-group-join" type="submit"
