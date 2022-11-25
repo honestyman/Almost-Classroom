@@ -17,8 +17,10 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('name', 32);
             $table->string('content', 256);
+            $table->string('type');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('group_id')->constrained();
+            $table->datetime('deadline')->nullable();
             $table->timestamps();
         });
     }

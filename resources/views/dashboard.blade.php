@@ -36,10 +36,16 @@
                                     </div>
 
                                     <div class="text-slate-600 italic p-3 align-middle flex justify-center">
-                                        {{ $post->user->name }} nahrál {{ $post->created_at->format('d. m. Y ') }} v
-                                        {{ $post->created_at->format('H:i') }} @if ($post->created_at != $post->updated_at)
-                                            (Upraveno {{ $post->updated_at->format('d. m. Y ') }} v
-                                            {{ $post->updated_at->format('H:i') }})
+                                        @if (isset($post->deadline) || $post->deadline != null)
+                                            Termín odevzdání je
+                                            {{ date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y ') }}
+                                            ve
+                                            {{ date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('H:i') }}
+                                            @if (date('d. m. Y H:i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
+                                                => POZDĚ !!!
+                                            @endif
+                                        @else
+                                            Bez termínu odevzdání
                                         @endif
                                     </div>
 
@@ -47,8 +53,18 @@
                                         @foreach ($post->postusers as $postuser)
                                             @if ($postuser->user_id == Auth::user()->id and $postuser->post_id == $post->id)
                                                 @if ($postuser->finished == 1)
-                                                    <i
-                                                        class="fa-solid fa-square-check text-5xl text-green-600 mr-2"></i>
+                                                    @if (isset($post->deadline) || $post->deadline != null)
+                                                        @if (date('d. m. Y H:i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
+                                                            <i
+                                                                class="fa-solid fa-square-check text-5xl text-yellow-300 mr-2"></i>
+                                                        @else
+                                                            <i
+                                                                class="fa-solid fa-square-check text-5xl text-green-600 mr-2"></i>
+                                                        @endif
+                                                    @else
+                                                        <i
+                                                            class="fa-solid fa-square-check text-5xl text-green-600 mr-2"></i>
+                                                    @endif
                                                 @else
                                                     <i class="fa-solid fa-square-xmark text-5xl text-red-600 mr-2"></i>
                                                 @endif

@@ -14,7 +14,7 @@ class PostController extends Controller
 {
     public function show(Request $request) {
         $post = Post::findOrFail($request->id2);
-        return view('post', ['post' => $post],);
+        return view('post', ['post' => $post,],);
     }
 
     public function finished(Request $request) {

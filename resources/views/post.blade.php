@@ -5,7 +5,7 @@
                 <div>
                     <button id="dropdownDefault" data-dropdown-toggle="dropdownGroups"
                         class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
-                        type="button">Skupiny <i class="fa-solid fa-caret-down ml-2"></i></button>
+                        type="button"><i class="fa-solid fa-caret-down mr-2"></i>Skupiny</button>
                     <div id="dropdownGroups"
                         class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
@@ -33,7 +33,7 @@
                 <div>
                     <button id="dropdownDefault" data-dropdown-toggle="dropdownThisGroup"
                         class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
-                        type="button"><i class="fa-solid fa-caret-down mr-2"></i>{{ $post->group->name }}</button>
+                        type="button">{{ $post->group->name }}<i class="fa-solid fa-caret-down ml-2"></i></button>
                     <div id="dropdownThisGroup"
                         class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
@@ -76,36 +76,39 @@
                                                 <x-slot name="content">
                                                     <x-dropdown-link>
                                                         <div class="flex justify-between hover:cursor-pointer"
-                                                                type="button"
-                                                                data-modal-toggle="popup-modal-post-{{ $post->id }}-add">
-                                                                {{ 'Upravit' }}
-                                                                <i class="fa-solid fa-pen pr-4 pt-0.5"></i>
-                                                            </div>
+                                                            type="button"
+                                                            data-modal-toggle="popup-modal-post-{{ $post->id }}-add">
+                                                            {{ 'Upravit' }}
+                                                            <i class="fa-solid fa-pen pr-4 pt-0.5"></i>
+                                                        </div>
                                                     </x-dropdown-link>
                                                     <x-dropdown-link>
                                                         <div class="flex justify-between hover:cursor-pointer"
-                                                                type="button"
-                                                                data-modal-toggle="popup-modal-post-{{ $post->id }}-del">
-                                                                {{ 'Smazat' }}
-                                                                <i class="fa-solid fa-trash pr-4 pt-0.5"></i>
-                                                            </div>
+                                                            type="button"
+                                                            data-modal-toggle="popup-modal-post-{{ $post->id }}-del">
+                                                            {{ 'Smazat' }}
+                                                            <i class="fa-solid fa-trash pr-4 pt-0.5"></i>
+                                                        </div>
                                                     </x-dropdown-link>
                                                 </x-slot>
                                             </x-dropdown>
                                         </div>
-                                        <x-modal :id="$post->id" type="post" :content="$post->content" :name="$post->name" function="add">
+                                        <x-modal :id="$post->id" type="post" :content="$post->content" :name="$post->name"
+                                            function="add">
                                         </x-modal>
-                                        <x-modal :id="$post->id" type="post" :content="$post->content" :name="$post->name" function="del">
+                                        <x-modal :id="$post->id" type="post" :content="$post->content" :name="$post->name"
+                                            function="del">
                                         </x-modal>
                                     @endif
                                 </div>
-                                <div class="p-2 border-b-2 sm:border-b-0 border-slate-500 text-lg">
+                                <div
+                                    class="p-2 border-b-2 sm:border-b-0 border-slate-500 text-lg text-justify break-all">
                                     {{ $post->content }}
                                 </div>
                             </div>
 
-                            <div class="mt-2 max-h-80 h-60 sm:max-h-100 sm:h-80 sm:col-span-2">
-                                <div class="max-h-80 h-60 sm:h-80 overflow-auto">
+                            <div class="my-3 max-h-80 sm:max-h-100 sm:h-80 sm:col-span-2">
+                                <div class="max-h-80 sm:h-80 overflow-auto">
                                     <div class="sm:mr-6 flex">
                                         <form method="POST" action="/finished" class="w-full">
                                             @csrf
@@ -150,9 +153,14 @@
                                             @endforeach
                                         </div>
 
-                                        <textarea name="post_answer" rows="6"
-                                            class="block p-2.5 mt-4 w-full text-sm bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            @if ($finished == 1) disabled @endif placeholder="Odpověď k úkolu..."></textarea>
+                                        @if ($post->type == 2)
+                                            <div class="flex justify-center md:justify-end">
+                                                <textarea name="post_answer" rows="6"
+                                                    class="block p-2.5 mt-4 w-10/12 text-sm bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    @if ($finished == 1) disabled @endif placeholder="Odpověď k úkolu..." required>@if ($postuser->post_answer != ''){{ $postuser->post_answer }}@endif
+                                                </textarea>
+                                            </div>
+                                        @endif
                                     </form>
                                 </div>
                             </div>
@@ -160,11 +168,23 @@
 
                     </div>
                     <div class="flex justify-between">
-                        <div class="text-slate-600 italic">
-                            {{ $post->user->name }} nahrál {{ $post->created_at->format('d. m. Y ') }} v
+                        <div class="text-slate-600 italic text-left">
+                            {{ $post->user->name }} zveřejnil {{ $post->created_at->format('d. m. Y ') }} v
                             {{ $post->created_at->format('H:i') }} @if ($post->created_at != $post->updated_at)
                                 (Upraveno {{ $post->updated_at->format('d. m. Y ') }} v
                                 {{ $post->updated_at->format('H:i') }})
+                            @endif
+                        </div>
+                        <div class="text-slate-600 italic text-right">
+                            @if (isset($post->deadline))
+                                Termín odevzdání je
+                                {{ date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y ') }}
+                                ve {{ date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('H:i') }}
+                                @if (date('d. m. Y H:i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
+                                    pozdě
+                                @endif
+                            @else
+                                Bez termínu odevzdání
                             @endif
                         </div>
                     </div>

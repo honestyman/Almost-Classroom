@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Group;
+use App\Models\GroupUser;
 use App\Models\Post;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
@@ -16,15 +17,25 @@ class HomeController extends Controller
         $user = User::findOrFail(Auth::user()->id);
         $posts_final = array();
         $comments_final = array();
-        foreach ($user->groups as $group) {
-            $posts_final[] = (Post::where('group_id', $group->id)->get());
-            $posts = Post::where('group_id', $group->id)->get();
-                foreach ($posts as $post) {
-                    $comments_final[] = Comment::where('post_id', $post->id)->get();
-                    $comments = Comment::where('post_id', $post->id)->get();
-                }
+        $groups_private = array();
+        $groups_public = array();
+        $groups_public[] = Group::where('public', 1)->get();
+        $groups_private[] = $user->groups->where('public', '!=', 1);
+        
+        $groups_final = array_merge($groups_private, $groups_public);
+        $groups_final = array_unique($groups_final);
+        foreach ($groups_final as $groups) {
+            foreach ($groups as $group) {
+                $posts_final[] = Post::where('group_id', $group->id)->get();
+                $posts = Post::where('group_id', $group->id)->get();
+                    foreach ($posts as $post) {
+                        $comments_final[] = Comment::where('post_id', $post->id)->get();
+                        $comments = Comment::where('post_id', $post->id)->get();
+                    }
+            }
+            
         };
-        return view('dashboard', ['user' => $user, 'posts' => $posts_final, 'comments' => $comments_final]);
+        return view('dashboard', ['user' => $user, 'posts' => $posts_final, 'groups' => $groups_final,]);
         
     }
 
@@ -46,6 +57,8 @@ class HomeController extends Controller
                 $newPost = Post::updateOrCreate(
                     ['name' => $request->name,
                     'content' => $request->content,
+                    'type' => $request->type,
+                    'deadline' => $request->deadline,
                     'group_id' => $request->group_id,
                     'user_id'=> $request->user_id,]);
                     $user->posts()->attach(Post::all()->count());
@@ -78,6 +91,7 @@ class HomeController extends Controller
                 Group::destroy($request->group_id);
                 break;
             case 'post':
+                Comment::where('post_id', $request->post_id)->delete();
                 Post::destroy($request->post_id);
                 break;
             case 'comment':
