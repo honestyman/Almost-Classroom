@@ -139,12 +139,14 @@
 
                                 <div class="text-slate-600 italic p-3 align-middle flex justify-center">
                                     @if (isset($post->deadline) || $post->deadline != null)
-                                        Termín odevzdání je
+                                        Termín odevzdání 
+                                        @if (date('d. m. Y H:i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
+                                            byl
+                                            @else
+                                            je
+                                        @endif
                                         {{ date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y ') }}
                                         ve {{ date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('H:i') }}
-                                        @if (date('d. m. Y H:i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
-                                            pozdě
-                                        @endif
                                     @else
                                         Bez termínu odevzdání
                                     @endif
@@ -155,7 +157,7 @@
                                         @if ($postuser->user_id == Auth::user()->id and $postuser->post_id == $post->id)
                                             @if ($postuser->finished == 1)
                                                 @if (isset($post->deadline) || $post->deadline != null)
-                                                    @if (date('d. m. Y H:i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
+                                                    @if (date_create_from_format('Y-m-d H:i:s', $postuser->updated_at)->format('d. m. Y H:i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
                                                         <i
                                                             class="fa-solid fa-square-check text-5xl text-yellow-300 mr-2"></i>
                                                     @else

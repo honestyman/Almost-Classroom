@@ -4,8 +4,10 @@ use Illuminate\Support\Facades\Route;
   
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GoogleController;
+use App\Http\Controllers\SortController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PostController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -25,11 +27,8 @@ Route::get('/', function () {
 require __DIR__.'/auth.php';
 
 Route::controller(GoogleController::class)->group(function(){
-
     Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
-
     Route::get('auth/google/callback', 'handleGoogleCallback');
-
 });
 
 Route::group(['middleware' => 'auth'], function() {
@@ -46,3 +45,6 @@ Route::group(['middleware' => 'auth'], function() {
     Route::match(array('GET','POST'),'group/{id}/users', [GroupController::class, 'users']);
     Route::match(array('GET','POST'),'users/{id}', [GroupController::class, 'user']);
 });
+
+Route::get('/test',[SortController::class, 'index']);
+Route::get('/sort',[SortController::class, 'sort'])->name('sort');

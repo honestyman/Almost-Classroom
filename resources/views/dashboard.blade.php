@@ -1,25 +1,47 @@
 <x-app-layout>
     <x-slot name="header">
         @if (isset($user))
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Vaše skupiny
-            </h2>
-            <div class="flex space-x-2 justify-start py-4">
-                @foreach ($user->groups as $group)
-                    <div class="px-2">
+            <div class="flex justify-between">
+                <div>
+                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                        Vaše skupiny
+                    </h2>
+                    <div class="flex space-x-2 justify-start py-4">
+                        @foreach ($user->groups as $group)
+                            <div class="px-2">
 
-                        <form action="/group/{{ $group->id }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="id" id="id" value="{{ $group->id }}">
-                            <button type="submit"
-                                class="inline-block px-6 py-2 bg-gray-200 text-gray-700 font-medium leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">{{ $group->name }}</button>
-                        </form>
+                                <form action="/group/{{ $group->id }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="id" id="id" value="{{ $group->id }}">
+                                    <button type="submit"
+                                        class="inline-block px-6 py-2 bg-gray-200 text-gray-700 font-medium leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">{{ $group->name }}</button>
+                                </form>
+                            </div>
+                        @endforeach
                     </div>
-                @endforeach
+                </div>
+
+                <div>
+                    <label for="sort" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Třídit
+                        podle</label>
+                    <select id="sort" name="sort"
+                        class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        <option value="1">Od nejstaršího</option>
+                        <option value="2" selected>Od nejnovějšího</option>
+                        <option value="3">Nejvzdálenější termín odevzdání</option>
+                        <option value="4">Nejbližší termín odevzdání</option>
+                        <option value="5">Názvu skupiny (A-Z)</option>
+                        <option value="6">Názvu skupiny (Z-A)</option>
+                    </select>
+                </div>
             </div>
         @endif
 
     </x-slot>
+
+    <div class="razeni">
+        @include('test')
+    </div>
 
     @if (isset($user))
         @foreach ($posts as $postss)
@@ -37,13 +59,15 @@
 
                                     <div class="text-slate-600 italic p-3 align-middle flex justify-center">
                                         @if (isset($post->deadline) || $post->deadline != null)
-                                            Termín odevzdání je
+                                            Termín odevzdání
+                                            @if (date('d. m. Y H:i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
+                                                byl
+                                            @else
+                                                je
+                                            @endif
                                             {{ date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y ') }}
                                             ve
                                             {{ date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('H:i') }}
-                                            @if (date('d. m. Y H:i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
-                                                => POZDĚ !!!
-                                            @endif
                                         @else
                                             Bez termínu odevzdání
                                         @endif
@@ -54,7 +78,7 @@
                                             @if ($postuser->user_id == Auth::user()->id and $postuser->post_id == $post->id)
                                                 @if ($postuser->finished == 1)
                                                     @if (isset($post->deadline) || $post->deadline != null)
-                                                        @if (date('d. m. Y H:i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
+                                                        @if (date_create_from_format('Y-m-d H:i:s', $postuser->updated_at)->format('d. m. Y H:i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
                                                             <i
                                                                 class="fa-solid fa-square-check text-5xl text-yellow-300 mr-2"></i>
                                                         @else
@@ -82,6 +106,33 @@
         @endforeach
     @endforeach
 @endif
+
+
+<script>
+    $(document).ready(function() {
+
+        fetch_customer_data();
+
+        function fetch_customer_data(query = '') {
+            $.ajax({
+                url: "{{ route('sort') }}",
+                method: 'GET',
+                data: {
+                    query: query
+                },
+                success: function(data) {
+                    console.log(data);
+                    $('.razeni').html(data);
+                }
+            })
+        }
+
+        $(document).on('change', '#sort', function() {
+            var query = $(this).val();
+            fetch_customer_data(query);
+        });
+    });
+</script>
 
 
 </x-app-layout>
