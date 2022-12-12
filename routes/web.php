@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
   
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GoogleController;
-use App\Http\Controllers\SortController;
+use App\Http\Controllers\ContentController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PostController;
 
@@ -46,5 +46,5 @@ Route::group(['middleware' => 'auth'], function() {
     Route::match(array('GET','POST'),'users/{id}', [GroupController::class, 'user']);
 });
 
-Route::get('/test',[SortController::class, 'index']);
-Route::get('/sort',[SortController::class, 'sort'])->name('sort');
+Route::get('/test',[ContentController::class, 'index']);
+Route::get('/sort',[ContentController::class, 'sort'])->name('sort');

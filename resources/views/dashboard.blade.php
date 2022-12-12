@@ -20,31 +20,48 @@
                     </div>
                 </div>
 
-                <div class="block md:flex flex-col md:flex-row justify-between">
-                    <div class="mx-2 py-2">
-                        <label for="groups"
-                            class="block mb-2 text-l font-medium text-gray-900 dark:text-white">Zobrazení
-                            skupin</label>
-                        <select id="groups" name="groups"
-                            class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="1" selected>Všechny skupiny</option>
-                            <option value="2">Pouze soukromé skupiny</option>
-                            <option value="3">Pouze veřejné skupiny</option>
-                        </select>
+                <div>
+                    <div class="block md:flex flex-col md:flex-row justify-between">
+                        <div class="mx-2 py-2">
+                            <label for="groups"
+                                class="block mb-2 text-l font-medium text-gray-900 dark:text-white">Zobrazení
+                                skupin</label>
+                            <select id="groups" name="groups"
+                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="1" selected>Všechny skupiny</option>
+                                <option value="2">Pouze soukromé skupiny</option>
+                                <option value="3">Pouze veřejné skupiny</option>
+                            </select>
+                        </div>
+                        <div class="mx-2 py-2">
+                            <label for="sort" class="block mb-2 text-l font-medium text-gray-900 dark:text-white">Třídit
+                                obsah podle</label>
+                            <select id="sort" name="sort"
+                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="1">Od nejstaršího</option>
+                                <option value="2">Od nejnovějšího</option>
+                                <option value="3">Nejvzdálenější termín odevzdání</option>
+                                <option value="4" selected>Nejbližší termín odevzdání</option>
+                                <option value="5">Názvu skupiny (A-Z)</option>
+                                <option value="6">Názvu skupiny (Z-A)</option>
+                            </select>
+                        </div>
                     </div>
-                    <div class="mx-2 py-2">
-                        <label for="sort"
-                            class="block mb-2 text-l font-medium text-gray-900 dark:text-white">Třídit
-                            obsah podle</label>
-                        <select id="sort" name="sort"
-                            class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                            <option value="1">Od nejstaršího</option>
-                            <option value="2">Od nejnovějšího</option>
-                            <option value="3">Nejvzdálenější termín odevzdání</option>
-                            <option value="4" selected>Nejbližší termín odevzdání</option>
-                            <option value="5">Názvu skupiny (A-Z)</option>
-                            <option value="6">Názvu skupiny (Z-A)</option>
-                        </select>
+                    <div class="mx-2">
+                        <label for="simple-search" class="sr-only">Search</label>
+                        <div class="relative w-full">
+                            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                <svg aria-hidden="true" class="w-5 h-4 text-gray-500 dark:text-gray-400" fill="currentColor"
+                                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd"
+                                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                            <input type="text" id="search" name="search"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full h-10 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                placeholder="Vyhledat">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -52,7 +69,7 @@
 
     </x-slot>
 
-    <div class="razeni" id="orderContent">
+    <div class="obsah" id="orderContent">
         @include('prispevky')
     </div>
     <center>
@@ -69,13 +86,14 @@
 
             fetch_customer_data();
 
-            function fetch_customer_data(query = '', groups = '') {
+            function fetch_customer_data(query = '', groups = '', search = '') {
                 $.ajax({
                     url: "{{ route('sort') }}",
                     method: 'GET',
                     data: {
                         query: query,
-                        groups: groups
+                        groups: groups,
+                        search: search,
                     },
                     beforeSend: function() {
                         $('#loadingImage').show();
@@ -86,21 +104,29 @@
                     },
                     success: function(data) {
                         console.log(data);
-                        $('.razeni').html(data);
+                        $('.obsah').html(data);
                         $('#orderContent').show();
                     }
                 })
             }
 
             $(document).on('change', '#sort', function() {
-                var query = $('#sort').val();
+                var sort = $('#sort').val();
                 var groups = $('#groups').val();
-                fetch_customer_data(query, groups);
+                var search = $('#search').val();
+                fetch_customer_data(sort, groups, search);
             });
             $(document).on('change', '#groups', function() {
-                var query = $('#sort').val();
+                var sort = $('#sort').val();
                 var groups = $('#groups').val();
-                fetch_customer_data(query, groups);
+                var search = $('#search').val();
+                fetch_customer_data(sort, groups, search);
+            });
+            $(document).on('input', '#search', function() {
+                var sort = $('#sort').val();
+                var groups = $('#groups').val();
+                var search = $('#search').val();
+                fetch_customer_data(sort, groups, search);
             });
         });
     </script>

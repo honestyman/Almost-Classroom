@@ -125,3 +125,6 @@
 </div>
 @endforeach
 @endif
+@if (isset($test))
+    <p>{{$test}}</p>
+@endif
