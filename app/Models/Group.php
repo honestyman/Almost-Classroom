@@ -21,7 +21,6 @@ class Group extends Model
         return $this->hasMany(Post::class);
     }
 
-    
     public function groupusers()
     {
         return $this->hasMany(GroupUser::class);

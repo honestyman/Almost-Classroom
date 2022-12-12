@@ -10,6 +10,7 @@ use App\Models\Post;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Exception;
 
 class HomeController extends Controller
 {
@@ -46,6 +47,7 @@ class HomeController extends Controller
                 if ($request->public != 1) {
                     $request->public = 0;
                 }
+                //dodělat že pri vytvoření public skupiny se do ní automaticky přidají všichni uživatelé
                 $newGroup = Group::updateOrCreate(
                     ['name' => $request->name,
                     'user_id' => $request->user_id,

@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 32);
-            $table->string('content', 256);
+            $table->string('content', 256)->nullable();
             $table->string('type');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('group_id')->constrained();

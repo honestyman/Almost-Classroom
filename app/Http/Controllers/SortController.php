@@ -4,52 +4,100 @@ namespace App\Http\Controllers;
 
 
 use App\Models\Group;
-use DB;
+use App\Models\Post;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
 
 class SortController extends Controller
 {
-    public function index()
-    {
-        $data = DB::table('groups')->orderBy('id', 'asc')->get();
-        return view('test', compact($data));
-    }
-
-
     function sort(Request $request)
     {
         if ($request->ajax()) {
-            $vysl = '';
             $query = $request->get('query');
+            $groups = $request->get('groups');
+            $user = User::findOrFail(Auth::user()->id);
+
             switch ($query) {
                 case 1:
-                    $data = DB::table('groups')->orderBy('id', 'asc')->get();
+                    $tridit_dle = 'id';
+                    $tridit_jak = 'asc';
                     break;
                 case 2:
-                    $data = DB::table('groups')->orderBy('id', 'desc')->get();
+                    $tridit_dle = 'id';
+                    $tridit_jak = 'desc';
                     break;
                 case 3:
-                    $data = DB::table('groups')->orderBy('id', 'asc')->get();
+                    $tridit_dle = 'deadline';
+                    $tridit_jak = 'asc';
                     break;
                 case 4:
-                    $data = DB::table('groups')->orderBy('id', 'desc')->get();
+                    $tridit_dle = 'deadline';
+                    $tridit_jak = 'desc';
                     break;
                 case 5:
-                    $data = DB::table('groups')->orderBy('name', 'asc')->get();
+                    $tridit_dle = 'name';
+                    $tridit_jak = 'asc';
                     break;
                 case 6:
-                    $data = DB::table('groups')->orderBy('name', 'desc')->get();
+                    $tridit_dle = 'name';
+                    $tridit_jak = 'desc';
                     break;
                 default:
-                    $data = DB::table('groups')->orderBy('id', 'desc')->get();
+                    $tridit_dle = 'deadline';
+                    $tridit_jak = 'desc';
                     break;
             }
-            //echo json_encode($data);
-            //return $data;
-            //return response($data);
-            return view('test', ['data' => $data])->render();
+
+            switch ($groups) {
+                case 1:
+                    $groups_final = $user->groups();
+                    if ($query < 5) {
+                        $posts = array();
+                        $posts = Post::orderBy($tridit_dle, $tridit_jak)->get();
+                        return view('prispevky', ['prispevky' => $posts])->render();
+                    }
+                    else {
+                        $groups_final = $user->groups()->orderBy($tridit_dle, $tridit_jak)->get();
+                    }
+                    break;
+                case 2:
+                    $groups_final = $user->groups()->where('public', '!=', 1)->get();
+                    foreach ($groups_final as $group) {
+                        $id[] = $group->id;
+                    }
+                    if ($query < 5) {
+                        $posts = Post::whereIn('group_id', $id)->orderBy($tridit_dle, $tridit_jak)->get();
+                        return view('prispevky', ['prispevky' => $posts])->render();
+                    }
+                    else {
+                        $groups_final = $user->groups()->where('public', '!=', 1)->orderBy($tridit_dle, $tridit_jak)->get();
+                    }
+                    break;
+                case 3:
+                    $groups_final = Group::where('public', 1)->get();
+                    foreach ($groups_final as $group) {
+                        $id[] = $group->id;
+                    }
+                    if ($query < 5) {
+                        $posts = Post::whereIn('group_id', $id)->orderBy($tridit_dle, $tridit_jak)->get();
+                        return view('prispevky', ['prispevky' => $posts])->render();
+                    }
+                    else {
+                        $groups_final = Group::where('public', 1)->orderBy($tridit_dle, $tridit_jak)->get();
+                    }
+                    break;
+                default:
+                    $groups_final = $user->groups();
+                    if ($query < 5) {
+                        $posts = array();
+                        $posts = Post::orderBy($tridit_dle, $tridit_jak)->get();
+                        return view('prispevky', ['prispevky' => $posts])->render();
+                    }
+                    break;
+            }
+            return view('prispevky', ['data' => $groups_final])->render();
         }
     }
-
 }

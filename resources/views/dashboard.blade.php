@@ -6,133 +6,104 @@
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                         Vaše skupiny
                     </h2>
-                    <div class="flex space-x-2 justify-start py-4">
+                    <div class="flex flex-col md:flex-row py-4">
                         @foreach ($user->groups as $group)
-                            <div class="px-2">
-
+                            <div class="flex justify-center p-2 items-center">
                                 <form action="/group/{{ $group->id }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="id" id="id" value="{{ $group->id }}">
                                     <button type="submit"
-                                        class="inline-block px-6 py-2 bg-gray-200 text-gray-700 font-medium leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">{{ $group->name }}</button>
+                                        class="inline-block px-6 py-2 w-32 bg-gray-200 text-gray-700 font-medium leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">{{ $group->name }}</button>
                                 </form>
                             </div>
                         @endforeach
                     </div>
                 </div>
 
-                <div>
-                    <label for="sort" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Třídit
-                        podle</label>
-                    <select id="sort" name="sort"
-                        class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="1">Od nejstaršího</option>
-                        <option value="2" selected>Od nejnovějšího</option>
-                        <option value="3">Nejvzdálenější termín odevzdání</option>
-                        <option value="4">Nejbližší termín odevzdání</option>
-                        <option value="5">Názvu skupiny (A-Z)</option>
-                        <option value="6">Názvu skupiny (Z-A)</option>
-                    </select>
+                <div class="block md:flex flex-col md:flex-row justify-between">
+                    <div class="mx-2 py-2">
+                        <label for="groups"
+                            class="block mb-2 text-l font-medium text-gray-900 dark:text-white">Zobrazení
+                            skupin</label>
+                        <select id="groups" name="groups"
+                            class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option value="1" selected>Všechny skupiny</option>
+                            <option value="2">Pouze soukromé skupiny</option>
+                            <option value="3">Pouze veřejné skupiny</option>
+                        </select>
+                    </div>
+                    <div class="mx-2 py-2">
+                        <label for="sort"
+                            class="block mb-2 text-l font-medium text-gray-900 dark:text-white">Třídit
+                            obsah podle</label>
+                        <select id="sort" name="sort"
+                            class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            <option value="1">Od nejstaršího</option>
+                            <option value="2">Od nejnovějšího</option>
+                            <option value="3">Nejvzdálenější termín odevzdání</option>
+                            <option value="4" selected>Nejbližší termín odevzdání</option>
+                            <option value="5">Názvu skupiny (A-Z)</option>
+                            <option value="6">Názvu skupiny (Z-A)</option>
+                        </select>
+                    </div>
                 </div>
             </div>
         @endif
 
     </x-slot>
 
-    <div class="razeni">
-        @include('test')
+    <div class="razeni" id="orderContent">
+        @include('prispevky')
     </div>
+    <center>
+        <div class="lds-ring mt-32 sm:mt-40 md:mt-56" id="loadingImage">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </center>
 
-    @if (isset($user))
-        @foreach ($posts as $postss)
-            @foreach ($postss as $post)
-                <div class="pt-6 sm:pt-8 pb-6">
-                    <div class="mx-0 sm:mx-5">
-                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg ">
-                            <div class="p-2 sm:p-4 bg-white border-b border-gray-200"
-                                onmouseover="this.style.cursor='pointer'"
-                                onclick="window.location='group/{{ $post->group->id }}/post/{{ $post->id }}'"">
-                                <div class="grid grid-cols-1 md:grid-cols-3">
-                                    <div class="flex justify-start p-3">
-                                        <b class="text-xl">{{ $post->name }}</b>
-                                    </div>
+    <script>
+        $(document).ready(function() {
 
-                                    <div class="text-slate-600 italic p-3 align-middle flex justify-center">
-                                        @if (isset($post->deadline) || $post->deadline != null)
-                                            Termín odevzdání
-                                            @if (date('d. m. Y H:i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
-                                                byl
-                                            @else
-                                                je
-                                            @endif
-                                            {{ date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y ') }}
-                                            ve
-                                            {{ date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('H:i') }}
-                                        @else
-                                            Bez termínu odevzdání
-                                        @endif
-                                    </div>
+            fetch_customer_data();
 
-                                    <div class="flex justify-end align-middle">
-                                        @foreach ($post->postusers as $postuser)
-                                            @if ($postuser->user_id == Auth::user()->id and $postuser->post_id == $post->id)
-                                                @if ($postuser->finished == 1)
-                                                    @if (isset($post->deadline) || $post->deadline != null)
-                                                        @if (date_create_from_format('Y-m-d H:i:s', $postuser->updated_at)->format('d. m. Y H:i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
-                                                            <i
-                                                                class="fa-solid fa-square-check text-5xl text-yellow-300 mr-2"></i>
-                                                        @else
-                                                            <i
-                                                                class="fa-solid fa-square-check text-5xl text-green-600 mr-2"></i>
-                                                        @endif
-                                                    @else
-                                                        <i
-                                                            class="fa-solid fa-square-check text-5xl text-green-600 mr-2"></i>
-                                                    @endif
-                                                @else
-                                                    <i class="fa-solid fa-square-xmark text-5xl text-red-600 mr-2"></i>
-                                                @endif
-                                            @break
-                                        @endif
-                                        @if ($loop->remaining == 0 and $postuser->user_id != Auth::user()->id)
-                                            <i class="fa-solid fa-square-xmark text-5xl text-red-600 mr-2"></i>
-                                        @endif
-                                    @endforeach
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-        @endforeach
-    @endforeach
-@endif
+            function fetch_customer_data(query = '', groups = '') {
+                $.ajax({
+                    url: "{{ route('sort') }}",
+                    method: 'GET',
+                    data: {
+                        query: query,
+                        groups: groups
+                    },
+                    beforeSend: function() {
+                        $('#loadingImage').show();
+                        $('#orderContent').hide();
+                    },
+                    complete: function() {
+                        $('#loadingImage').hide();
+                    },
+                    success: function(data) {
+                        console.log(data);
+                        $('.razeni').html(data);
+                        $('#orderContent').show();
+                    }
+                })
+            }
 
-
-<script>
-    $(document).ready(function() {
-
-        fetch_customer_data();
-
-        function fetch_customer_data(query = '') {
-            $.ajax({
-                url: "{{ route('sort') }}",
-                method: 'GET',
-                data: {
-                    query: query
-                },
-                success: function(data) {
-                    console.log(data);
-                    $('.razeni').html(data);
-                }
-            })
-        }
-
-        $(document).on('change', '#sort', function() {
-            var query = $(this).val();
-            fetch_customer_data(query);
+            $(document).on('change', '#sort', function() {
+                var query = $('#sort').val();
+                var groups = $('#groups').val();
+                fetch_customer_data(query, groups);
+            });
+            $(document).on('change', '#groups', function() {
+                var query = $('#sort').val();
+                var groups = $('#groups').val();
+                fetch_customer_data(query, groups);
+            });
         });
-    });
-</script>
+    </script>
 
 
 </x-app-layout>
