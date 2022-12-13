@@ -52,19 +52,17 @@ class ContentController extends Controller
             }
 
             if ($search != "") {
+                $group_posts = collect([]);
                 $groups_final = $user->groups()->get();
                 foreach ($groups_final as $group) {
                     $id[] = $group->id;
                 }
                 $posts = Post::whereIn('group_id', $id)->where('name', 'like', '%' . $search . '%')->orWhere('content', 'like', '%' . $search . '%')->orderBy($tridit_dle, $tridit_jak)->get();
-                if ($user->groups()->where('name', 'like', '%' . $search . '%')->get()) {
-                    $groups = $user->groups()->where('name', 'like', '%' . $search . '%')->get();
+                $groups = $user->groups()->where('name', 'like', '%' . $search . '%')->get();
                 foreach ($groups as $group) {
                     $group_posts = $group->posts()->get();
                 }
-                $vysl = $posts->merge($group_posts);
-                return view('prispevky', ['prispevky' => $vysl])->render();
-                }
+                $posts = $posts->merge($group_posts);
                 return view('prispevky', ['prispevky' => $posts])->render();
             }
 

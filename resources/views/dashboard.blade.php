@@ -6,7 +6,7 @@
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                         Vaše skupiny
                     </h2>
-                    <div class="flex flex-col md:flex-row py-4">
+                    <div class="flex flex-col sm:flex-row py-4">
                         @foreach ($user->groups as $group)
                             <div class="flex justify-center p-2 items-center">
                                 <form action="/group/{{ $group->id }}" method="POST">
