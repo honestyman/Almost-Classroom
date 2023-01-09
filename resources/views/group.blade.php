@@ -98,20 +98,14 @@
                                                     <input type="checkbox" id="deadline_switcher"
                                                         onclick="selectItem(this.checked)"
                                                         class="mb-0.5 w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                    <label for="deadline_switcher">S termínem odevzdání</label>
+                                                    <label for="deadline_switcher" class="ml-1">S termínem odevzdání</label>
                                                 </div>
                                                 <input type="datetime-local" id="deadline" name="deadline"
                                                     class="hidden p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                 <div class="flex justify-end mt-auto align-bottom">
                                                     <button type="submit"
-                                                        class="inline-flex justify-center p-2 mt-4 text-slate-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
-                                                        <svg aria-hidden="true" class="w-6 h-6 rotate-90"
-                                                            fill="currentColor" viewBox="0 0 20 20"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z">
-                                                            </path>
-                                                        </svg>Přidat Úkol</button>
+                                                        class="inline-flex justify-center text-lg p-2 px-4 mt-4 bg-gray-200 text-slate-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
+                                                        Přidat Úkol</button>
                                                 </div>
                                             </div>
                                         </form>
@@ -139,10 +133,10 @@
 
                                 <div class="text-slate-600 italic p-3 align-middle flex justify-center">
                                     @if (isset($post->deadline) || $post->deadline != null)
-                                        Termín odevzdání 
+                                        Termín odevzdání
                                         @if (date('d. m. Y H:i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
                                             byl
-                                            @else
+                                        @else
                                             je
                                         @endif
                                         {{ date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y ') }}
@@ -157,7 +151,8 @@
                                         @if ($postuser->user_id == Auth::user()->id and $postuser->post_id == $post->id)
                                             @if ($postuser->finished == 1)
                                                 @if (isset($post->deadline) || $post->deadline != null)
-                                                    @if (date_create_from_format('Y-m-d H:i:s', $postuser->updated_at)->format('d. m. Y H:i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
+                                                    @if (date_create_from_format('Y-m-d H:i:s', $postuser->updated_at)->format('d. m. Y H:i') >
+                                                        date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
                                                         <i
                                                             class="fa-solid fa-square-check text-5xl text-yellow-300 mr-2"></i>
                                                     @else
