@@ -68,10 +68,13 @@ class ContentController extends Controller
 
             switch ($groups) {
                 case 1:
-                    $groups_final = $user->groups();
+                    $groups_final = $user->groups;
+                    foreach ($groups_final as $group) {
+                        $id[] = $group->id;
+                    }
                     if ($sort < 5) {
                         $posts = array();
-                        $posts = Post::orderBy($tridit_dle, $tridit_jak)->get();
+                        $posts = Post::whereIn('group_id', $id)->orderBy($tridit_dle, $tridit_jak)->get();
                         return view('prispevky', ['prispevky' => $posts])->render();
                     } else {
                         $groups_final = $user->groups()->orderBy($tridit_dle, $tridit_jak)->get();
@@ -102,11 +105,16 @@ class ContentController extends Controller
                     }
                     break;
                 default:
-                    $groups_final = $user->groups();
+                    $groups_final = $user->groups;
+                    foreach ($groups_final as $group) {
+                        $id[] = $group->id;
+                    }
                     if ($sort < 5) {
                         $posts = array();
-                        $posts = Post::orderBy($tridit_dle, $tridit_jak)->get();
+                        $posts = Post::whereIn('group_id', $id)->orderBy($tridit_dle, $tridit_jak)->get();
                         return view('prispevky', ['prispevky' => $posts])->render();
+                    } else {
+                        $groups_final = $user->groups()->orderBy($tridit_dle, $tridit_jak)->get();
                     }
                     break;
             }
