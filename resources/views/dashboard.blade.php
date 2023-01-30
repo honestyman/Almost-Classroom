@@ -86,12 +86,12 @@
 
             fetch_customer_data();
 
-            function fetch_customer_data(query = '', groups = '', search = '') {
+            function fetch_customer_data(sort = '', groups = '', search = '') {
                 $.ajax({
                     url: "{{ route('sort') }}",
                     method: 'GET',
                     data: {
-                        query: query,
+                        sort: sort,
                         groups: groups,
                         search: search,
                     },

@@ -37,17 +37,24 @@
                             <div class="flex justify-between hover:cursor-pointer" type="button"
                                 data-modal-toggle="popup-modal-group-add">
                                 {{ 'Vytvořit skupinu' }}
-                                <i class="fa-solid fa-user-group pr-4 pt-0.5"></i>
+                                <i class="fa-solid fa-user-group fa-fw pr-4 pt-0.5"></i>
                             </div>
                         </x-dropdown-link>
                         <x-dropdown-link>
                             <div class="flex justify-between hover:cursor-pointer" type="button"
                                 data-modal-toggle="popup-modal-group-join">
                                 {{ 'Připojit do skupiny' }}
-                                <i class="fa-solid fa-user-plus pr-4 pt-0.5"></i>
+                                <i class="fa-solid fa-user-plus fa-fw pr-4 pt-0.5"></i>
                             </div>
                         </x-dropdown-link>
-                        <!-- Authentication -->
+                        <x-dropdown-link href="/user/{{ Auth::user()->id }}">
+                            <div class="flex justify-between hover:cursor-pointer">
+                                <p class="flex justify-between">
+                                    {{ __('Profil') }}
+                                </p>
+                                <i class="fa-solid fa-user fa-fw pr-4 pt-0.5"></i>
+                            </div>
+                        </x-dropdown-link>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
 
@@ -56,7 +63,7 @@
                                                 this.closest('form').submit();">
                                 <p class="flex justify-between">
                                     {{ __('Odhlásit') }}
-                                    <i class="fa-solid fa-user-minus pr-4 pt-0.5"></i>
+                                    <i class="fa-solid fa-user-minus fa-fw pr-4 pt-0.5"></i>
                                 </p>
                             </x-dropdown-link>
 

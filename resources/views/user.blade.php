@@ -26,66 +26,97 @@
             </div>
         </x-slot>
 
-        <div class="py-6 sm:pt-8 max-w-5xl mx-auto">
+        <div class="py-6 sm:pt-8 max-w-xs sm:max-w-xl md:max-w-5xl mx-auto">
             <div class="mx-0 sm:mx-5">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-4 sm:p-8 bg-white border-b border-gray-200">
-                        <div class="flex justify-start p-1 md:p-10">
-                            <img src="https://images.pexels.com/photos/3278968/pexels-photo-3278968.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"
-                                class="h-24 md:h-80 w-24 md:w-80 rounded-full object-cover mt-6 md:mt-0" alt="username" />
-                            <div class="mx-auto my-2 md:my-8">
-                                <div class="flex justify-end md:justify-start items-center">
+                        <div class="flex flex-col-reverse sm:flex-row justify-start p-1 md:p-10">
+                            <div class="flex justify-center">
+                                <img src="https://images.pexels.com/photos/3278968/pexels-photo-3278968.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"
+                                class="h-48 sm:h-60 md:h-80 w-48 sm:w-60 md:w-80 rounded-full object-cover mt-6 md:mt-0"
+                                alt="username" />
+                            </div>
+                            <div class="mx-auto my-2 md:my-8 mr-4">
+                                <div class="flex justify-center md:justify-start items-center">
                                     <h2 class="block leading-relaxed font-light text-gray-700 text-4xl md:text-5xl">
-                                        {{ $user->name }}</h2>
+                                        <a href="mailto:{{ $user->email }}">{{ $user->name }}</a></h2>
                                 </div>
-                                <ul class="flex justify-end md:justify-start items-center pl-0 p-1 md:p-4">
+                                <ul class="flex justify-center md:justify-start items-center pl-0 p-1 md:p-4">
                                     <li>
                                         <span class="block text-base"><span
-                                                class="font-bold mr-1">{{ $user->posts->count() }}</span>
-                                            @if ($user->posts->count() == 1)
-                                                úkol
+                                                class="font-bold mr-1">{{ count($hotove_prispevky) }}</span>
+                                            @if (count($hotove_prispevky) == 1)
+                                                hotový úkol
                                             @endif
-                                            @if ($user->posts->count() >= 2 && $user->posts->count() <= 4)
-                                                úkoly
+                                            @if (count($hotove_prispevky) >= 2 && count($hotove_prispevky) <= 4)
+                                                hotové úkoly
                                             @endif
-                                            @if ($user->posts->count() > 4)
-                                                úkolů
+                                            @if (count($hotove_prispevky) > 4 || count($hotove_prispevky) == 0)
+                                                hotových úkolů
                                             @endif
                                         </span>
                                     </li>
                                     <li>
                                         <span class="block text-base ml-5"><span
-                                                class="font-bold mr-1">{{ $user->groups->count() }}</span>
-                                            @if ($user->groups->count() == 1)
-                                                skupina
+                                                class="font-bold mr-1">{{ count($private_skupiny) }}</span>
+                                            @if (count($private_skupiny) == 1)
+                                                soukromá skupina
                                             @endif
-                                            @if ($user->groups->count() >= 2 && $user->groups->count() <= 4)
-                                                skupiny
+                                            @if (count($private_skupiny) >= 2 && count($private_skupiny) <= 4)
+                                                soukromé skupiny
                                             @endif
-                                            @if ($user->groups->count() > 4)
-                                                skupin
+                                            @if (count($private_skupiny) > 4 || count($private_skupiny) == 0)
+                                                soukromých skupin
                                             @endif
                                         </span>
                                     </li>
                                 </ul>
-                                <a class="text-base flex justify-end md:justify-start" href="mailto:{{$user->email}}">{{$user->email}}</a>
-                                <br>
-                                <div class="flex justify-end max-w-md">
-                                    <span class="text-base hidden md:block">{{$user->bio}}</span>
+                                <div class="flex justify-between hover:cursor-pointer mt-4 mx-2" type="button"
+                                    data-modal-toggle="popup-modal-bio-{{ $user->id }}">
+                                    <i class="fa-solid fa-pen pr-4 pt-2"></i>
+                                    <span class="text-base block max-w-sm">{{ $user->bio }}</span>
                                 </div>
+                                
                             </div>
-                            
-                        </div>
-                        <div class="flex justify-end">
-                            <span class="text-base block md:hidden">{{$user->bio}}</span>
                         </div>
 
                     </div>
+
                 </div>
             </div>
+        </div>
+        <div id="popup-modal-bio-{{ $user->id }}" tabindex="-1"
+            class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 md:inset-0 h-modal md:h-full justify-center items-center"
+            aria-hidden="true">
+            <div class="relative p-4 w-full max-w-md h-full md:h-auto">
+                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <button type="button"
+                        class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+                        data-modal-toggle="popup-modal-bio-{{ $user->id }}">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                    <div class="p-6 text-center">
+                        <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Upravit?<i
+                                class="fa-solid fa-pen pl-4"></i></h3>
 
-
-
-
+                        <form action="/add" method="POST" class="p-4">
+                            @csrf
+                            <textarea name="content" id="content" rows="4" cols="20"
+                                class="block p-2.5 mb-5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none"
+                                required>{{ $user->bio }}</textarea>
+                            <input type="hidden" id="workingWith" name="workingWith" value="bio">
+                            <input type="hidden" id="user_id" name="user_id" value="{{ $user->id }}">
+                            <button data-modal-toggle="popup-modal-bio-{{ $user->id }}" type="submit"
+                                class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+                                Ano, upravit
+                            </button>
+                            <button data-modal-toggle="popup-modal-bio-{{ $user->id }}" type="button"
+                                class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Ne,
+                                zrušit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </x-app-layout>
 @endif

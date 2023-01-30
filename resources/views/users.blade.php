@@ -57,7 +57,7 @@
                     <div class="p-4 sm:p-6 bg-white border-b border-gray-200">
                         <div class="grid grid-cols-4 gap-4">
                             @foreach ($site->users as $user)
-                                <a href="/users/{{ $user->id }}" class="flex justify-center">{{ $user->name }}</a>
+                                <a href="/user/{{ $user->id }}" class="flex justify-center">{{ $user->name }}</a>
                             @endforeach
                         </div>
                     </div>

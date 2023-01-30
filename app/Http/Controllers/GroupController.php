@@ -27,7 +27,23 @@ class GroupController extends Controller
         return view('users', ['site' => $group,],);
     }
     public function user(Request $request) {
-        $user = User::findOrFail($request->id)->first();
-        return view('user', ['user' => $user,],);
+        $user = User::findOrFail($request->id);
+        $pocet = 0;
+        $private_skupiny = array();
+        $hotove_prispevky = array();
+        $skupiny =  $user->groups;
+        foreach ($skupiny as $skupina) {
+            if ($skupina->public == 0) {
+                $private_skupiny[] = Group::where('id', $skupina->id)->get();
+            }
+        }
+        $ukoly = $user->postusers;
+        foreach ($ukoly as $ukol) {
+            if ($ukol->finished == 1) {
+                $hotove_prispevky[] = PostUser::where('id', $ukol->id)->get();
+            }
+        }
+        
+        return view('user', ['user' => $user, 'private_skupiny' =>$private_skupiny, 'hotove_prispevky' => $hotove_prispevky,],);
     }
 }

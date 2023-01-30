@@ -88,6 +88,14 @@ class HomeController extends Controller
                     );
                 }
                 break;
+            case 'bio':
+                //uprava uzivatelskeho popisku
+                $newBio = User::updateOrCreate([
+                    'id' => $request->user_id,
+                ], [
+                    'bio' => $request->content,
+                ]);
+                break;
             default:
                 dd($request);
                 break;

@@ -17,10 +17,6 @@
         <link href="/css/app.css" rel="stylesheet">
         <script src="https://kit.fontawesome.com/d8c9721737.js" crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-        
-
-        
-
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">

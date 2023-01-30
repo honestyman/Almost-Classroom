@@ -118,7 +118,6 @@ class ContentController extends Controller
                     }
                     break;
             }
-            return view('prispevky', ['data' => $groups_final])->render();
         }
     }
 }

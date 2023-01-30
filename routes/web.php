@@ -43,7 +43,7 @@ Route::group(['middleware' => 'auth'], function() {
     Route::match(array('GET','POST'),'group/{id}', [GroupController::class, 'show']);
     Route::match(array('GET','POST'),'group/{id}/post/{id2}', [PostController::class, 'show'])->name('post_ideal');
     Route::match(array('GET','POST'),'group/{id}/users', [GroupController::class, 'users']);
-    Route::match(array('GET','POST'),'users/{id}', [GroupController::class, 'user']);
+    Route::match(array('GET','POST'),'user/{id}', [GroupController::class, 'user'])->name('user');
 });
 
 Route::get('/test',[ContentController::class, 'index']);
