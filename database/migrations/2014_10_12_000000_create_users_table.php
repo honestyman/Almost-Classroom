@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('admin')->default(false);
             $table->string('bio', 256)->nullable();
+            $table->string('image')->default('user.svg');
             $table->rememberToken();
             $table->timestamps();
         });

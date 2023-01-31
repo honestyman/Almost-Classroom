@@ -20,10 +20,6 @@ use App\Http\Controllers\PostController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 require __DIR__.'/auth.php';
 
 Route::controller(GoogleController::class)->group(function(){
@@ -32,13 +28,10 @@ Route::controller(GoogleController::class)->group(function(){
 });
 
 Route::group(['middleware' => 'auth'], function() {
-    Route::get('/dashboard', [HomeController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('/', [HomeController::class, 'index'])->name('dashboard');
     Route::post('/add', [HomeController::class, 'add']);
     Route::post('/del', [HomeController::class, 'del']);
     Route::post('/join', [HomeController::class, 'join']);
-});
-
-Route::group(['middleware' => 'auth'], function() {
     Route::post('/finished', [PostController::class, 'finished']);
     Route::match(array('GET','POST'),'group/{id}', [GroupController::class, 'show']);
     Route::match(array('GET','POST'),'group/{id}/post/{id2}', [PostController::class, 'show'])->name('post_ideal');

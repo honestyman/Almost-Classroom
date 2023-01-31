@@ -43,11 +43,17 @@ class HomeController extends Controller
         $user = User::findOrFail(Auth::user()->id);
         switch ($request->workingWith) {
             case 'group':
+                if (!isset($request->public)) {
+                    $public = 0;
+                }
+                else {
+                    $public = 1;
+                }
                 $newGroup = Group::updateOrCreate(
                     [
                         'name' => $request->name,
                         'user_id' => $request->user_id,
-                        'public' => $request->public,
+                        'public' => $public,
                         'invite_key' => Str::random(10)
                     ]
                 );

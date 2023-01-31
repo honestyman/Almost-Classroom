@@ -10,7 +10,7 @@
                         class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
                             <li>
-                                <a href="/dashboard"
+                                <a href="/"
                                     class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Všechny
                                     skupiny</a>
                             </li>
@@ -76,7 +76,12 @@
                                             </p>
                                         </div>
                                     @endif
-                                    @if ($loop->last)
+                                    @if ($loop->count == 1)
+                                        </div>
+                                        <div class="flex justify-center p-4 sm:p-6 bg-white">
+                                            <h2>Nikdo nic neodevzdal!</h2>
+                                        </div>
+                                    @elseif ($loop->last)
                                         @if (($loop->count - 1) % 3 != 0)
                                             <div class="p-4 sm:p-6 odd:bg-white even:bg-slate-50">
                                             </div>

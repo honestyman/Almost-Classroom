@@ -45,6 +45,12 @@
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('auth.google') }}">
                     {{ __('Přihlásit pomocí Googlu')}}
                 </a>
+                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('register') }}">
+                    {{ __('Zaregistrovat')}}
+                </a>
+            </div>
+
+            <div class="flex items-center justify-between mt-4">
                 @if (Route::has('password.request'))
                     <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('password.request') }}">
                         {{ __('Zapomenuté heslo') }}
