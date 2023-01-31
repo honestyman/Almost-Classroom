@@ -26,20 +26,21 @@
             </div>
         </x-slot>
 
-        <div class="py-6 sm:pt-8 max-w-xs sm:max-w-xl md:max-w-5xl mx-auto">
+        <div class="py-6 sm:pt-8 max-w-xs sm:max-w-4xl md:max-w-7xl mx-auto">
             <div class="mx-0 sm:mx-5">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-4 sm:p-8 bg-white border-b border-gray-200">
                         <div class="flex flex-col-reverse sm:flex-row justify-start p-1 md:p-10">
                             <div class="flex justify-center">
                                 <img src="https://images.pexels.com/photos/3278968/pexels-photo-3278968.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"
-                                class="h-48 sm:h-60 md:h-80 w-48 sm:w-60 md:w-80 rounded-full object-cover mt-6 md:mt-0"
-                                alt="username" />
+                                    class="h-48 sm:h-60 md:h-80 w-48 sm:w-60 md:w-80 rounded-full object-cover mt-6"
+                                    alt="username" />
                             </div>
-                            <div class="mx-auto my-2 md:my-8 mr-4">
+                            <div class="sm:mx-auto my-2 md:my-8 px-4">
                                 <div class="flex justify-center md:justify-start items-center">
                                     <h2 class="block leading-relaxed font-light text-gray-700 text-4xl md:text-5xl">
-                                        <a href="mailto:{{ $user->email }}">{{ $user->name }}</a></h2>
+                                        <a href="mailto:{{ $user->email }}">{{ $user->name }}</a>
+                                    </h2>
                                 </div>
                                 <ul class="flex justify-center md:justify-start items-center pl-0 p-1 md:p-4">
                                     <li>
@@ -71,12 +72,15 @@
                                         </span>
                                     </li>
                                 </ul>
-                                <div class="flex justify-between hover:cursor-pointer mt-4 mx-2" type="button"
-                                    data-modal-toggle="popup-modal-bio-{{ $user->id }}">
-                                    <i class="fa-solid fa-pen pr-4 pt-2"></i>
-                                    <span class="text-base block max-w-sm">{{ $user->bio }}</span>
-                                </div>
-                                
+                                @if (Auth::user()->id == $user->id)
+                                    <div class="flex flex-row hover:cursor-pointer mt-4 mx-2" type="button"
+                                        data-modal-toggle="popup-modal-bio-{{ $user->id }}">
+                                        <i class="fa-solid fa-pen pr-4 pt-2"></i>
+                                        <span class="text-base block max-w-xs overflow-clip">{{ $user->bio }}</span>
+                                    </div>
+                                @else
+                                    <span class="text-base block max-w-xs overflow-clip">{{ $user->bio }}</span>
+                                @endif
                             </div>
                         </div>
 
@@ -88,7 +92,7 @@
         <div id="popup-modal-bio-{{ $user->id }}" tabindex="-1"
             class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 md:inset-0 h-modal md:h-full justify-center items-center"
             aria-hidden="true">
-            <div class="relative p-4 w-full max-w-md h-full md:h-auto">
+            <div class="relative p-4 w-full max-w-4xl md:h-auto">
                 <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
                     <button type="button"
                         class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
@@ -103,7 +107,7 @@
                             @csrf
                             <textarea name="content" id="content" rows="4" cols="20"
                                 class="block p-2.5 mb-5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none"
-                                required>{{ $user->bio }}</textarea>
+                                required maxlength="256">{{ $user->bio }}</textarea>
                             <input type="hidden" id="workingWith" name="workingWith" value="bio">
                             <input type="hidden" id="user_id" name="user_id" value="{{ $user->id }}">
                             <button data-modal-toggle="popup-modal-bio-{{ $user->id }}" type="submit"

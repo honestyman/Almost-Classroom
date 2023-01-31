@@ -76,6 +76,12 @@
                                             </p>
                                         </div>
                                     @endif
+                                    @if ($loop->last)
+                                        @if (($loop->count - 1) % 3 != 0)
+                                            <div class="p-4 sm:p-6 odd:bg-white even:bg-slate-50">
+                                            </div>
+                                        @endif
+                                    @endif
                                 @endforeach
                             </div>
                         </div>
@@ -189,7 +195,9 @@
                                                         <textarea name="post_answer" rows="6"
                                                             class="block p-2.5 mt-4 w-10/12 text-sm bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                             @if ($finished == 1) disabled @endif placeholder="Odpověď k úkolu..." required>
-                                                                @if ($postuser->post_answer != '') {{ $postuser->post_answer }} @endif
+                                                                @if ($postuser->post_answer != '')
+{{ $postuser->post_answer }}
+@endif
                                                         </textarea>
                                                     </div>
                                                 @endif
