@@ -57,6 +57,7 @@
 
         <!-- ZDE SE NACHAZI "ADMIN" STRANKA PRO ZOBRAZENI ODEVZDANYCH PRACI -->
         @if (Auth::user()->id == $post->user_id || Auth::user()->admin == 1)
+        <!-- ČÁST PRO UŽIVATELE A JEJICH ÚKOLY-->
             <div class="py-6 sm:pt-8">
                 <div class="mx-0 sm:mx-5">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -65,8 +66,10 @@
                                 @foreach ($post->group->users as $user)
                                     @if ($user->id != Auth::user()->id)
                                         <div class="p-4 sm:p-6 odd:bg-white even:bg-slate-50">
-                                            <a href="/user/{{ $user->id }}"
-                                                class="flex justify-center">{{ $user->name }}</a>
+                                            <a href="/user/{{ $user->id }}" class="flex justify-center">
+                                                <img src="{{ asset('/storage/images/' . $user->image) }}"
+                                                    class="h-10 sm:h-8 md:h-6 w-10 sm:w-8 md:w-6 mx-2 rounded-full object-cover"
+                                                    alt="username" />{{ $user->name }}</a>
                                             <p class="pt-4 flex justify-center">
                                                 @foreach ($post->postusers as $postuser)
                                                     @if ($postuser->user_id == $user->id && $postuser->post_id == $post->id)
@@ -93,6 +96,7 @@
                     </div>
                 </div>
             </div>
+            <!-- ČÁST PRO KOMENTÁŘE-->
             <div class="py-6 sm:pt-8">
                 <div class="mx-0 sm:mx-5">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -100,11 +104,7 @@
                             <div class="grid grid-cols-1">
                                 @foreach ($post->comments as $comment)
                                     <div class="flex justify-start">
-                                        @if ($loop->last)
-                                            <div class="p-4 pb-20">
-                                        @else
-                                            <div class="p-4">
-                                        @endif
+                                        <div class="px-6 py-3">
                                             <div class="flex">
                                                 <b class="mr-2">{{ $comment->user->name }}</b>
                                                 <!-- TADY JE ROZKLIKAVACI MENU NA MAZANI & UPRAVU KOMENTÁŘŮ-->
@@ -151,6 +151,30 @@
                                         </div>
                                     </div>
                                 @endforeach
+                                <div class="p-4">
+                                    <form action="/add" method="POST" class="mt-2">
+                                        @csrf
+                                        <input type="hidden" id="post_id" name="post_id"
+                                            value="{{ $post->id }}">
+                                        <input type="hidden" id="user_id" name="user_id"
+                                            value="{{ Auth::user()->id }}">
+                                        <input type="hidden" id="workingWith" name="workingWith" value="comment">
+                                        <div class="flex items-center py-2 rounded-lg dark:bg-gray-700">
+                                            <textarea name="content" id="content" rows="1"
+                                                class="block p-2.5 w-full text-sm bg-gray-50 text-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                placeholder="Přidejte komentář"></textarea>
+                                            <button type="submit"
+                                                class="inline-flex justify-center p-2 text-slate-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
+                                                <svg aria-hidden="true" class="w-6 h-6 rotate-90" fill="currentColor"
+                                                    viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                                    <path
+                                                        d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
