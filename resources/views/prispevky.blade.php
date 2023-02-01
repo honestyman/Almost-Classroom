@@ -28,30 +28,35 @@
                         </div>
 
                         <div class="flex justify-end align-middle">
-                            @foreach ($prispevek->postusers as $postuser)
-                                @if ($postuser->user_id == Auth::user()->id and $postuser->post_id == $prispevek->id)
-                                    @if ($postuser->finished == 1)
-                                        @if (isset($prispevek->deadline) || $prispevek->deadline != null)
-                                            @if (date_create_from_format('Y-m-d H:i:s', $postuser->updated_at)->format('d. m. Y H:i') >
-                                                date_create_from_format('Y-m-d H:i:s', $prispevek->deadline)->format('d. m. Y H:i'))
-                                                <i
-                                                    class="fa-solid fa-square-check text-5xl text-yellow-300 mr-2"></i>
+                            @if ($prispevek->user_id == Auth::user()->id || Auth::user()->admin == 1)
+                            <i
+                                class="fa-solid fa-square-up-right text-5xl text-blue-500 mr-2"></i>
+                            @else
+                                @foreach ($prispevek->postusers as $postuser)
+                                    @if ($postuser->user_id == Auth::user()->id and $postuser->post_id == $prispevek->id)
+                                        @if ($postuser->finished == 1)
+                                            @if (isset($prispevek->deadline) || $prispevek->deadline != null)
+                                                @if (date_create_from_format('Y-m-d H:i:s', $postuser->updated_at)->format('d. m. Y H:i') >
+                                                    date_create_from_format('Y-m-d H:i:s', $prispevek->deadline)->format('d. m. Y H:i'))
+                                                    <i
+                                                        class="fa-solid fa-square-check text-5xl text-yellow-300 mr-2"></i>
+                                                @else
+                                                    <i
+                                                        class="fa-solid fa-square-check text-5xl text-green-600 mr-2"></i>
+                                                @endif
                                             @else
-                                                <i
-                                                    class="fa-solid fa-square-check text-5xl text-green-600 mr-2"></i>
+                                                <i class="fa-solid fa-square-check text-5xl text-green-600 mr-2"></i>
                                             @endif
                                         @else
-                                            <i class="fa-solid fa-square-check text-5xl text-green-600 mr-2"></i>
+                                            <i class="fa-solid fa-square-xmark text-5xl text-red-600 mr-2"></i>
                                         @endif
-                                    @else
+                                    @break
+                                    @endif
+                                    @if ($loop->remaining == 0 and $postuser->user_id != Auth::user()->id)
                                         <i class="fa-solid fa-square-xmark text-5xl text-red-600 mr-2"></i>
                                     @endif
-                                @break
+                                @endforeach
                             @endif
-                            @if ($loop->remaining == 0 and $postuser->user_id != Auth::user()->id)
-                                <i class="fa-solid fa-square-xmark text-5xl text-red-600 mr-2"></i>
-                            @endif
-                        @endforeach
                     </div>
                 </div>
             </div>

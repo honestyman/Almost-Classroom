@@ -118,6 +118,12 @@ class ContentController extends Controller
                     }
                     break;
             }
+            foreach ($groups_final as $group) {
+                $id[] = $group->id;
+                $posts = array();
+                $posts = Post::whereIn('group_id', $id)->orderBy($tridit_dle, $tridit_jak)->get();
+                return view('prispevky', ['prispevky' => $posts])->render();
+            }
         }
     }
 }

@@ -25,7 +25,7 @@
                 </div>
                 <div>
                     <h2>
-                        @if (Auth::user()->id == $post->group->user_id)
+                        @if (Auth::user()->id == $post->group->user_id || Auth::user()->admin == 1)
                             {{ $post->group->invite_key }}
                         @endif
                     </h2>
@@ -56,7 +56,7 @@
         </x-slot>
 
         <!-- ZDE SE NACHAZI "ADMIN" STRANKA PRO ZOBRAZENI ODEVZDANYCH PRACI -->
-        @if (Auth::user()->id == $post->user_id)
+        @if (Auth::user()->id == $post->user_id || Auth::user()->admin == 1)
             <div class="py-6 sm:pt-8">
                 <div class="mx-0 sm:mx-5">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -92,6 +92,70 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="py-6 sm:pt-8">
+                <div class="mx-0 sm:mx-5">
+                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                        <div class="bg-white border-b border-gray-200">
+                            <div class="grid grid-cols-1">
+                                @foreach ($post->comments as $comment)
+                                    <div class="flex justify-start">
+                                        @if ($loop->last)
+                                            <div class="p-4 pb-20">
+                                        @else
+                                            <div class="p-4">
+                                        @endif
+                                            <div class="flex">
+                                                <b class="mr-2">{{ $comment->user->name }}</b>
+                                                <!-- TADY JE ROZKLIKAVACI MENU NA MAZANI & UPRAVU KOMENTÁŘŮ-->
+                                                @if (Auth::user()->id == $comment->user_id || Auth::user()->admin == 1)
+                                                    <div class="sm:flex items-center pt-1 sm:pt-0 sm:m-1">
+                                                        <x-dropdown align="left" width="48">
+                                                            <x-slot name="trigger">
+                                                                <button
+                                                                    class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                                                    <div><i class="fa-solid fa-gear"></i></div>
+                                                                </button>
+                                                            </x-slot>
+                                                            <x-slot name="content">
+                                                                <x-dropdown-link>
+                                                                    <div class="flex justify-between hover:cursor-pointer"
+                                                                        type="button"
+                                                                        data-modal-toggle="popup-modal-comment-{{ $comment->id }}-add">
+                                                                        {{ 'Upravit' }}
+                                                                        <i class="fa-solid fa-pen pr-4 pt-0.5"></i>
+                                                                    </div>
+                                                                </x-dropdown-link>
+                                                                <x-dropdown-link>
+                                                                    <div class="flex justify-between hover:cursor-pointer"
+                                                                        type="button"
+                                                                        data-modal-toggle="popup-modal-comment-{{ $comment->id }}-del">
+                                                                        {{ 'Smazat' }}
+                                                                        <i
+                                                                            class="fa-solid fa-trash pr-4 pt-0.5"></i>
+                                                                    </div>
+                                                                </x-dropdown-link>
+                                                            </x-slot>
+
+                                                        </x-dropdown>
+                                                    </div>
+                                                @endif
+                                            </div>
+                                            <x-modal :id="$comment->id" type="comment" :content="$comment->content"
+                                                function="add">
+                                            </x-modal>
+                                            <x-modal :id="$comment->id" type="comment" :content="$comment->content"
+                                                function="del">
+                                            </x-modal>
+                                            <p>{{ $comment->content }}</p>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             @else
                 <div class="py-6 sm:pt-8">
                     <div class="mx-0 sm:mx-5">
@@ -105,7 +169,7 @@
                                                 <b>{{ $post->name }}</b>
                                             </p>
                                             <!-- TADY JE ROZKLIKAVACI MENU NA MAZANI & UPRAVU POSTU-->
-                                            @if (Auth::user()->id == $post->group->user_id)
+                                            @if (Auth::user()->id == $post->group->user_id || Auth::user()->admin == 1)
                                                 <div class="flex items-center ml-2 sm:ml-3 pt-0.5">
                                                     <x-dropdown align="left" width="48">
                                                         <x-slot name="trigger">
@@ -201,8 +265,8 @@
                                                             class="block p-2.5 mt-4 w-10/12 text-sm bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                             @if ($finished == 1) disabled @endif placeholder="Odpověď k úkolu..." required>
                                                                 @if ($postuser->post_answer != '')
-{{ $postuser->post_answer }}
-@endif
+                                                                {{ $postuser->post_answer }}
+                                                                @endif
                                                         </textarea>
                                                     </div>
                                                 @endif
@@ -246,7 +310,7 @@
                                             <div class="flex">
                                                 <b class="mr-2">{{ $comment->user->name }}</b>
                                                 <!-- TADY JE ROZKLIKAVACI MENU NA MAZANI & UPRAVU KOMENTÁŘŮ-->
-                                                @if (Auth::user()->id == $comment->user_id)
+                                                @if (Auth::user()->id == $comment->user_id || Auth::user()->admin == 1)
                                                     <div class="sm:flex items-center pt-1 sm:pt-0 sm:m-1">
                                                         <x-dropdown align="left" width="48">
                                                             <x-slot name="trigger">

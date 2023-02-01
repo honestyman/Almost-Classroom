@@ -25,7 +25,7 @@
                 </div>
                 <div>
                     <h2>
-                        @if (Auth::user()->id == $site->user_id)
+                        @if (Auth::user()->id == $site->user_id || Auth::user()->admin == 1)
                             {{ $site->invite_key }}
                         @endif
                     </h2>
@@ -51,7 +51,7 @@
             </div>
         </x-slot>
 
-        @if (Auth::user()->id == $site->user_id)
+        @if (Auth::user()->id == $site->user_id || Auth::user()->admin == 1)
             <div class="pt-6 sm:pt-8">
                 <div class="mx-0 sm:mx-5">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">

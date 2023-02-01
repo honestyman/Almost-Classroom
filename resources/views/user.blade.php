@@ -32,7 +32,7 @@
                     <div class="p-4 sm:p-8 bg-white border-b border-gray-200">
                         <div class="flex flex-col-reverse sm:flex-row justify-start p-1 md:p-10">
                             <div class="flex justify-center">
-                                @if (Auth::user()->id == $user->id)
+                                @if (Auth::user()->id == $user->id || Auth::user()->admin == 1)
                                     <form action="/add" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <input type="hidden" name="workingWith" value="image">
@@ -84,7 +84,7 @@
                                         </span>
                                     </li>
                                 </ul>
-                                @if (Auth::user()->id == $user->id)
+                                @if (Auth::user()->id == $user->id || Auth::user()->admin == 1)
                                     <div class="flex flex-row hover:cursor-pointer mt-4 mx-2" type="button"
                                         data-modal-toggle="popup-modal-bio-{{ $user->id }}">
                                         <i class="fa-solid fa-pen pr-4 pt-2"></i>
