@@ -63,34 +63,48 @@
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="bg-white border-b border-gray-200">
                             <div class="grid grid-cols-1 sm:grid-cols-3">
+                                @php
+                                    $finished_users = 0;
+                                @endphp
                                 @foreach ($post->group->users as $user)
-                                    @if ($user->id != Auth::user()->id)
+                                    
+                                    @if ($user->id != $post->group->user_id && $user->admin != 1)
+                                        @php
+                                            $finished_users++;
+                                        @endphp
                                         <div class="p-4 sm:p-6 odd:bg-white even:bg-slate-50">
                                             <a href="/user/{{ $user->id }}" class="flex justify-center">
                                                 <img src="{{ asset('/storage/images/' . $user->image) }}"
-                                                    class="h-10 sm:h-8 md:h-6 w-10 sm:w-8 md:w-6 mx-2 rounded-full object-cover"
-                                                    alt="username" />{{ $user->name }}</a>
+                                                    class="h-10 w-10 mr-2 md:mr-3 rounded-full object-cover"
+                                                    alt="username" />
+                                                <span class="my-auto text-lg">
+                                                    {{ $user->name }}
+                                                </span>
+                                            </a>
                                             <p class="pt-4 flex justify-center">
                                                 @foreach ($post->postusers as $postuser)
                                                     @if ($postuser->user_id == $user->id && $postuser->post_id == $post->id)
-                                                        {{ $postuser->post_answer }}
+                                                        @if ($postuser->post->type == 1)
+                                                            <span>Odevzdal úkol</span>
+                                                        @else
+                                                            <span>{{ $postuser->post_answer }}</span>
+                                                        @endif
                                                     @endif
                                                 @endforeach
                                             </p>
                                         </div>
                                     @endif
-                                    @if ($loop->count == 1)
-                                        </div>
-                                        <div class="flex justify-center p-4 sm:p-6 bg-white">
-                                            <h2>Nikdo nic neodevzdal!</h2>
-                                        </div>
-                                    @elseif ($loop->last)
-                                        @if (($loop->count - 1) % 3 != 0)
-                                            <div class="p-4 sm:p-6 odd:bg-white even:bg-slate-50">
-                                            </div>
-                                        @endif
-                                    @endif
                                 @endforeach
+                                @if ($finished_users < 1)
+                                    </div>
+                                    <div class="flex justify-center p-4 sm:p-6 bg-white">
+                                        <h2>Nikdo nic neodevzdal!</h2>
+                                    </div>
+                                @endif
+                                @if ($finished_users % 3 != 0)
+                                    <div class="p-4 sm:p-6 odd:bg-white even:bg-slate-50">
+                                    </div>
+                                @endif
                             </div>
                         </div>
                     </div>
