@@ -32,9 +32,21 @@
                     <div class="p-4 sm:p-8 bg-white border-b border-gray-200">
                         <div class="flex flex-col-reverse sm:flex-row justify-start p-1 md:p-10">
                             <div class="flex justify-center">
-                                <img src="https://images.pexels.com/photos/3278968/pexels-photo-3278968.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"
-                                    class="h-48 sm:h-60 md:h-80 w-48 sm:w-60 md:w-80 rounded-full object-cover mt-6"
-                                    alt="username" />
+                                @if (Auth::user()->id == $user->id)
+                                    <form action="/add" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        <input type="hidden" name="workingWith" value="image">
+                                        <input type="file" name="image" id="image" class="hidden" onchange="this.form.submit()">
+                                        <img src="{{ asset('/storage/images/' . $user->image) }}"
+                                            onclick="document.querySelector('input#image').click()"
+                                            class="h-48 sm:h-60 md:h-80 w-48 sm:w-60 md:w-80 rounded-full object-cover mt-6 hover:cursor-pointer"
+                                            alt="username" />
+                                    </form>
+                                @else
+                                    <img src="{{ asset('/storage/images/' . $user->image) }}"
+                                        class="h-48 sm:h-60 md:h-80 w-48 sm:w-60 md:w-80 rounded-full object-cover mt-6"
+                                        alt="username" />
+                                @endif
                             </div>
                             <div class="sm:mx-auto my-2 md:my-8 px-4">
                                 <div class="flex justify-center md:justify-start items-center">

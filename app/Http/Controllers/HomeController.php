@@ -93,6 +93,14 @@ class HomeController extends Controller
                     );
                 }
                 break;
+            case 'image':
+                //uprava profilove fotky
+                if($request->hasFile('image')){
+                    $filename = $user->id . $request->image->getClientOriginalName();
+                    $request->image->storeAs('images',$filename,'public');
+                    User::where('id', Auth::user()->id)->update(['image' => $filename]);
+                }
+                break;
             case 'bio':
                 //uprava uzivatelskeho popisku
                 $newBio = User::updateOrCreate([

@@ -55,9 +55,13 @@
             <div class="mx-0 sm:mx-5">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-4 sm:p-6 bg-white border-b border-gray-200">
-                        <div class="grid grid-cols-4 gap-4">
+                        <div
+                            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-2xl sm:text-xl md:text-lg">
                             @foreach ($site->users as $user)
-                                <a href="/user/{{ $user->id }}" class="flex justify-center">{{ $user->name }}</a>
+                                <a href="/user/{{ $user->id }}" class="flex justify-center">
+                                    <img src="{{ asset('/storage/images/' . $user->image) }}"
+                                        class="h-10 sm:h-8 md:h-6 w-10 sm:w-8 md:w-6 mx-2 rounded-full object-cover"
+                                        alt="username" />{{ $user->name }}</a>
                             @endforeach
                         </div>
                     </div>
