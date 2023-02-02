@@ -14,7 +14,18 @@ class PostController extends Controller
 {
     public function show(Request $request) {
         $post = Post::findOrFail($request->id2);
-        return view('post', ['post' => $post,],);
+        $p = 0;
+        foreach ($post->group->users as $user) {
+            if (Auth::user()->id == $user->id) {
+                $p++;
+            }
+        }
+        if ($p == 1) {
+            return view('post', ['post' => $post,],);
+        }
+        else {
+            return redirect()->route('dashboard');
+        }
     }
 
     public function finished(Request $request) {
