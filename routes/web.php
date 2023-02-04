@@ -39,5 +39,4 @@ Route::group(['middleware' => 'auth'], function() {
     Route::match(array('GET','POST'),'user/{id}', [GroupController::class, 'user'])->name('user');
 });
 
-Route::get('/test',[ContentController::class, 'index']);
 Route::get('/sort',[ContentController::class, 'sort'])->name('sort');

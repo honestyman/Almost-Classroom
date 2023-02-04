@@ -33,7 +33,7 @@
                 <div>
                     <button id="dropdownDefault" data-dropdown-toggle="dropdownThisGroup"
                         class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
-                        type="button">{{ $post->group->name }}<i class="fa-solid fa-caret-down ml-2"></i></button>
+                        type="button">{{ $group->name }}<i class="fa-solid fa-caret-down ml-2"></i></button>
                     <div id="dropdownThisGroup"
                         class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">

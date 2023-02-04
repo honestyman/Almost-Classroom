@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 class PostController extends Controller
 {
     public function show(Request $request) {
+        $group = $post = Group::findOrFail($request->id);
         $post = Post::findOrFail($request->id2);
         $p = 0;
         foreach ($post->group->users as $user) {
@@ -21,7 +22,7 @@ class PostController extends Controller
             }
         }
         if ($p == 1) {
-            return view('post', ['post' => $post,],);
+            return view('post', ['post' => $post, 'group' => $group],);
         }
         else {
             return redirect()->route('dashboard');

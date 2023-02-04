@@ -15,6 +15,7 @@ class ContentController extends Controller
     function sort(Request $request)
     {
         if ($request->ajax()) {
+            $paginate_count = 4;
             $sort = $request->get('sort');
             $groups = $request->get('groups');
             $search = $request->get('search');
@@ -57,12 +58,14 @@ class ContentController extends Controller
                 foreach ($groups_final as $group) {
                     $id[] = $group->id;
                 }
-                $posts = Post::whereIn('group_id', $id)->where('name', 'like', '%' . $search . '%')->orWhere('content', 'like', '%' . $search . '%')->orderBy($tridit_dle, $tridit_jak)->get();
+                $posts = Post::whereIn('group_id', $id)->where('name', 'like', '%' . $search . '%')->orWhere('content', 'like', '%' . $search . '%')->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count/2);
+                /*
                 $groups = $user->groups()->where('name', 'like', '%' . $search . '%')->get();
                 foreach ($groups as $group) {
                     $group_posts = $group->posts()->get();
                 }
                 $posts = $posts->merge($group_posts);
+                */
                 return view('prispevky', ['prispevky' => $posts])->render();
             }
 
@@ -74,7 +77,7 @@ class ContentController extends Controller
                     }
                     if ($sort < 5) {
                         $posts = array();
-                        $posts = Post::whereIn('group_id', $id)->orderBy($tridit_dle, $tridit_jak)->get();
+                        $posts = Post::whereIn('group_id', $id)->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count);
                         return view('prispevky', ['prispevky' => $posts])->render();
                     } else {
                         $groups_final = $user->groups()->orderBy($tridit_dle, $tridit_jak)->get();
@@ -86,7 +89,7 @@ class ContentController extends Controller
                         $id[] = $group->id;
                     }
                     if ($sort < 5) {
-                        $posts = Post::whereIn('group_id', $id)->orderBy($tridit_dle, $tridit_jak)->get();
+                        $posts = Post::whereIn('group_id', $id)->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count);
                         return view('prispevky', ['prispevky' => $posts])->render();
                     } else {
                         $groups_final = $user->groups()->where('public', '!=', 1)->orderBy($tridit_dle, $tridit_jak)->get();
@@ -98,7 +101,7 @@ class ContentController extends Controller
                         $id[] = $group->id;
                     }
                     if ($sort < 5) {
-                        $posts = Post::whereIn('group_id', $id)->orderBy($tridit_dle, $tridit_jak)->get();
+                        $posts = Post::whereIn('group_id', $id)->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count);
                         return view('prispevky', ['prispevky' => $posts])->render();
                     } else {
                         $groups_final = Group::where('public', 1)->orderBy($tridit_dle, $tridit_jak)->get();
@@ -111,7 +114,7 @@ class ContentController extends Controller
                     }
                     if ($sort < 5) {
                         $posts = array();
-                        $posts = Post::whereIn('group_id', $id)->orderBy($tridit_dle, $tridit_jak)->get();
+                        $posts = Post::whereIn('group_id', $id)->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count);
                         return view('prispevky', ['prispevky' => $posts])->render();
                     } else {
                         $groups_final = $user->groups()->orderBy($tridit_dle, $tridit_jak)->get();
@@ -121,9 +124,10 @@ class ContentController extends Controller
             foreach ($groups_final as $group) {
                 $id[] = $group->id;
                 $posts = array();
-                $posts = Post::whereIn('group_id', $id)->orderBy($tridit_dle, $tridit_jak)->get();
+                $posts = Post::whereIn('group_id', $id)->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count);
                 return view('prispevky', ['prispevky' => $posts])->render();
             }
         }
+        return redirect()->route('dashboard');
     }
 }
