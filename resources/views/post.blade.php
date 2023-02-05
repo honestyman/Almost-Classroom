@@ -61,53 +61,78 @@
             <div class="py-6 sm:pt-8">
                 <div class="mx-0 sm:mx-5">
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="bg-white border-b border-gray-200">
-                            <div class="grid grid-cols-1 sm:grid-cols-3">
-                                @php
-                                    $finished_users = 0;
-                                @endphp
-                                @foreach ($post->postusers as $postuser)
-                                    @if ($postuser->finished == 1)
-                                        @php
-                                            $finished_users++;
-                                        @endphp
-                                        <div class="p-4 sm:p-6 odd:bg-white even:bg-slate-50">
-                                            <a href="/user/{{ $postuser->user->id }}" class="flex justify-center">
-                                                <img src="{{ asset('/storage/images/' . $postuser->user->image) }}"
-                                                    class="h-10 w-10 mr-2 md:mr-3 rounded-full object-cover"
-                                                    alt="username" />
-                                                <span class="my-auto text-lg">
-                                                    {{ $postuser->user->name }}
-                                                </span>
-                                            </a>
-                                            <p class="pt-4 flex justify-center">
-                                                @if ($postuser->post->type == 1)
-                                                    @if ($postuser->post_answer == null)
-                                                        <span>Odevzdáno</span>
-                                                    @endif
-                                                @else
-                                                    <span>{{ $postuser->post_answer }}</span>
-                                                @endif
-                                            </p>
-                                        </div>
-                                    @endif
-                                @endforeach
-                                @if ($finished_users < 1)
+                        <div class="p-4 sm:p-6 bg-white border-b border-gray-200">
+                            <div class="sm:grid sm:grid-cols-5">
+                                <!-- HLAVNÍ ČÁST POSTU -->
+                                <div class="sm:col-span-3">
+                                    <div class="flex">
+                                        <p class="text-xl">
+                                            <b>{{ $post->name }}</b>
+                                        </p>
                                     </div>
-                                    <div class="flex justify-center p-4 sm:p-6 bg-white">
-                                        <h2>Nikdo nic neodevzdal!</h2>
+                                    <div
+                                        class="p-2 border-b-2 sm:border-b-0 border-slate-500 text-lg text-justify break-all">
+                                        {{ $post->content }}
                                     </div>
-                                    @if ($finished_users % 3 != 0)
-                                    <div class="p-4 sm:p-6 odd:bg-white even:bg-slate-50">
-                                    </div>
-                                    @endif
-                                @else
-                                    </div>
-                                @endif
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            @if ($post->type != 0)
+                <div class="py-6 sm:pt-8">
+                    <div class="mx-0 sm:mx-5">
+                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                            <div class="bg-white border-b border-gray-200">
+                                <div class="grid grid-cols-1 sm:grid-cols-3">
+                                    @php
+                                        $finished_users = 0;
+                                    @endphp
+                                    @foreach ($post->postusers as $postuser)
+                                        @if ($postuser->finished == 1)
+                                            @php
+                                                $finished_users++;
+                                            @endphp
+                                            <div class="p-4 sm:p-6 odd:bg-white even:bg-slate-50">
+                                                <a href="/user/{{ $postuser->user->id }}" class="flex justify-center">
+                                                    <img src="{{ asset('/storage/images/' . $postuser->user->image) }}"
+                                                        class="h-10 w-10 mr-2 md:mr-3 rounded-full object-cover"
+                                                        alt="username" />
+                                                    <span class="my-auto text-lg">
+                                                        {{ $postuser->user->name }}
+                                                    </span>
+                                                </a>
+                                                <p class="pt-4 flex justify-center">
+                                                    @if ($postuser->post->type == 1)
+                                                        @if ($postuser->post_answer == null)
+                                                            <span>Odevzdáno</span>
+                                                        @endif
+                                                    @else
+                                                        <span>{{ $postuser->post_answer }}</span>
+                                                    @endif
+                                                </p>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                    @if ($finished_users < 1)
+                                        </div>
+                                        <div class="flex justify-center p-4 sm:p-6 bg-white">
+                                            <h2>Nikdo nic neodevzdal!</h2>
+                                        </div>
+                                        @if ($finished_users % 3 != 0)
+                                        <div class="p-4 sm:p-6 odd:bg-white even:bg-slate-50">
+                                        </div>
+                                        @endif
+                                    @else
+                                        </div>
+                                    @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            @endif
+            
             <!-- ČÁST PRO KOMENTÁŘE-->
             <div class="py-6 sm:pt-8">
                 <div class="mx-0 sm:mx-5">
@@ -201,44 +226,6 @@
                                         <p class="text-xl">
                                             <b>{{ $post->name }}</b>
                                         </p>
-                                        <!-- TADY JE ROZKLIKAVACI MENU NA MAZANI & UPRAVU POSTU-->
-                                        @if (Auth::user()->id == $post->group->user_id || Auth::user()->admin == 1)
-                                            <div class="flex items-center ml-2 sm:ml-3 pt-0.5">
-                                                <x-dropdown align="left" width="48">
-                                                    <x-slot name="trigger">
-                                                        <button
-                                                            class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
-                                                            <div><i class="fa-solid fa-gear"></i></div>
-                                                        </button>
-                                                    </x-slot>
-
-                                                    <x-slot name="content">
-                                                        <x-dropdown-link>
-                                                            <div class="flex justify-between hover:cursor-pointer"
-                                                                type="button"
-                                                                data-modal-toggle="popup-modal-post-{{ $post->id }}-add">
-                                                                {{ 'Upravit' }}
-                                                                <i class="fa-solid fa-pen pr-4 pt-0.5"></i>
-                                                            </div>
-                                                        </x-dropdown-link>
-                                                        <x-dropdown-link>
-                                                            <div class="flex justify-between hover:cursor-pointer"
-                                                                type="button"
-                                                                data-modal-toggle="popup-modal-post-{{ $post->id }}-del">
-                                                                {{ 'Smazat' }}
-                                                                <i class="fa-solid fa-trash pr-4 pt-0.5"></i>
-                                                            </div>
-                                                        </x-dropdown-link>
-                                                    </x-slot>
-                                                </x-dropdown>
-                                            </div>
-                                            <x-modal :id="$post->id" type="post" :content="$post->content"
-                                                :name="$post->name" function="add">
-                                            </x-modal>
-                                            <x-modal :id="$post->id" type="post" :content="$post->content"
-                                                :name="$post->name" function="del">
-                                            </x-modal>
-                                        @endif
                                     </div>
                                     <div
                                         class="p-2 border-b-2 sm:border-b-0 border-slate-500 text-lg text-justify break-all">
@@ -246,6 +233,7 @@
                                     </div>
                                 </div>
 
+                                @if ($post->type != 0)
                                 <div class="my-3 max-h-80 sm:max-h-100 sm:h-80 sm:col-span-2">
                                     <div class="max-h-80 sm:h-80 overflow-auto">
                                         <div class="sm:mr-6 flex">
@@ -291,19 +279,18 @@
                                                     @endif
                                                 @endforeach
                                             </div>
-
-                                            @if ($post->type == 2)
-                                                <div class="flex justify-center md:justify-end">
-                                                    <textarea name="post_answer" rows="6"
-                                                        class="block p-2.5 mt-4 w-10/12 text-sm bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                        @if ($finished == 1) disabled @endif placeholder="Odpověď k úkolu..." required>@if($postuser->post_answer != ''){{ $postuser->post_answer }}@endif</textarea>
-                                                </div>
-                                            @endif
-                                        </form>
+                                                @if ($post->type == 2)
+                                                    <div class="flex justify-center md:justify-end">
+                                                        <textarea name="post_answer" rows="6"
+                                                            class="block p-2.5 mt-4 w-10/12 text-sm bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                            @if ($finished == 1) disabled @endif placeholder="Odpověď k úkolu..." required>@if($postuser->post_answer != ''){{ $postuser->post_answer }}@endif</textarea>
+                                                    </div>
+                                                @endif
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-
+                                @endif
                         </div>
                         <div class="flex justify-between">
                             <div class="text-slate-600 italic text-left">

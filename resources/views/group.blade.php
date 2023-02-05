@@ -95,6 +95,7 @@
                                                 <select required name="type" id="type"
                                                     class="block mb-2 sm:mb-4 p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                                                     <option value="" disabled selected>Zvolte typ úkolu</option>
+                                                    <option value="0">Bez odevzdání</option>
                                                     <option value="1">Pouze odkliknutí 'Splněno'</option>
                                                     <option value="2">'Splněno' doplněno textovým polem</option>
                                                 </select>
@@ -102,7 +103,8 @@
                                                     <input type="checkbox" id="deadline_switcher"
                                                         onclick="selectItem(this.checked)"
                                                         class="mb-0.5 w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                                    <label for="deadline_switcher" class="ml-1">S termínem odevzdání</label>
+                                                    <label for="deadline_switcher" class="ml-1">S termínem
+                                                        odevzdání</label>
                                                 </div>
                                                 <input type="datetime-local" id="deadline" name="deadline"
                                                     class="hidden p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -150,32 +152,44 @@
                                     @endif
                                 </div>
 
+
                                 <div class="flex justify-end align-middle">
-                                    @foreach ($post->postusers as $postuser)
-                                        @if ($postuser->user_id == Auth::user()->id and $postuser->post_id == $post->id)
-                                            @if ($postuser->finished == 1)
-                                                @if (isset($post->deadline) || $post->deadline != null)
-                                                    @if (date_create_from_format('Y-m-d H:i:s', $postuser->updated_at)->format('d. m. Y H:i') >
-                                                        date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
-                                                        <i
-                                                            class="fa-solid fa-square-check text-5xl text-yellow-300 mr-2"></i>
+                                    @if ($post->type != 0)
+                                        @if ($post->user_id == Auth::user()->id || Auth::user()->admin == 1)
+                                            <i class="fa-solid fa-square-up-right text-5xl text-blue-500 mr-2"></i>
+                                        @else
+                                            @foreach ($post->postusers as $postuser)
+                                                @if ($postuser->user_id == Auth::user()->id and $postuser->post_id == $post->id)
+                                                    @if ($postuser->finished == 1)
+                                                        @if (isset($post->deadline) || $post->deadline != null)
+                                                            @if (date_create_from_format('Y-m-d H:i:s', $postuser->updated_at)->format('d. m. Y H:i') >
+                                                                    date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
+                                                                <i
+                                                                    class="fa-solid fa-square-check text-5xl text-yellow-300 mr-2"></i>
+                                                            @else
+                                                                <i
+                                                                    class="fa-solid fa-square-check text-5xl text-green-600 mr-2"></i>
+                                                            @endif
+                                                        @else
+                                                            <i
+                                                                class="fa-solid fa-square-check text-5xl text-green-600 mr-2"></i>
+                                                        @endif
                                                     @else
                                                         <i
-                                                            class="fa-solid fa-square-check text-5xl text-green-600 mr-2"></i>
+                                                            class="fa-solid fa-square-xmark text-5xl text-red-600 mr-2"></i>
                                                     @endif
-                                                @else
-                                                    <i
-                                                        class="fa-solid fa-square-check text-5xl text-green-600 mr-2"></i>
-                                                @endif
-                                            @else
+                                                @break
+                                            @endif
+                                            @if ($loop->remaining == 0 and $postuser->user_id != Auth::user()->id)
                                                 <i class="fa-solid fa-square-xmark text-5xl text-red-600 mr-2"></i>
                                             @endif
-                                        @break
+                                        @endforeach
                                     @endif
-                                    @if ($loop->remaining == 0 and $postuser->user_id != Auth::user()->id)
-                                        <i class="fa-solid fa-square-xmark text-5xl text-red-600 mr-2"></i>
-                                    @endif
-                                @endforeach
+                                @else
+                                    <i class="fa-solid fa-square-up-right text-5xl text-blue-500 mr-2"></i>
+                                @endif
+
+
                             </div>
                         </div>
                     </div>

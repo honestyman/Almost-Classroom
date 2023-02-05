@@ -71,7 +71,7 @@
     </x-slot>
 
     <div class="obsah" id="orderContent">
-        @include('prispevky')
+        @include('posts')
     </div>
     <center>
         <div class="lds-ring mt-32 sm:mt-40 md:mt-56" id="loadingImage">

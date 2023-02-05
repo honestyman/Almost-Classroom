@@ -66,7 +66,7 @@ class ContentController extends Controller
                 }
                 $posts = $posts->merge($group_posts);
                 */
-                return view('prispevky', ['prispevky' => $posts])->render();
+                return view('posts', ['prispevky' => $posts])->render();
             }
 
             switch ($groups) {
@@ -78,7 +78,7 @@ class ContentController extends Controller
                     if ($sort < 5) {
                         $posts = array();
                         $posts = Post::whereIn('group_id', $id)->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count);
-                        return view('prispevky', ['prispevky' => $posts])->render();
+                        return view('posts', ['prispevky' => $posts])->render();
                     } else {
                         $groups_final = $user->groups()->orderBy($tridit_dle, $tridit_jak)->get();
                     }
@@ -90,7 +90,7 @@ class ContentController extends Controller
                     }
                     if ($sort < 5) {
                         $posts = Post::whereIn('group_id', $id)->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count);
-                        return view('prispevky', ['prispevky' => $posts])->render();
+                        return view('posts', ['prispevky' => $posts])->render();
                     } else {
                         $groups_final = $user->groups()->where('public', '!=', 1)->orderBy($tridit_dle, $tridit_jak)->get();
                     }
@@ -102,7 +102,7 @@ class ContentController extends Controller
                     }
                     if ($sort < 5) {
                         $posts = Post::whereIn('group_id', $id)->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count);
-                        return view('prispevky', ['prispevky' => $posts])->render();
+                        return view('posts', ['prispevky' => $posts])->render();
                     } else {
                         $groups_final = Group::where('public', 1)->orderBy($tridit_dle, $tridit_jak)->get();
                     }
@@ -115,7 +115,7 @@ class ContentController extends Controller
                     if ($sort < 5) {
                         $posts = array();
                         $posts = Post::whereIn('group_id', $id)->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count);
-                        return view('prispevky', ['prispevky' => $posts])->render();
+                        return view('posts', ['prispevky' => $posts])->render();
                     } else {
                         $groups_final = $user->groups()->orderBy($tridit_dle, $tridit_jak)->get();
                     }
@@ -125,7 +125,7 @@ class ContentController extends Controller
                 $id[] = $group->id;
                 $posts = array();
                 $posts = Post::whereIn('group_id', $id)->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count);
-                return view('prispevky', ['prispevky' => $posts])->render();
+                return view('posts', ['prispevky' => $posts])->render();
             }
         }
         return redirect()->route('dashboard');
