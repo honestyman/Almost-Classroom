@@ -28,7 +28,7 @@
                             </div>
 
                             <div class="flex justify-end align-middle">
-                                @if ($post->user_id == Auth::user()->id || Auth::user()->admin == 1)
+                                @if ($post->user_id == Auth::user()->id || Auth::user()->admin == 1 || $post->type == 0)
                                     <i class="fa-solid fa-square-up-right text-5xl text-blue-500 mr-2"></i>
                                 @else
                                     @foreach ($post->postusers as $postuser)

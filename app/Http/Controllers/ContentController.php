@@ -59,13 +59,13 @@ class ContentController extends Controller
 
             if ($search != "") {
                 if ($address) {
-                    $posts = Post::where('group_id', $address)->where('name', 'like', '%' . $search . '%')->orWhere('content', 'like', '%' . $search . '%')->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count / 2);
+                    $posts = Post::where('group_id', $address)->where('name', 'like', '%' . $search . '%')->orWhere('content', 'like', '%' . $search . '%')->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count);
                 } else {
                     $groups_final = $user->groups()->get();
                     foreach ($groups_final as $group) {
                         $id[] = $group->id;
                     }
-                    $posts = Post::whereIn('group_id', $id)->where('name', 'like', '%' . $search . '%')->orWhere('content', 'like', '%' . $search . '%')->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count / 2);
+                    $posts = Post::whereIn('group_id', $id)->where('name', 'like', '%' . $search . '%')->orWhere('content', 'like', '%' . $search . '%')->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count);
                 }
                 return view('posts', ['prispevky' => $posts])->render();
             }

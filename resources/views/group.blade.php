@@ -3,27 +3,31 @@
         <x-slot name="header">
             <div class="flex justify-between">
                 <div>
-                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                        Vaše skupiny
-                    </h2>
                     <div class="flex flex-col md:flex-row py-4">
                         @if (Auth::user()->groups->count() >= 5)
-                            <button id="dropdownDefault" data-dropdown-toggle="dropdownGroups"
-                                class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
-                                type="button"><i class="fa-solid fa-caret-down mr-2"></i>Všechny skupiny</button>
-                            <div id="dropdownGroups"
-                                class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
-                                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                                    aria-labelledby="dropdownDefault">
+                            <x-dropdown align="left" width="40">
+                                <x-slot name="trigger">
+                                    <button
+                                        class="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                        <div class="text-xl"><i class="fa-solid fa-caret-down mr-2"></i>Vaše skupiny</div>
+                                    </button>
+                                </x-slot>
+                                <x-slot name="content">
                                     @foreach (Auth::user()->groups as $group)
-                                        <li>
-                                            <a href="/group/{{ $group->id }}"
-                                                class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ $group->name }}</a>
-                                        </li>
+                                        <x-dropdown-link href="/group/{{ $group->id }}">
+                                            <div class="flex justify-between hover:cursor-pointer">
+                                                <p class="flex justify-between">
+                                                    {{ $group->name }}
+                                                </p>
+                                            </div>
+                                        </x-dropdown-link>
                                     @endforeach
-                                </ul>
-                            </div>
+                                </x-slot>
+                            </x-dropdown>
                         @else
+                            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                                Vaše skupiny
+                            </h2>
                             @foreach (Auth::user()->groups as $group)
                                 <div class="flex justify-center p-2 items-center">
                                     <form action="/group/{{ $group->id }}" method="POST">
@@ -37,26 +41,38 @@
                         @endif
                     </div>
                     <div class="flex flex-col md:flex-row py-4">
-                        <button id="dropdownDefault" data-dropdown-toggle="dropdownThisGroup"
-                            class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
-                            type="button"><i class="fa-solid fa-caret-down mr-2"></i>{{ $site->name }}</button>
-                        <div id="dropdownThisGroup"
-                            class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
-                            <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
-                                <li>
-                                    <a href="/group/{{ $site->id }}"
-                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Úkoly</a>
-                                </li>
-                                <li>
-                                    <a href="/group/{{ $site->id }}/users"
-                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Členové</a>
-                                </li>
-                                <li>
-                                    <a onclick="showInvite()" href="#"
-                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Pozvat</a>
-                                </li>
-                            </ul>
-                        </div>
+                        <x-dropdown align="left" width="24">
+                            <x-slot name="trigger">
+                                <button
+                                    class="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                    <div class="text-medium"><i
+                                            class="fa-solid fa-caret-down mr-2"></i>{{ $site->name }}</div>
+                                </button>
+                            </x-slot>
+                            <x-slot name="content">
+                                <x-dropdown-link href="/group/{{ $site->id }}">
+                                    <div class="flex justify-between hover:cursor-pointer">
+                                        <p class="flex justify-between">
+                                            {{ __('Úkoly') }}
+                                        </p>
+                                    </div>
+                                </x-dropdown-link>
+                                <x-dropdown-link href="/group/{{ $site->id }}/users">
+                                    <div class="flex justify-between hover:cursor-pointer">
+                                        <p class="flex justify-between">
+                                            {{ __('Členové') }}
+                                        </p>
+                                    </div>
+                                </x-dropdown-link>
+                                <x-dropdown-link onclick="showInvite()">
+                                    <div class="flex justify-between hover:cursor-pointer">
+                                        <p class="flex justify-between">
+                                            {{ __('Pozvat') }}
+                                        </p>
+                                    </div>
+                                </x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown>
                     </div>
                 </div>
 
@@ -64,7 +80,8 @@
                     <div class="block md:flex flex-col md:flex-row justify-between">
                         <div class="mx-2 py-2">
                             <label for="search"
-                                class="block mb-2 text-l font-medium text-gray-900 dark:text-white">Vyhledat obsah</label>
+                                class="block mb-2 text-l font-medium text-gray-900 dark:text-white">Vyhledat
+                                obsah</label>
                             <div class="relative w-full">
                                 <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                                     <svg aria-hidden="true" class="w-5 h-4 text-gray-500 dark:text-gray-400"
@@ -113,7 +130,7 @@
                                             clip-rule="evenodd"></path>
                                     </svg></button>
                                 <div id="mega-menu-full-dropdown"
-                                    class="hidden mt-1 bg-gray-50 border-gray-200 shadow-sm md:bg-white border-y dark:bg-gray-800 dark:border-gray-600">
+                                    class="hidden mt-1 transition ease-in-out duration-200 bg-gray-50 border-gray-200 shadow-sm md:bg-white border-y dark:bg-gray-800 dark:border-gray-600">
                                     <div
                                         class="py-5 px-4 mx-auto max-w-screen-xl text-gray-900 dark:text-white sm:grid-cols-2 md:px-6">
                                         <form action="/add" method="POST" class="grid grid-cols-2">
@@ -173,7 +190,7 @@
         </div>
 
         <div id="toast-bottom-right"
-            class="transition ease-in-out duration-400 absolute flex items-center w-full max-w-xs p-4 space-x-4 text-gray-500 bg-white divide-x divide-gray-200 rounded-lg shadow right-5 bottom-5 dark:text-gray-400 dark:divide-gray-700 space-x dark:bg-gray-800"
+            class="transition ease-in-out duration-200 absolute flex items-center w-full max-w-xs p-4 space-x-4 text-gray-500 bg-white divide-x divide-gray-200 rounded-lg shadow right-5 bottom-5 dark:text-gray-400 dark:divide-gray-700 space-x dark:bg-gray-800"
             role="alert" style="visibility: hidden; transition: visibility 0s, opacity 0.5s linear; opacity: 0;">
             <div class="flex w-full">
                 <div class="text-sm font-normal">

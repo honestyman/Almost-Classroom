@@ -3,27 +3,31 @@
         @if (isset($user))
             <div class="flex justify-between">
                 <div>
-                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                        Vaše skupiny
-                    </h2>
                     <div class="flex flex-col md:flex-row py-4">
                         @if ($user->groups->count() >= 5)
-                            <button id="dropdownDefault" data-dropdown-toggle="dropdownGroups"
-                                class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
-                                type="button"><i class="fa-solid fa-caret-down mr-2"></i>Všechny skupiny</button>
-                            <div id="dropdownGroups"
-                                class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
-                                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
-                                    aria-labelledby="dropdownDefault">
-                                    @foreach ($user->groups as $group)
-                                        <li>
-                                            <a href="/group/{{ $group->id }}"
-                                                class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ $group->name }}</a>
-                                        </li>
+                            <x-dropdown align="left" width="40">
+                                <x-slot name="trigger">
+                                    <button
+                                        class="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
+                                        <div class="text-xl"><i class="fa-solid fa-caret-down mr-2"></i>Vaše skupiny</div>
+                                    </button>
+                                </x-slot>
+                                <x-slot name="content">
+                                    @foreach (Auth::user()->groups as $group)
+                                        <x-dropdown-link href="/group/{{ $group->id }}">
+                                            <div class="flex justify-between hover:cursor-pointer">
+                                                <p class="flex justify-between">
+                                                    {{ $group->name }}
+                                                </p>
+                                            </div>
+                                        </x-dropdown-link>
                                     @endforeach
-                                </ul>
-                            </div>
+                                </x-slot>
+                            </x-dropdown>
                         @else
+                            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                                Vaše skupiny
+                            </h2>
                             @foreach ($user->groups as $group)
                                 <div class="flex justify-center p-2 items-center">
                                     <form action="/group/{{ $group->id }}" method="POST">
@@ -87,97 +91,94 @@
         @endif
 
     </x-slot>
-
-    <div class="obsah" id="orderContent">
-        @include('posts')
-    </div>
-    <center>
-        <div class="lds-ring mt-32 sm:mt-40 md:mt-56" id="loadingImage">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
+    <x-slot name="slot">
+        <div class="obsah" id="orderContent">
+            @include('posts')
         </div>
-    </center>
-
-    <script>
-        $(document).ready(function() {
-
-            fetch_customer_data();
-
-            function fetch_customer_data(sort = '', groups = '', search = '', url) {
-                $.ajax({
-                    url: "{{ route('sort') }}",
-                    method: 'GET',
-                    data: {
-                        sort: sort,
-                        groups: groups,
-                        search: search,
-                    },
-                    beforeSend: function() {
-                        $('#loadingImage').show();
-                        $('#orderContent').hide();
-                    },
-                    complete: function() {
-                        $('#loadingImage').hide();
-                    },
-                    success: function(data) {
-                        $('.obsah').html(data);
-                        $('#orderContent').show();
-                    }
-                });
-            }
-
-            $(document).on('change', '#sort, #groups', function() {
-                var sort = $('#sort').val();
-                var groups = $('#groups').val();
-                var search = $('#search').val();
-                fetch_customer_data(sort, groups, search);
-            });
-            $(document).on('input', '#search', function() {
-                var sort = $('#sort').val();
-                var groups = $('#groups').val();
-                var search = $('#search').val();
-                fetch_customer_data(sort, groups, search);
-            });
-        });
-    </script>
-
-    <script type="text/javascript">
-        $(function() {
-            $('body').on('click', '#pagination a', function(e) {
-                e.preventDefault();
-                var url = $(this).attr('href');
-                var sort = $('#sort').val();
-                var groups = $('#groups').val();
-                var search = $('#search').val();
-                getArticles(sort, groups, search, url);
-            });
-            function getArticles(sort = '', groups = '', search = '', url) {
-                $.ajax({
-                    url: url,
-                    method: 'GET',
-                    data: {
-                        sort: sort,
-                        groups: groups,
-                        search: search,
-                    },
-                    beforeSend: function() {
-                        $('#loadingImage').show();
-                        $('#orderContent').hide();
-                    },
-                    complete: function() {
-                        $('#loadingImage').hide();
-                    },
-                    success: function(data) {
-                        $('.obsah').html(data);
-                        $('#orderContent').show();
-                    },
-                });
-            }
-        });
-    </script>
-
-
-
+        <center>
+            <div class="lds-ring mt-32 sm:mt-40 md:mt-56" id="loadingImage">
+            </div>
+        </center>
+    </x-slot>
+    <x-slot name="footer">
+    </x-slot>
 </x-app-layout>
+
+<script>
+    $(document).ready(function() {
+
+        fetch_customer_data();
+
+        function fetch_customer_data(sort = '', groups = '', search = '', url) {
+            $.ajax({
+                url: "{{ route('sort') }}",
+                method: 'GET',
+                data: {
+                    sort: sort,
+                    groups: groups,
+                    search: search,
+                },
+                beforeSend: function() {
+                    $('#loadingImage').show();
+                    $('#orderContent').hide();
+                },
+                complete: function() {
+                    $('#loadingImage').hide();
+                },
+                success: function(data) {
+                    $('.obsah').html(data);
+                    $('#orderContent').show();
+                }
+            });
+        }
+
+        $(document).on('change', '#sort, #groups', function() {
+            var sort = $('#sort').val();
+            var groups = $('#groups').val();
+            var search = $('#search').val();
+            fetch_customer_data(sort, groups, search);
+        });
+        $(document).on('input', '#search', function() {
+            var sort = $('#sort').val();
+            var groups = $('#groups').val();
+            var search = $('#search').val();
+            fetch_customer_data(sort, groups, search);
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(function() {
+        $('body').on('click', '#pagination a', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('href');
+            var sort = $('#sort').val();
+            var groups = $('#groups').val();
+            var search = $('#search').val();
+            getArticles(sort, groups, search, url);
+        });
+
+        function getArticles(sort = '', groups = '', search = '', url) {
+            $.ajax({
+                url: url,
+                method: 'GET',
+                data: {
+                    sort: sort,
+                    groups: groups,
+                    search: search,
+                },
+                beforeSend: function() {
+                    $('#loadingImage').show();
+                    $('#orderContent').hide();
+                },
+                complete: function() {
+                    $('#loadingImage').hide();
+                },
+                success: function(data) {
+                    $('.obsah').html(data);
+                    $('#orderContent').show();
+                },
+            });
+        }
+    });
+</script>
