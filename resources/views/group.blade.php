@@ -3,53 +3,94 @@
         <x-slot name="header">
             <div class="flex justify-between">
                 <div>
-                    <button id="dropdownDefault" data-dropdown-toggle="dropdownGroups"
-                        class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
-                        type="button">Skupiny <i class="fa-solid fa-caret-down ml-2"></i></button>
-                    <div id="dropdownGroups"
-                        class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
-                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
-                            <li>
-                                <a href="/"
-                                    class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Všechny
-                                    skupiny</a>
-                            </li>
+                    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                        Vaše skupiny
+                    </h2>
+                    <div class="flex flex-col md:flex-row py-4">
+                        @if (Auth::user()->groups->count() >= 5)
+                            <button id="dropdownDefault" data-dropdown-toggle="dropdownGroups"
+                                class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
+                                type="button"><i class="fa-solid fa-caret-down mr-2"></i>Všechny skupiny</button>
+                            <div id="dropdownGroups"
+                                class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
+                                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
+                                    aria-labelledby="dropdownDefault">
+                                    @foreach (Auth::user()->groups as $group)
+                                        <li>
+                                            <a href="/group/{{ $group->id }}"
+                                                class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ $group->name }}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @else
                             @foreach (Auth::user()->groups as $group)
-                                <li>
-                                    <a href="/group/{{ $group->id }}"
-                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ $group->name }}</a>
-                                </li>
+                                <div class="flex justify-center p-2 items-center">
+                                    <form action="/group/{{ $group->id }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id" id="id" value="{{ $group->id }}">
+                                        <button type="submit"
+                                            class="inline-block px-6 py-2 w-32 bg-gray-200 text-gray-700 font-medium leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">{{ $group->name }}</button>
+                                    </form>
+                                </div>
                             @endforeach
-                        </ul>
+                        @endif
+                    </div>
+                    <div class="flex flex-col md:flex-row py-4">
+                        <button id="dropdownDefault" data-dropdown-toggle="dropdownThisGroup"
+                            class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
+                            type="button"><i class="fa-solid fa-caret-down mr-2"></i>{{ $site->name }}</button>
+                        <div id="dropdownThisGroup"
+                            class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
+                            <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
+                                <li>
+                                    <a href="/group/{{ $site->id }}"
+                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Úkoly</a>
+                                </li>
+                                <li>
+                                    <a href="/group/{{ $site->id }}/users"
+                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Členové</a>
+                                </li>
+                                <li>
+                                    <a onclick="showInvite()" href="#"
+                                        class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Pozvat</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
+
                 <div>
-                    <h2>
-                        @if (Auth::user()->id == $site->user_id || Auth::user()->admin == 1)
-                            {{ $site->invite_key }}
-                        @endif
-                    </h2>
-                </div>
-                <div>
-                    <button id="dropdownDefault" data-dropdown-toggle="dropdownThisGroup"
-                        class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
-                        type="button"><i class="fa-solid fa-caret-down mr-2"></i>{{ $site->name }}</button>
-                    <div id="dropdownThisGroup"
-                        class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
-                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
-                            <li>
-                                <a href="/group/{{ $site->id }}"
-                                    class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Úkoly</a>
-                            </li>
-                            <li>
-                                <a href="/group/{{ $site->id }}/users"
-                                    class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Členové</a>
-                            </li>
-                            <li>
-                                <a onclick="showInvite()" href="#"
-                                    class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Pozvat</a>
-                            </li>
-                        </ul>
+                    <div class="block md:flex flex-col md:flex-row justify-between">
+                        <div class="mx-2 py-2">
+                            <label for="search"
+                                class="block mb-2 text-l font-medium text-gray-900 dark:text-white">Vyhledat obsah</label>
+                            <div class="relative w-full">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <svg aria-hidden="true" class="w-5 h-4 text-gray-500 dark:text-gray-400"
+                                        fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill-rule="evenodd"
+                                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                            clip-rule="evenodd"></path>
+                                    </svg>
+                                </div>
+                                <input type="text" id="search" name="search"
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full h-10 pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Vyhledat">
+                            </div>
+                        </div>
+                        <div class="mx-2 py-2">
+                            <label for="sort"
+                                class="block mb-2 text-l font-medium text-gray-900 dark:text-white">Třídit
+                                obsah podle</label>
+                            <select id="sort" name="sort"
+                                class="p-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                <option value="1">Od nejstaršího</option>
+                                <option value="2" selected>Od nejnovějšího</option>
+                                <option value="3">Nejvzdálenější termín odevzdání</option>
+                                <option value="4">Nejbližší termín odevzdání</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -124,114 +165,131 @@
             </div>
         @endif
 
+        <div class="hidden">
+            <input type="hidden" id="address" value="{{ $site->id }}">
+        </div>
+        <div class="obsah" id="orderContent">
+            @include('posts')
+        </div>
 
-        @foreach ($site->posts as $post)
-            <div class="pt-6 sm:pt-8 pb-6">
-                <div class="mx-0 sm:mx-5">
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg ">
-                        <div class="p-2 sm:p-4 bg-white border-b border-gray-200"
-                            onmouseover="this.style.cursor='pointer'"
-                            onclick="window.location='{{ $post->group->id }}/post/{{ $post->id }}'"">
-                            <div class="grid grid-cols-1 md:grid-cols-3">
-                                <div class="flex justify-start p-3">
-                                    <b class="text-xl">{{ $post->name }}</b>
-                                </div>
-
-                                <div class="text-slate-600 italic p-3 align-middle flex justify-center">
-                                    @if (isset($post->deadline) || $post->deadline != null)
-                                        Termín odevzdání
-                                        @if (date('d. m. Y H:i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
-                                            byl
-                                        @else
-                                            je
-                                        @endif
-                                        {{ date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y ') }}
-                                        ve {{ date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('H:i') }}
-                                    @else
-                                        Bez termínu odevzdání
-                                    @endif
-                                </div>
-
-
-                                <div class="flex justify-end align-middle">
-                                    @if ($post->type != 0)
-                                        @if ($post->user_id == Auth::user()->id || Auth::user()->admin == 1)
-                                            <i class="fa-solid fa-square-up-right text-5xl text-blue-500 mr-2"></i>
-                                        @else
-                                            @foreach ($post->postusers as $postuser)
-                                                @if ($postuser->user_id == Auth::user()->id and $postuser->post_id == $post->id)
-                                                    @if ($postuser->finished == 1)
-                                                        @if (isset($post->deadline) || $post->deadline != null)
-                                                            @if (date_create_from_format('Y-m-d H:i:s', $postuser->updated_at)->format('d. m. Y H:i') >
-                                                                    date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
-                                                                <i
-                                                                    class="fa-solid fa-square-check text-5xl text-yellow-300 mr-2"></i>
-                                                            @else
-                                                                <i
-                                                                    class="fa-solid fa-square-check text-5xl text-green-600 mr-2"></i>
-                                                            @endif
-                                                        @else
-                                                            <i
-                                                                class="fa-solid fa-square-check text-5xl text-green-600 mr-2"></i>
-                                                        @endif
-                                                    @else
-                                                        <i
-                                                            class="fa-solid fa-square-xmark text-5xl text-red-600 mr-2"></i>
-                                                    @endif
-                                                @break
-                                            @endif
-                                            @if ($loop->remaining == 0 and $postuser->user_id != Auth::user()->id)
-                                                <i class="fa-solid fa-square-xmark text-5xl text-red-600 mr-2"></i>
-                                            @endif
-                                        @endforeach
-                                    @endif
-                                @else
-                                    <i class="fa-solid fa-square-up-right text-5xl text-blue-500 mr-2"></i>
-                                @endif
-
-
-                            </div>
-                        </div>
-                    </div>
+        <div id="toast-bottom-right"
+            class="transition ease-in-out duration-400 absolute flex items-center w-full max-w-xs p-4 space-x-4 text-gray-500 bg-white divide-x divide-gray-200 rounded-lg shadow right-5 bottom-5 dark:text-gray-400 dark:divide-gray-700 space-x dark:bg-gray-800"
+            role="alert" style="visibility: hidden; transition: visibility 0s, opacity 0.5s linear; opacity: 0;">
+            <div class="flex w-full">
+                <div class="text-sm font-normal">
+                    <p>Kód pro připojení je:</p>
+                    <p><b>{{ $group->invite_key }}</b></p>
+                </div>
+                <div class="flex items-center ml-auto space-x-2">
+                    <button type="button"
+                        class="bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+                        onclick="hideInvite()" aria-label="Zavřít">
+                        <span class="sr-only">Zavřít</span>
+                        <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </button>
                 </div>
             </div>
-    @endforeach
-    </div>
-
-    <div id="toast-bottom-right"
-        class="transition ease-in-out duration-400 absolute flex items-center w-full max-w-xs p-4 space-x-4 text-gray-500 bg-white divide-x divide-gray-200 rounded-lg shadow right-5 bottom-5 dark:text-gray-400 dark:divide-gray-700 space-x dark:bg-gray-800"
-        role="alert" style="visibility: hidden; transition: visibility 0s, opacity 0.5s linear; opacity: 0;">
-        <div class="flex w-full">
-            <div class="text-sm font-normal">
-                <p>Kód pro připojení je:</p>
-                <p><b>{{ $post->group->invite_key }}</b></p>
-            </div>
-            <div class="flex items-center ml-auto space-x-2">
-                <button type="button"
-                    class="bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
-                    onclick="hideInvite()" aria-label="Zavřít">
-                    <span class="sr-only">Zavřít</span>
-                    <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd"
-                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clip-rule="evenodd"></path>
-                    </svg>
-                </button>
-            </div>
         </div>
-    </div>
 
-</x-app-layout>
+    </x-app-layout>
 
-<script>
-    function selectItem(isChecked) {
-        if (isChecked) {
-            document.getElementById('deadline').style.display = "block";
-        } else {
-            document.getElementById('deadline').style.display = "none";
+    <script>
+        function selectItem(isChecked) {
+            if (isChecked) {
+                document.getElementById('deadline').style.display = "block";
+            } else {
+                document.getElementById('deadline').style.display = "none";
+            }
         }
-    }
-</script>
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            var sort = $('#sort').val();
+            var groups = $('#groups').val();
+            var search = $('#search').val();
+            var address = $('#address').val();
+            fetch_customer_data(sort, groups, search, address);
+
+            function fetch_customer_data(sort = '', groups = '', search = '', address = '', url) {
+                $.ajax({
+                    url: "{{ route('sort') }}",
+                    method: 'GET',
+                    data: {
+                        sort: sort,
+                        groups: groups,
+                        search: search,
+                        address: address,
+                    },
+                    beforeSend: function() {
+                        $('#loadingImage').show();
+                        $('#orderContent').hide();
+                    },
+                    complete: function() {
+                        $('#loadingImage').hide();
+                    },
+                    success: function(data) {
+                        $('.obsah').html(data);
+                        $('#orderContent').show();
+                    }
+                });
+            }
+            $(document).on('change', '#sort, #groups', function() {
+                sort = $('#sort').val();
+                groups = $('#groups').val();
+                search = $('#search').val();
+                fetch_customer_data(sort, groups, search, address);
+            });
+            $(document).on('input', '#search', function() {
+                sort = $('#sort').val();
+                groups = $('#groups').val();
+                search = $('#search').val();
+                fetch_customer_data(sort, groups, search, address);
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(function() {
+            $('body').on('click', '#pagination a', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('href');
+                var sort = $('#sort').val();
+                var groups = $('#groups').val();
+                var search = $('#search').val();
+                var address = $('#address').val();
+                getArticles(sort, groups, search, address, url);
+            });
+
+            function getArticles(sort = '', groups = '', search = '', address = '', url) {
+                $.ajax({
+                    url: url,
+                    method: 'GET',
+                    data: {
+                        sort: sort,
+                        groups: groups,
+                        search: search,
+                        address: address,
+                    },
+                    beforeSend: function() {
+                        $('#loadingImage').show();
+                        $('#orderContent').hide();
+                    },
+                    complete: function() {
+                        $('#loadingImage').hide();
+                    },
+                    success: function(data) {
+                        $('.obsah').html(data);
+                        $('#orderContent').show();
+                    },
+                });
+            }
+        });
+    </script>
 
 @endif

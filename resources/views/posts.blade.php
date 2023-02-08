@@ -4,7 +4,7 @@
             <div class="mx-0 sm:mx-5">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-2 sm:p-4 bg-white border-b border-gray-200" onmouseover="this.style.cursor='pointer'"
-                        onclick="window.location='group/{{ $post->group->id }}/post/{{ $post->id }}'"">
+                        onclick="window.location='/group/{{ $post->group->id }}/post/{{ $post->id }}'"">
                         <div class="grid grid-cols-1 md:grid-cols-3">
                             <div class="flex justify-start p-3">
                                 <span class="text-sm pt-1 capitalise mx-1">{{ $post->group->name }}</span>
@@ -65,7 +65,6 @@
     </div>
 @endforeach
 <div class="p-8" id="pagination">
-    {{ $prispevky->links() }}
+    {{ $prispevky->onEachSide(1)->links() }}
 </div>
-
 @endif

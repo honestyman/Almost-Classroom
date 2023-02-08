@@ -34,7 +34,7 @@ class GoogleController extends Controller
         $finduser = User::where('google_id', $user->id)->first();
         if ($finduser) {
             Auth::login($finduser);
-            return redirect()->intended('dashboard');
+            return redirect()->route('dashboard');
         } else {
             $newUser = User::updateOrCreate(['email' => $user->email], [
                 'name' => $user->name,
@@ -42,7 +42,7 @@ class GoogleController extends Controller
                 'password' => encrypt('123456dummy')
             ]);
             Auth::login($newUser);
-            return redirect()->intended('dashboard');
+            return redirect()->route('dashboard');
         }
     }
 }

@@ -6,17 +6,35 @@
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                         Vaše skupiny
                     </h2>
-                    <div class="flex flex-col sm:flex-row py-4">
-                        @foreach ($user->groups as $group)
-                            <div class="flex justify-center p-2 items-center">
-                                <form action="/group/{{ $group->id }}" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="id" id="id" value="{{ $group->id }}">
-                                    <button type="submit"
-                                        class="inline-block px-6 py-2 w-32 bg-gray-200 text-gray-700 font-medium leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">{{ $group->name }}</button>
-                                </form>
+                    <div class="flex flex-col md:flex-row py-4">
+                        @if ($user->groups->count() >= 5)
+                            <button id="dropdownDefault" data-dropdown-toggle="dropdownGroups"
+                                class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
+                                type="button"><i class="fa-solid fa-caret-down mr-2"></i>Všechny skupiny</button>
+                            <div id="dropdownGroups"
+                                class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
+                                <ul class="py-1 text-sm text-gray-700 dark:text-gray-200"
+                                    aria-labelledby="dropdownDefault">
+                                    @foreach ($user->groups as $group)
+                                        <li>
+                                            <a href="/group/{{ $group->id }}"
+                                                class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">{{ $group->name }}</a>
+                                        </li>
+                                    @endforeach
+                                </ul>
                             </div>
-                        @endforeach
+                        @else
+                            @foreach ($user->groups as $group)
+                                <div class="flex justify-center p-2 items-center">
+                                    <form action="/group/{{ $group->id }}" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id" id="id" value="{{ $group->id }}">
+                                        <button type="submit"
+                                            class="inline-block px-6 py-2 w-32 bg-gray-200 text-gray-700 font-medium leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">{{ $group->name }}</button>
+                                    </form>
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
                 </div>
 
@@ -87,7 +105,7 @@
 
             fetch_customer_data();
 
-            function fetch_customer_data(sort = '', groups = '', search = '') {
+            function fetch_customer_data(sort = '', groups = '', search = '', url) {
                 $.ajax({
                     url: "{{ route('sort') }}",
                     method: 'GET',
@@ -135,7 +153,6 @@
                 var search = $('#search').val();
                 getArticles(sort, groups, search, url);
             });
-
             function getArticles(sort = '', groups = '', search = '', url) {
                 $.ajax({
                     url: url,
