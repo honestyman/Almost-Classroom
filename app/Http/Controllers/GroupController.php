@@ -7,8 +7,9 @@ use App\Models\Group;
 use App\Models\User;
 use App\Models\Post;
 use App\Models\PostUser;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Exception;
 
 class GroupController extends Controller
 {
@@ -30,6 +31,50 @@ class GroupController extends Controller
         } else {
             return redirect()->route('dashboard');
         }
+    }
+
+    public function add(Request $request) {
+        $user = User::findOrFail(Auth::id());
+        if (!isset($request->public)) {
+            $public = 0;
+        } else {
+            $public = 1;
+        }
+        $newGroup = Group::updateOrCreate(
+            [
+                'name' => $request->name,
+                'user_id' => Auth::id(),
+                'public' => $public,
+                'invite_key' => Str::random(10)
+            ]
+        );
+        if ($request->public == 1) {
+            foreach (User::all() as $user) {
+                $user->groups()->attach(Group::latest()->first()->id);
+            }
+        } else {
+            $user->groups()->attach(Group::latest()->first()->id);
+        }
+        return redirect()->back();
+    }
+
+    public function join(Request $request)
+    {
+        $user = User::findOrFail(Auth::id());
+        try {
+            $group_id = Group::where('invite_key', $request->invite_key)->get('id');
+            $user->groups()->attach($group_id);
+        } catch (Exception $e) {
+            dd($e->getMessage());
+        }
+        return redirect()->back();
+    }
+
+    public function delete(Group $group) {
+        $this->authorize('delete', $group);
+        $group->groupusers()->delete();
+        $group->delete();
+        return redirect()->route('dashboard');
     }
 
     public function users(Request $request)

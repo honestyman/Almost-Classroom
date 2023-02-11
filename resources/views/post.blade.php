@@ -145,7 +145,7 @@
                                         <div class="flex">
                                             <b class="mr-2">{{ $comment->user->name }}</b>
                                             <!-- TADY JE ROZKLIKAVACI MENU NA MAZANI & UPRAVU KOMENTÁŘŮ-->
-                                            @if (Auth::id() == $comment->user_id || Auth::user()->admin == 1)
+                                            @can ('edit', $comment)
                                                 <div class="sm:flex items-center pt-1 sm:pt-0 sm:m-1">
                                                     <x-dropdown align="left" width="48">
                                                         <x-slot name="trigger">
@@ -158,7 +158,7 @@
                                                             <x-dropdown-link>
                                                                 <div class="flex justify-between hover:cursor-pointer"
                                                                     type="button"
-                                                                    data-modal-toggle="popup-modal-comment-edit-{{ $comment->id }}-add">
+                                                                    data-modal-toggle="popup-modal-comment-{{ $comment->id }}-edit">
                                                                     {{ 'Upravit' }}
                                                                     <i class="fa-solid fa-pen pr-4 pt-0.5"></i>
                                                                 </div>
@@ -175,9 +175,9 @@
 
                                                     </x-dropdown>
                                                 </div>
-                                            @endif
+                                            @endcan
                                         </div>
-                                        <x-modal :id="$comment->id" type="comment-edit" :content="$comment->content" function="add">
+                                        <x-modal :id="$comment->id" type="comment" :content="$comment->content" function="edit">
                                         </x-modal>
                                         <x-modal :id="$comment->id" type="comment" :content="$comment->content" function="del">
                                         </x-modal>
@@ -186,9 +186,8 @@
                                 </div>
                             @endforeach
                             <div class="p-4">
-                                <form action="{{ route('add', $post->id) }}" method="POST" class="mt-2">
+                                <form action="{{ route('comment.add', $post->id) }}" method="POST" class="mt-2">
                                     @csrf
-                                    <input type="hidden" id="workingWith" name="workingWith" value="comment">
                                     <div class="flex items-center py-2 rounded-lg dark:bg-gray-700">
                                         <textarea name="content" id="content" rows="1"
                                             class="block p-2.5 w-full text-sm bg-gray-50 text-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -205,6 +204,7 @@
                                     </div>
                                 </form>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -233,7 +233,7 @@
                                 <div class="my-3 max-h-80 sm:max-h-100 sm:h-80 sm:col-span-2">
                                     <div class="max-h-80 sm:h-80 overflow-auto">
                                         <div class="sm:mr-6 flex">
-                                            <form method="POST" action="{{ route('finished', $post->id) }}"
+                                            <form method="POST" action="{{ route('post.finished', $post->id) }}"
                                                 class="w-full">
                                                 @csrf
                                                 <div class="flex justify-center md:justify-end mt-2">
@@ -323,7 +323,7 @@
                                     <div class="flex">
                                         <b class="mr-2">{{ $comment->user->name }}</b>
                                         <!-- TADY JE ROZKLIKAVACI MENU NA MAZANI & UPRAVU KOMENTÁŘŮ-->
-                                        @if (Auth::id() == $comment->user_id || Auth::user()->admin == 1)
+                                        @can('edit', $comment)
                                             <div class="sm:flex items-center pt-1 sm:pt-0 sm:m-1">
                                                 <x-dropdown align="left" width="48">
                                                     <x-slot name="trigger">
@@ -336,7 +336,7 @@
                                                         <x-dropdown-link>
                                                             <div class="flex justify-between hover:cursor-pointer"
                                                                 type="button"
-                                                                data-modal-toggle="popup-modal-comment-edit-{{ $comment->id }}-add">
+                                                                data-modal-toggle="popup-modal-comment-{{ $comment->id }}-edit">
                                                                 {{ 'Upravit' }}
                                                                 <i class="fa-solid fa-pen pr-4 pt-0.5"></i>
                                                             </div>
@@ -353,9 +353,9 @@
 
                                                 </x-dropdown>
                                             </div>
-                                        @endif
+                                        @endcan
                                     </div>
-                                    <x-modal :id="$comment->id" type="comment-edit" :content="$comment->content" function="add">
+                                    <x-modal :id="$comment->id" type="comment" :content="$comment->content" function="edit">
                                     </x-modal>
                                     <x-modal :id="$comment->id" type="comment" :content="$comment->content" function="del">
                                     </x-modal>
@@ -363,9 +363,8 @@
                                 </div>
                             </div>
                         @endforeach
-                        <form action="{{ route('add', $post->id) }}" method="POST" class="mt-2">
+                        <form action="{{ route('comment.add', $post->id) }}" method="POST" class="mt-2">
                             @csrf
-                            <input type="hidden" id="workingWith" name="workingWith" value="comment">
                             <div class="flex items-center py-2 rounded-lg dark:bg-gray-700">
                                 <textarea name="content" id="content" rows="1"
                                     class="block p-2.5 w-full text-sm bg-gray-50 text-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
@@ -381,6 +380,7 @@
                                 </button>
                             </div>
                         </form>
+
                     </div>
                 </div>
 

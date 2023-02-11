@@ -7,7 +7,6 @@ use App\Models\Group;
 use App\Models\User;
 use App\Models\Post;
 use App\Models\PostUser;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
@@ -27,6 +26,32 @@ class PostController extends Controller
         else {
             return redirect()->route('dashboard');
         }
+    }
+
+    public function add(Request $request) {
+        $user = User::findOrFail(Auth::id());
+        $newPost = Post::updateOrCreate(
+            [
+                'name' => $request->name,
+                'content' => $request->content,
+                'type' => $request->type,
+                'deadline' => $request->deadline,
+                'group_id' => $request->id,
+                'user_id' => Auth::id(),
+            ]
+        );
+        $user->posts()->attach(Post::all()->count());
+        return redirect()->back();
+    }
+
+    public function edit(Request $request, Post $post) {
+        $post->update([
+            'name' => $request->name,
+            'content' => $request->content,
+            'type' => $request->type,
+            'deadline' => $request->deadline,
+            ]);
+        return redirect()->back();
     }
 
     public function finished(Request $request) {

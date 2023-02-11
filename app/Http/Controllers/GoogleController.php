@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Exception;
 use App\Models\User;
+use App\Models\Group;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -36,12 +37,15 @@ class GoogleController extends Controller
             Auth::login($finduser);
             return redirect()->route('dashboard');
         } else {
-            $newUser = User::updateOrCreate(['email' => $user->email], [
+            $user = User::updateOrCreate(['email' => $user->email], [
                 'name' => $user->name,
                 'google_id' => $user->id,
                 'password' => encrypt('123456dummy')
             ]);
-            Auth::login($newUser);
+            foreach (Group::where('public', "1")->get() as $group) {
+                $user->groups()->attach($group->id);
+            }
+            Auth::login($user);
             return redirect()->route('dashboard');
         }
     }

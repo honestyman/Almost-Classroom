@@ -143,13 +143,11 @@
                     <h3 class="mb-1 sm:mb-2 text-lg font-normal text-gray-500 dark:text-gray-400">Vytvořit novou
                         skupinu?<i class="fa-solid fa-people-group pl-4"></i></h3>
 
-                    <form action="{{ route('add') }}" method="POST" class="p-4">
+                    <form action="{{ route('group.add') }}" method="POST" class="p-4">
                         @csrf
-
                         <input
                             class="p-2 h-12 w-max rounded-md mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             type="text" id="name" name="name" required placeholder="Název skupiny">
-                        <input type="hidden" id="workingWith" name="workingWith" value="group">
                         <div class="flex justify-center mb-4">
                             <input type="checkbox" value="1" id="public" name="public"
                                 class="mt-1 appearance-none checked:bg-green-500" />
@@ -182,8 +180,7 @@
                 <div class="p-6 text-center">
                     <h3 class="mb-1 sm:mb-2 text-lg font-normal text-gray-500 dark:text-gray-400">Připojit se do nové
                         skupiny?<i class="fa-solid fa-people-group pl-4"></i></h3>
-
-                    <form action="{{ route('join') }}" method="POST" class="p-4">
+                    <form action="{{ route('group.join') }}" method="POST" class="p-4">
                         @csrf
                         <input type="text" id="invite_key" name="invite_key"
                             class="mb-4 sm:mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

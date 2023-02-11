@@ -14,7 +14,7 @@
                                 </x-slot>
                                 <x-slot name="content">
                                     @foreach (Auth::user()->groups as $group)
-                                        <x-dropdown-link href="{{route('group', $group->id)}}">
+                                        <x-dropdown-link href="{{ route('group', $group->id) }}">
                                             <div class="flex justify-between hover:cursor-pointer">
                                                 <p class="flex justify-between">
                                                     {{ $group->name }}
@@ -33,8 +33,8 @@
                             <div class="flex flex-col md:flex-row py-4">
                                 @foreach (Auth::user()->groups as $group)
                                     <div class="flex justify-center p-2 items-center">
-                                        <form action="{{route('group', $group->id)}}" method="POST">
-                                            @csrf   
+                                        <form action="{{ route('group', $group->id) }}" method="POST">
+                                            @csrf
                                             <button type="submit"
                                                 class="inline-block px-6 py-2 w-32 bg-gray-200 text-gray-700 font-medium leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">{{ $group->name }}</button>
                                         </form>
@@ -74,6 +74,16 @@
                                         </p>
                                     </div>
                                 </x-dropdown-link>
+                                @can('delete', $site)
+                                    <x-dropdown-link>
+                                        <div class="flex justify-between hover:cursor-pointer" type="button"
+                                            data-modal-toggle="popup-modal-group-{{ $site->id }}-del">
+                                            <p class="flex justify-between">
+                                                {{ __('Smazat') }}
+                                            </p>
+                                        </div>
+                                    </x-dropdown-link>
+                                @endcan
                             </x-slot>
                         </x-dropdown>
                     </div>
@@ -116,7 +126,7 @@
             </div>
         </x-slot>
         <x-slot name="slot">
-            @if (Auth::id() == $site->user_id || Auth::user()->admin == 1)
+            @can ('delete', $site)
                 <div class="pt-6 sm:pt-8">
                     <div class="mx-0 sm:mx-5">
                         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -136,7 +146,8 @@
                                         class="hidden mt-1 transition ease-in-out duration-200 bg-gray-50 border-gray-200 shadow-sm md:bg-white border-y dark:bg-gray-800 dark:border-gray-600">
                                         <div
                                             class="py-5 px-4 mx-auto max-w-screen-xl text-gray-900 dark:text-white sm:grid-cols-2 md:px-6">
-                                            <form action="{{route('add', $site->id)}}" method="POST" class="grid grid-cols-2">
+                                            <form action="{{ route('post.add', $site->id) }}" method="POST"
+                                                class="grid grid-cols-2">
                                                 @csrf
                                                 <div>
                                                     <input type="text" id="name" name="name"
@@ -145,8 +156,6 @@
                                                     <textarea name="content" id="content" rows="10" cols="20"
                                                         class="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none"
                                                         placeholder="Úkol" maxlength="256"></textarea>
-                                                    <input type="hidden" id="workingWith" name="workingWith"
-                                                        value="post">
                                                 </div>
                                                 <div class="flex flex-col ml-4">
                                                     <select required name="type" id="type"
@@ -181,7 +190,7 @@
                         </div>
                     </div>
                 </div>
-            @endif
+            @endcan
 
             <div class="obsah" id="orderContent">
                 @include('posts')
@@ -215,6 +224,8 @@
                     </div>
                 </div>
             </div>
+            <x-modal :id="$site->id" type="group" :content="$site->name" function="del">
+            </x-modal>
 
         </x-slot>
 
