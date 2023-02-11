@@ -5,23 +5,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <link rel="icon" href="{{ asset('favicon.ico') }}">
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
-    @vite('resources/css/loading.css')
 
     <!-- Scripts -->
     <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.4/dist/flowbite.min.css" />
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <link href="/css/app.css" rel="stylesheet">
+    
     <script src="https://kit.fontawesome.com/d8c9721737.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 
 <body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100">
+    <div class="flex flex-col min-h-screen bg-gray-100">
         @include('layouts.navigation')
 
         <!-- Page Heading -->
@@ -34,25 +34,24 @@
         @endif
 
         <!-- Page Content -->
-        <main>
+        <main class="flex-grow">
             {{ $slot }}
         </main>
 
         <!-- Page Footing -->
-        @if (isset($footer))
-            <footer
-                class="p-4 mt-20 bg-white rounded-lg shadow md:flex md:items-center md:justify-between md:p-6 dark:bg-gray-800">
+        <footer
+                class="p-4 mt-auto bg-white rounded-lg shadow flex items-center justify-between md:p-6 dark:bg-gray-800">
                 <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© {{ date('Y') }} <a
-                        href="https://laravel.com/" class="hover:underline">Laravel pomohl při tvorbě!</a>
+                        href="#" class="hover:underline">web by Štěpán Švarc</a>
                 </span>
                 <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">
-                    <a href="#" class="hover:underline">web by Štěpán Švarc</a>
+                    <a href="https://laravel.com/" class="hover:underline">Při tvorbě byl použit Laravel!</a>
                 </span>
             </footer>
-        @endif
 
     </div>
     <script src="https://unpkg.com/flowbite@1.5.4/dist/flowbite.js"></script>
+    
 </body>
 
 </html>

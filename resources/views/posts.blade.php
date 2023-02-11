@@ -28,11 +28,11 @@
                             </div>
 
                             <div class="flex justify-end align-middle">
-                                @if ($post->user_id == Auth::user()->id || Auth::user()->admin == 1 || $post->type == 0)
+                                @if ($post->user_id == Auth::id() || Auth::user()->admin == 1 || $post->type == 0)
                                     <i class="fa-solid fa-square-up-right text-5xl text-blue-500 mr-2"></i>
                                 @else
                                     @foreach ($post->postusers as $postuser)
-                                        @if ($postuser->user_id == Auth::user()->id and $postuser->post_id == $post->id)
+                                        @if ($postuser->user_id == Auth::id() and $postuser->post_id == $post->id)
                                             @if ($postuser->finished == 1)
                                                 @if (isset($post->deadline) || $post->deadline != null)
                                                     @if (date_create_from_format('Y-m-d H:i:s', $postuser->updated_at)->format('d. m. Y H:i') >
@@ -52,18 +52,18 @@
                                             @endif
                                         @break
                                     @endif
-                                    @if ($loop->remaining == 0 and $postuser->user_id != Auth::user()->id)
+                                    @if ($loop->remaining == 0 and $postuser->user_id != Auth::id())
                                         <i class="fa-solid fa-square-xmark text-5xl text-red-600 mr-2"></i>
                                     @endif
                                 @endforeach
                             @endif
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-@endforeach
+    @endforeach
 <div class="p-8" id="pagination">
     {{ $prispevky->onEachSide(1)->links() }}
 </div>

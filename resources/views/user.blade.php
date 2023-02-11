@@ -32,11 +32,12 @@
                     <div class="p-4 sm:p-8 bg-white border-b border-gray-200">
                         <div class="flex flex-col-reverse sm:flex-row justify-start p-1 md:p-10">
                             <div class="flex justify-center">
-                                @if (Auth::user()->id == $user->id || Auth::user()->admin == 1)
+                                @if (Auth::id() == $user->id || Auth::user()->admin == 1)
                                     <form action="/add" method="POST" enctype="multipart/form-data">
                                         @csrf
-                                        <input type="hidden" name="workingWith" value="image">
-                                        <input type="file" name="image" id="image" class="hidden" onchange="this.form.submit()">
+                                        <input type="hidden" id="workingWith" name="workingWith" value="image">
+                                        <input type="file" name="image" id="image" class="hidden"
+                                            onchange="this.form.submit()">
                                         <img src="{{ asset('/storage/images/' . $user->image) }}"
                                             onclick="document.querySelector('input#image').click()"
                                             class="h-48 sm:h-60 md:h-80 w-48 sm:w-60 md:w-80 rounded-full object-cover mt-6 hover:cursor-pointer"
@@ -84,7 +85,7 @@
                                         </span>
                                     </li>
                                 </ul>
-                                @if (Auth::user()->id == $user->id || Auth::user()->admin == 1)
+                                @if (Auth::id() == $user->id || Auth::user()->admin == 1)
                                     <div class="flex flex-row hover:cursor-pointer mt-4 mx-2" type="button"
                                         data-modal-toggle="popup-modal-bio-{{ $user->id }}">
                                         <i class="fa-solid fa-pen pr-4 pt-2"></i>
@@ -115,13 +116,12 @@
                         <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Upravit?<i
                                 class="fa-solid fa-pen pl-4"></i></h3>
 
-                        <form action="/add" method="POST" class="p-4">
+                        <form action="{{ route('add') }}" method="POST" class="p-4">
                             @csrf
                             <textarea name="content" id="content" rows="4" cols="20"
                                 class="block p-2.5 mb-5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none"
                                 required maxlength="256">{{ $user->bio }}</textarea>
                             <input type="hidden" id="workingWith" name="workingWith" value="bio">
-                            <input type="hidden" id="user_id" name="user_id" value="{{ $user->id }}">
                             <button data-modal-toggle="popup-modal-bio-{{ $user->id }}" type="submit"
                                 class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
                                 Ano, upravit

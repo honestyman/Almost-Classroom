@@ -17,7 +17,7 @@ class PostController extends Controller
         $post = Post::findOrFail($request->id2);
         $p = 0;
         foreach ($post->group->users as $user) {
-            if (Auth::user()->id == $user->id) {
+            if (Auth::id() == $user->id) {
                 $p++;
             }
         }
@@ -30,14 +30,14 @@ class PostController extends Controller
     }
 
     public function finished(Request $request) {
-        $user = User::findOrFail(Auth::user()->id);
-        $post = Post::findOrFail($request->post_id);
+        $user = User::findOrFail(Auth::id());
+        $post = Post::findOrFail($request->id);
         $finished = PostUser::updateOrCreate([
-            'post_id' => $request->post_id,
-            'user_id' => $request->user_id,
+            'post_id' => $request->id,
+            'user_id' => Auth::id(),
             ], [
-            'post_id' =>  $request->post_id,
-            'user_id' => $request->user_id,
+            'post_id' =>  $request->id,
+            'user_id' => Auth::id(),
             'finished' => $request->finished,
             'post_answer' => $request->post_answer,
             ]);

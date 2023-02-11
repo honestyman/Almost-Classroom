@@ -17,14 +17,14 @@ class GroupController extends Controller
         $group = Group::findOrFail($request->id);
         $p = 0;
         foreach ($group->users as $user) {
-            if (Auth::user()->id == $user->id) {
+            if (Auth::id() == $user->id) {
                 $p++;
             }
         }
         if ($p == 1) {
             $finished_final = array();
             foreach ($group->posts as $post) {
-                $finished_final[] = PostUser::where('post_id', $post->id)->where('user_id', Auth::user()->id)->get('finished');
+                $finished_final[] = PostUser::where('post_id', $post->id)->where('user_id', Auth::id())->get('finished');
             }
             return view('group', ['site' => $group, 'finished' => $finished_final],);
         } else {

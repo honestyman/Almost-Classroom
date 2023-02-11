@@ -13,7 +13,7 @@
                     <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Upravit?<i
                             class="fa-solid fa-pen pl-4"></i></h3>
 
-                    <form action="/add" method="POST" class="p-4">
+                    <form action="{{ route('add', $item_id) }}" method="POST" class="p-4">
                         @csrf
                         @if (isset($name))
                             <input type="text" id="name" name="name"
@@ -22,10 +22,8 @@
                         @endif
                         <textarea name="content" id="content" rows="4" cols="20"
                             class="block p-2.5 mb-5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none"
-                            required>{{$content}}</textarea>
+                            required>{{ $content }}</textarea>
                         <input type="hidden" id="workingWith" name="workingWith" value="{{ $type }}">
-                        <input type="hidden" id="{{ $type }}_id" name="{{ $type }}_id"
-                            value="{{ $item_id }}">
                         <button
                             data-modal-toggle="popup-modal-{{ $type }}-{{ $item_id }}-{{ $function }}"
                             type="submit"
@@ -57,15 +55,13 @@
                     <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Smazat?<i
                             class="fa-solid fa-trash pl-4"></i></h3>
 
-                    <form action="/del" method="POST" class="p-4">
+                    <form action="{{ route('del', $item_id) }}" method="POST" class="p-4">
                         @csrf
                         @if (isset($name))
                             <p class="h-wax w-max rounded-md text-lg">{{ $name }}</p>
                         @endif
                         <p class="p-2 mb-5 h-wax w-max rounded-md">{{ $content }}</p>
                         <input type="hidden" id="workingWith" name="workingWith" value="{{ $type }}">
-                        <input type="hidden" id="{{ $type }}_id" name="{{ $type }}_id"
-                            value="{{ $item_id }}">
                         <button
                             data-modal-toggle="popup-modal-{{ $type }}-{{ $item_id }}-{{ $function }}"
                             type="submit"

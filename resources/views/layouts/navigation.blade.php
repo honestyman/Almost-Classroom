@@ -47,7 +47,7 @@
                                 <i class="fa-solid fa-user-plus fa-fw pr-4 pt-0.5"></i>
                             </div>
                         </x-dropdown-link>
-                        <x-dropdown-link href="/user/{{ Auth::user()->id }}">
+                        <x-dropdown-link href="{{ route('user', Auth::id()) }}">
                             <div class="flex justify-between hover:cursor-pointer">
                                 <p class="flex justify-between">
                                     {{ __('Profil') }}
@@ -95,7 +95,7 @@
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div>
                 <div class="hover:cursor-pointer block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:text-gray-800 focus:bg-gray-50 focus:border-gray-300 transition duration-150 ease-in-out"
-                    type="button" onclick="window.location='/user/{{ Auth::user()->id }}'">
+                    type="button" onclick="window.location='/user/{{ Auth::id() }}'">
                     <div class="font-medium text-base">{{ Auth::user()->name }}</div>
                     <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
                 </div>
@@ -143,14 +143,13 @@
                     <h3 class="mb-1 sm:mb-2 text-lg font-normal text-gray-500 dark:text-gray-400">Vytvořit novou
                         skupinu?<i class="fa-solid fa-people-group pl-4"></i></h3>
 
-                    <form action="/add" method="POST" class="p-4">
+                    <form action="{{ route('add') }}" method="POST" class="p-4">
                         @csrf
 
                         <input
                             class="p-2 h-12 w-max rounded-md mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             type="text" id="name" name="name" required placeholder="Název skupiny">
                         <input type="hidden" id="workingWith" name="workingWith" value="group">
-                        <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user()->id }}">
                         <div class="flex justify-center mb-4">
                             <input type="checkbox" value="1" id="public" name="public"
                                 class="mt-1 appearance-none checked:bg-green-500" />
@@ -184,12 +183,11 @@
                     <h3 class="mb-1 sm:mb-2 text-lg font-normal text-gray-500 dark:text-gray-400">Připojit se do nové
                         skupiny?<i class="fa-solid fa-people-group pl-4"></i></h3>
 
-                    <form action="/join" method="POST" class="p-4">
+                    <form action="{{ route('join') }}" method="POST" class="p-4">
                         @csrf
                         <input type="text" id="invite_key" name="invite_key"
                             class="mb-4 sm:mb-4 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                             placeholder="Kód pro připojení do skupiny" required>
-                        <input type="hidden" id="user_id" name="user_id" value="{{ Auth::user()->id }}">
                         <button data-modal-toggle="popup-modal-group-join" type="submit"
                             class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
                             Ano, připojit se

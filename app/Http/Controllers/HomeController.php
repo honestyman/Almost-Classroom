@@ -15,7 +15,7 @@ class HomeController extends Controller
 {
     public function index(Request $request)
     {
-        $user = User::findOrFail(Auth::user()->id);
+        $user = User::findOrFail(Auth::id());
         $posts_final = array();
         $comments_final = array();
         $groups_private = array();
@@ -40,19 +40,18 @@ class HomeController extends Controller
 
     public function add(Request $request)
     {
-        $user = User::findOrFail(Auth::user()->id);
+        $user = User::findOrFail(Auth::id());
         switch ($request->workingWith) {
             case 'group':
                 if (!isset($request->public)) {
                     $public = 0;
-                }
-                else {
+                } else {
                     $public = 1;
                 }
                 $newGroup = Group::updateOrCreate(
                     [
                         'name' => $request->name,
-                        'user_id' => $request->user_id,
+                        'user_id' => Auth::id(),
                         'public' => $public,
                         'invite_key' => Str::random(10)
                     ]
@@ -72,39 +71,38 @@ class HomeController extends Controller
                         'content' => $request->content,
                         'type' => $request->type,
                         'deadline' => $request->deadline,
-                        'group_id' => $request->group_id,
-                        'user_id' => $request->user_id,
+                        'group_id' => $request->id,
+                        'user_id' => Auth::id(),
                     ]
                 );
                 $user->posts()->attach(Post::all()->count());
                 break;
             case 'comment':
-                //uprava komentare
-                if (isset($request->comment_id)) {
-                    $comment = Comment::where('id', $request->comment_id)->update(['content' => $request->content, 'updated_at' => now()]);
-                } else {
-                    //vytvareni noveho komentare
-                    $newComment = Comment::updateOrCreate(
-                        [
-                            'content' => $request->content,
-                            'user_id' => $request->user_id,
-                            'post_id' => $request->post_id,
-                        ]
-                    );
-                }
+                //pridavani komentare
+                $comment = Comment::updateOrCreate(
+                    [
+                        'content' => $request->content,
+                        'user_id' => Auth::id(),
+                        'post_id' => $request->id,
+                    ]
+                );
+                break;
+            case 'comment-edit':
+                //pridavani komentare
+                $comment = Comment::where('id', $request->id)->update(['content' => $request->content]);
                 break;
             case 'image':
                 //uprava profilove fotky
-                if($request->hasFile('image')){
-                    $filename = $user->id . $request->image->getClientOriginalName();
-                    $request->image->storeAs('images',$filename,'public');
-                    User::where('id', Auth::user()->id)->update(['image' => $filename]);
+                if ($request->hasFile('image')) {
+                    $filename = Auth::id() . $request->image->getClientOriginalName();
+                    $request->image->storeAs('images', $filename, 'public');
+                    User::where('id', Auth::id())->update(['image' => $filename]);
                 }
                 break;
             case 'bio':
                 //uprava uzivatelskeho popisku
                 $newBio = User::updateOrCreate([
-                    'id' => $request->user_id,
+                    'id' => Auth::id(),
                 ], [
                     'bio' => $request->content,
                 ]);
@@ -118,17 +116,17 @@ class HomeController extends Controller
 
     public function del(Request $request)
     {
-        $user = User::findOrFail(Auth::user()->id);
+        $user = User::findOrFail(Auth::id());
         switch ($request->workingWith) {
             case 'group':
-                Group::destroy($request->group_id);
+                Group::destroy($request->id);
                 break;
             case 'post':
-                Comment::where('post_id', $request->post_id)->delete();
-                Post::destroy($request->post_id);
+                Comment::where('post_id', $request->id)->delete();
+                Post::destroy($request->id);
                 break;
             case 'comment':
-                Comment::destroy($request->comment_id);
+                Comment::destroy($request->id);
                 break;
             default:
                 dd($request);
@@ -139,7 +137,7 @@ class HomeController extends Controller
 
     public function join(Request $request)
     {
-        $user = User::findOrFail(Auth::user()->id);
+        $user = User::findOrFail(Auth::id());
         try {
             $group_id = Group::where('invite_key', $request->invite_key)->get('id');
             $user->groups()->attach($group_id);

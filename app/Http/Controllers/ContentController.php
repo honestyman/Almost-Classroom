@@ -23,9 +23,8 @@ class ContentController extends Controller
             $groups = $request->get('groups');
             $search = $request->get('search');
             $address = $request->get('address');
-            $user = User::findOrFail(Auth::user()->id);
-
-
+            $user = User::findOrFail(Auth::id());
+            
             switch ($sort) {
                 case 1:
                     $tridit_dle = 'id';
