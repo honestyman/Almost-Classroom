@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\GroupUserController;
@@ -40,10 +39,4 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::put('user/{user}/image', [UserImageController::class, 'update'])->name('user.image.update');
 });
 
-
 require __DIR__ . '/auth.php';
-
-Route::controller(GoogleController::class)->group(function () {
-    Route::get('auth/google', 'redirectToGoogle')->name('auth.google');
-    Route::get('auth/google/callback', 'handleGoogleCallback');
-});
