@@ -59,7 +59,7 @@
                             class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 text-2xl sm:text-xl md:text-lg">
                             @foreach ($group->users as $user)
                                 <a href="/user/{{ $user->id }}" class="flex justify-center">
-                                    <img src="{{ asset('/storage/images/' . $user->image) }}"
+                                    <img src="{{ $user->image ? asset('storage/images/' . $user->image) : asset('storage/images/default.svg') }}"
                                         class="h-10 sm:h-8 md:h-6 w-10 sm:w-8 md:w-6 mx-2 rounded-full object-cover"
                                         alt="username" />{{ $user->name }}</a>
                             @endforeach

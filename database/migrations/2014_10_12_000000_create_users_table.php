@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('password');
             $table->boolean('admin')->default(false);
             $table->string('bio', 256)->default('Přidejte popisek')->nullable();
-            $table->string('image')->default('user.svg');
+            $table->string('image')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

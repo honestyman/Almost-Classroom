@@ -40,13 +40,13 @@
                                         <input type="hidden" id="workingWith" name="workingWith" value="image">
                                         <input type="file" name="image" id="image" class="hidden"
                                             onchange="this.form.submit()">
-                                        <img src="{{ asset('storage/images/' . $user->image) }}"
+                                        <img src="{{ $user->image ? asset('storage/images/' . $user->image) : asset('storage/images/default.svg') }}"
                                             onclick="document.querySelector('input#image').click()"
                                             class="h-48 sm:h-60 md:h-80 w-48 sm:w-60 md:w-80 rounded-full object-cover mt-6 hover:cursor-pointer"
                                             alt="username" />
                                     </form>
                                 @else
-                                    <img src="{{ asset('storage/images/' . $user->image) }}"
+                                    <img src="{{ $user->image ? asset('storage/images/' . $user->image) : asset('storage/images/default.svg') }}"
                                         class="h-48 sm:h-60 md:h-80 w-48 sm:w-60 md:w-80 rounded-full object-cover mt-6"
                                         alt="username" />
                                 @endif

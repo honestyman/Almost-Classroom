@@ -117,12 +117,11 @@
                         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                             <div class="bg-white border-b border-gray-200">
                                 <div class="grid grid-cols-1 sm:grid-cols-3">
-
                                     @forelse ($post_user as $postuser)
                                         @if ($postuser->finished)
                                             <div class="p-4 sm:p-6 odd:bg-white even:bg-slate-50">
                                                 <a href="/user/{{ $postuser->user->id }}" class="flex justify-center">
-                                                    <img src="{{ asset('/storage/images/' . $postuser->user->image) }}"
+                                                    <img src="{{ $postuser->user->image ? asset('storage/images/' . $postuser->user->image) : asset('storage/images/default.svg') }}"
                                                         class="h-10 w-10 mr-2 md:mr-3 rounded-full object-cover"
                                                         alt="username" />
                                                     <span class="my-auto text-lg">
@@ -139,7 +138,6 @@
                                             </div>
                                         @endif
                                     @empty
-                                        <span>empty</span>
                                     @endforelse
                                 </div>
                                 @if ($finished_user_count < 1)
