@@ -10,12 +10,14 @@ class GroupPolicy
 {
     use HandlesAuthorization;
 
-    
-    public function edit(User $user, Group $group) {
+
+    public function edit(User $user, Group $group)
+    {
         return $user->admin || $group->user_id == auth()->id();
     }
-    
-    public function delete(User $user, Group $group) {
+
+    public function delete(User $user, Group $group)
+    {
         return $user->admin || $group->user_id == auth()->id();
     }
 }

@@ -5,14 +5,14 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
+                    <a href="{{ route('home') }}">
                         <i class="fa-solid fa-graduation-cap text-xl"></i>
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('home')" :active="request()->routeIs('dashboard')">
                         {{ __('Domů') }}
                     </x-nav-link>
                 </div>
@@ -47,7 +47,7 @@
                                 <i class="fa-solid fa-user-plus fa-fw pr-4 pt-0.5"></i>
                             </div>
                         </x-dropdown-link>
-                        <x-dropdown-link href="{{ route('user', Auth::id()) }}">
+                        <x-dropdown-link href="{{ route('user.show', auth()->id()) }}">
                             <div class="flex justify-between hover:cursor-pointer">
                                 <p class="flex justify-between">
                                     {{ __('Profil') }}
@@ -143,7 +143,7 @@
                     <h3 class="mb-1 sm:mb-2 text-lg font-normal text-gray-500 dark:text-gray-400">Vytvořit novou
                         skupinu?<i class="fa-solid fa-people-group pl-4"></i></h3>
 
-                    <form action="{{ route('group.add') }}" method="POST" class="p-4">
+                    <form action="{{ route('group.store') }}" method="POST" class="p-4">
                         @csrf
                         <input
                             class="p-2 h-12 w-max rounded-md mb-3 bg-gray-50 border border-gray-300 text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"

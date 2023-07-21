@@ -33,7 +33,7 @@ class Modal extends Component
      *
      * @var string
      */
-    public $function; 
+    public $function;
 
     /**
      * stary nazev.
@@ -49,7 +49,7 @@ class Modal extends Component
      */
     public function __construct($id, $type, $content, $function, $name = null,)
     {
-        
+
         $this->item_id = $id;
         $this->type = $type;
         $this->content = $content;

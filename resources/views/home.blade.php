@@ -4,7 +4,7 @@
             <div class="flex justify-between">
                 <div>
                     <div>
-                        @if ($user->groups->count() >= 5)
+                        @if ($user->groups_count >= 5)
                             <x-dropdown align="left" width="40">
                                 <x-slot name="trigger">
                                     <button
@@ -13,8 +13,8 @@
                                     </button>
                                 </x-slot>
                                 <x-slot name="content">
-                                    @foreach (Auth::user()->groups as $group)
-                                        <x-dropdown-link href="{{route('group', $group->id)}}">
+                                    @foreach ($user->groups as $group)
+                                        <x-dropdown-link href="{{ route('group.show', $group->id) }}">
                                             <div class="flex justify-between hover:cursor-pointer">
                                                 <p class="flex justify-between">
                                                     {{ $group->name }}
@@ -33,7 +33,7 @@
                             <div class="flex flex-col md:flex-row py-4">
                                 @foreach ($user->groups as $group)
                                     <div class="flex justify-center p-2 items-center">
-                                        <form action="{{route('group', $group->id)}}" method="POST">
+                                        <form action="{{ route('group.show', $group->id) }}">
                                             @csrf
                                             <button type="submit"
                                                 class="inline-block px-6 py-2 w-32 bg-gray-200 text-gray-700 font-medium leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">{{ $group->name }}</button>

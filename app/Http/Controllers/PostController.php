@@ -11,65 +11,62 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-    public function show(Request $request) {
-        $group = $post = Group::findOrFail($request->id);
-        $post = Post::findOrFail($request->id2);
-        $p = 0;
-        foreach ($post->group->users as $user) {
-            if (Auth::id() == $user->id) {
-                $p++;
-            }
-        }
-        if ($p == 1) {
-            return view('post', ['post' => $post, 'group' => $group],);
-        }
-        else {
-            return redirect()->route('dashboard');
-        }
+    public function __construct()
+    {
+        $this->authorizeResource(Post::class, 'post');
     }
 
-    public function add(Request $request) {
-        $user = User::findOrFail(Auth::id());
-        $newPost = Post::updateOrCreate(
-            [
-                'name' => $request->name,
-                'content' => $request->content,
-                'type' => $request->type,
-                'deadline' => $request->deadline,
-                'group_id' => $request->id,
-                'user_id' => Auth::id(),
-            ]
-        );
-        $user->posts()->attach(Post::all()->count());
-        return redirect()->back();
-    }
-
-    public function edit(Request $request, Post $post) {
-        $post->update([
+    public function store(Request $request, Group $group)
+    {
+        $this->authorize('store', [Post::class, $group]);
+        Post::make([
             'name' => $request->name,
             'content' => $request->content,
             'type' => $request->type,
             'deadline' => $request->deadline,
-            ]);
+        ])->user()->associate(auth()->user())->group()->associate($group)->save();
         return redirect()->back();
     }
 
-    public function finished(Request $request) {
-        $user = User::findOrFail(Auth::id());
-        $post = Post::findOrFail($request->id);
-        $finished = PostUser::updateOrCreate([
-            'post_id' => $request->id,
-            'user_id' => Auth::id(),
-            ], [
-            'post_id' =>  $request->id,
-            'user_id' => Auth::id(),
+    public function show(Group $group, Post $post)
+    {
+        $post_user = PostUser::where('post_id', $post->id)->get();
+        return view('post', [
+            'post' => $post->with('comments')->first(),
+            'group' => $group,
+            'post_user' => $post_user,
+            'finished_user_count' => $post_user->where('finished', 1)->count(),
+        ]);
+    }
+
+    public function update(Request $request, Group $group, Post $post)
+    {
+        $post->updateOrFail([
+            'name' => $request->name,
+            'content' => $request->content,
+            'type' => $request->type,
+            'deadline' => $request->deadline,
+        ]);
+        return redirect()->back();
+    }
+
+    public function destroy(Group $group, Post $post)
+    {
+        $post->delete();
+        return redirect()->route('home');
+    }
+
+    public function finish(Request $request, Group $group, Post $post)
+    {
+        PostUser::updateOrCreate([
+            'user_id' => $request->user()->id,
+            'post_id' => $post->id,
+        ], [
+            'user_id' => $request->user()->id,
+            'post_id' => $post->id,
             'finished' => $request->finished,
             'post_answer' => $request->post_answer,
-            ]);
-        
-        return redirect()->action(
-            [PostController::class, 'show'], ['id' => $post->group->id, 'id2' => $post->id]
-        );
+        ]);
+        return redirect()->route('group.post.show', ['group' => $group->id, 'post' => $post->id]);
     }
-    
 }

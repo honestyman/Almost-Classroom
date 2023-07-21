@@ -6,12 +6,8 @@ namespace App\Http\Controllers;
 use App\Models\Group;
 use App\Models\Post;
 use App\Models\User;
-use Hamcrest\Type\IsNumeric;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\View;
-
-use function PHPUnit\Framework\isEmpty;
 
 class ContentController extends Controller
 {
@@ -24,7 +20,7 @@ class ContentController extends Controller
             $search = $request->get('search');
             $address = $request->get('address');
             $user = User::findOrFail(Auth::id());
-            
+
             switch ($sort) {
                 case 1:
                     $tridit_dle = 'id';
@@ -144,6 +140,6 @@ class ContentController extends Controller
                 return view('posts', ['prispevky' => $posts])->render();
             }
         }
-        return redirect()->route('dashboard');
+        return redirect()->route('home');
     }
 }

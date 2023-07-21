@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('name', 32);
             $table->string('content', 256)->nullable();
             $table->string('type');
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('group_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('group_id')->constrained()->onDelete('cascade');
             $table->datetime('deadline')->nullable();
             $table->timestamps();
         });

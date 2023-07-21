@@ -1,10 +1,10 @@
-@if (isset($site))
+@if (isset($group))
     <x-app-layout>
         <x-slot name="header">
             <div class="flex justify-between">
                 <div>
                     <div>
-                        @if (Auth::user()->groups->count() >= 5)
+                        @if ($user->groups_count >= 5)
                             <x-dropdown align="left" width="40">
                                 <x-slot name="trigger">
                                     <button
@@ -13,11 +13,11 @@
                                     </button>
                                 </x-slot>
                                 <x-slot name="content">
-                                    @foreach (Auth::user()->groups as $group)
-                                        <x-dropdown-link href="{{ route('group', $group->id) }}">
+                                    @foreach ($user->groups as $groupp)
+                                        <x-dropdown-link href="{{ route('group.show', $groupp->id) }}">
                                             <div class="flex justify-between hover:cursor-pointer">
                                                 <p class="flex justify-between">
-                                                    {{ $group->name }}
+                                                    {{ $groupp->name }}
                                                 </p>
                                             </div>
                                         </x-dropdown-link>
@@ -31,9 +31,9 @@
                                 </h2>
                             </div>
                             <div class="flex flex-col md:flex-row py-4">
-                                @foreach (Auth::user()->groups as $group)
+                                @foreach ($user->groups as $groupp)
                                     <div class="flex justify-center p-2 items-center">
-                                        <form action="{{ route('group', $group->id) }}" method="POST">
+                                        <form action="{{ route('group.show', $groupp->id) }}">
                                             @csrf
                                             <button type="submit"
                                                 class="inline-block px-6 py-2 w-32 bg-gray-200 text-gray-700 font-medium leading-tight uppercase rounded shadow-md hover:bg-gray-300 hover:shadow-lg focus:bg-gray-300 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-gray-400 active:shadow-lg transition duration-150 ease-in-out">{{ $group->name }}</button>
@@ -49,18 +49,18 @@
                                 <button
                                     class="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out">
                                     <div class="text-medium"><i
-                                            class="fa-solid fa-caret-down mr-2"></i>{{ $site->name }}</div>
+                                            class="fa-solid fa-caret-down mr-2"></i>{{ $group->name }}</div>
                                 </button>
                             </x-slot>
                             <x-slot name="content">
-                                <x-dropdown-link href="/group/{{ $site->id }}">
+                                <x-dropdown-link href="/group/{{ $group->id }}">
                                     <div class="flex justify-between hover:cursor-pointer">
                                         <p class="flex justify-between">
                                             {{ __('Úkoly') }}
                                         </p>
                                     </div>
                                 </x-dropdown-link>
-                                <x-dropdown-link href="/group/{{ $site->id }}/users">
+                                <x-dropdown-link href="{{ route('group.user.index', $group->id) }}">
                                     <div class="flex justify-between hover:cursor-pointer">
                                         <p class="flex justify-between">
                                             {{ __('Členové') }}
@@ -74,10 +74,10 @@
                                         </p>
                                     </div>
                                 </x-dropdown-link>
-                                @can('delete', $site)
+                                @can('delete', $group)
                                     <x-dropdown-link>
                                         <div class="flex justify-between hover:cursor-pointer" type="button"
-                                            data-modal-toggle="popup-modal-group-{{ $site->id }}-del">
+                                            data-modal-toggle="popup-modal-group-{{ $group->id }}-del">
                                             <p class="flex justify-between">
                                                 {{ __('Smazat') }}
                                             </p>
@@ -126,7 +126,7 @@
             </div>
         </x-slot>
         <x-slot name="slot">
-            @can ('delete', $site)
+            @can('delete', $group)
                 <div class="pt-6 sm:pt-8">
                     <div class="mx-0 sm:mx-5">
                         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -146,7 +146,7 @@
                                         class="hidden mt-1 transition ease-in-out duration-200 bg-gray-50 border-gray-200 shadow-sm md:bg-white border-y dark:bg-gray-800 dark:border-gray-600">
                                         <div
                                             class="py-5 px-4 mx-auto max-w-screen-xl text-gray-900 dark:text-white sm:grid-cols-2 md:px-6">
-                                            <form action="{{ route('post.add', $site->id) }}" method="POST"
+                                            <form action="{{ route('group.post.store', $group->id) }}" method="POST"
                                                 class="grid grid-cols-2">
                                                 @csrf
                                                 <div>
@@ -224,7 +224,7 @@
                     </div>
                 </div>
             </div>
-            <x-modal :id="$site->id" type="group" :content="$site->name" function="del">
+            <x-modal :id="$group->id" type="group" :content="$group->name" function="del">
             </x-modal>
 
         </x-slot>
@@ -246,7 +246,7 @@
             var sort = $('#sort').val();
             var groups = $('#groups').val();
             var search = $('#search').val();
-            var address = {{ $site->id }};
+            var address = {{ $group->id }};
             fetch_customer_data(sort, groups, search, address);
 
             function fetch_customer_data(sort = '', groups = '', search = '', address = '', url) {
@@ -295,7 +295,7 @@
                 var sort = $('#sort').val();
                 var groups = $('#groups').val();
                 var search = $('#search').val();
-                var address = {{ $site->id }};
+                var address = {{ $group->id }};
                 getArticles(sort, groups, search, address, url);
             });
 

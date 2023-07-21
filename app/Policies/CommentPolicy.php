@@ -10,11 +10,13 @@ class CommentPolicy
 {
     use HandlesAuthorization;
 
-    public function edit(User $user, Comment $comment) {
+    public function edit(User $user, Comment $comment)
+    {
         return $user->admin || $comment->user_id == auth()->id();
     }
 
-    public function delete(User $user, Comment $comment) {
+    public function destroy(User $user, Comment $comment)
+    {
         return $user->admin || $comment->user_id == auth()->id();
     }
 }

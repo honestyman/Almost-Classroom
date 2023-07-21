@@ -13,9 +13,11 @@
 
     <!-- Scripts -->
     <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.4/dist/flowbite.min.css" />
+    <script defer src="https://unpkg.com/@alpinejs/focus@3.x.x/dist/cdn.min.js"></script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
+    @livewireStyles
+
     <script src="https://kit.fontawesome.com/d8c9721737.js" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
@@ -40,18 +42,19 @@
 
         <!-- Page Footing -->
         <footer
-                class="p-4 mt-auto bg-white rounded-lg shadow flex items-center justify-between md:p-6 dark:bg-gray-800">
-                <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© {{ date('Y') }} <a
-                        href="#" class="hover:underline">web by Štěpán Švarc</a>
-                </span>
-                <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">
-                    <a href="https://laravel.com/" class="hover:underline">Při tvorbě byl použit Laravel!</a>
-                </span>
-            </footer>
+            class="p-4 mt-auto bg-white rounded-lg shadow flex items-center justify-between md:p-6 dark:bg-gray-800">
+            <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">© {{ date('Y') }} <a
+                    href="#" class="hover:underline">web by Štěpán Švarc</a>
+            </span>
+            <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400">
+                <a href="https://laravel.com/" class="hover:underline">Při tvorbě byl použit Laravel!</a>
+            </span>
+        </footer>
 
     </div>
     <script src="https://unpkg.com/flowbite@1.5.4/dist/flowbite.js"></script>
-    
+    @livewire('livewire-ui-modal')
+    @livewireScripts
 </body>
 
 </html>

@@ -35,7 +35,7 @@ class GoogleController extends Controller
         $finduser = User::where('google_id', $user->id)->first();
         if ($finduser) {
             Auth::login($finduser);
-            return redirect()->route('dashboard');
+            return redirect()->route('home');
         } else {
             $user = User::updateOrCreate(['email' => $user->email], [
                 'name' => $user->name,
@@ -46,7 +46,7 @@ class GoogleController extends Controller
                 $user->groups()->attach($group->id);
             }
             Auth::login($user);
-            return redirect()->route('dashboard');
+            return redirect()->route('home');
         }
     }
 }
