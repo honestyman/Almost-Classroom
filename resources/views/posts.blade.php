@@ -57,14 +57,14 @@
                                     @endif
                                 @endforeach
                             @endif
-                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    @endforeach
+    </div>
+@endforeach
 <div class="p-8" id="pagination">
-    {{ $prispevky->onEachSide(1)->links() }}
+    {{ $prispevky->links() }}
 </div>
 @endif

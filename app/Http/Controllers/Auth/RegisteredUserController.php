@@ -34,18 +34,12 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $user = User::create($request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-        foreach (Group::where('public', "1")->get() as $group) {
+        ]));
+        foreach (Group::where('public', 1)->get() as $group) {
             $user->groups()->attach($group->id);
         }
 

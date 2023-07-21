@@ -14,23 +14,6 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    public function groups(): BelongsToMany
-    {
-        return $this->belongsToMany(Group::class, 'group_user', 'user_id', 'group_id');
-    }
-
-    public function posts(): BelongsToMany
-
-    {
-        return $this->belongsToMany(Post::class, 'post_user', 'user_id', 'post_id');
-    }
-
-    public function postusers(): HasMany
-    {
-        return $this->hasMany(PostUser::class);
-    }
-
-
     protected $fillable = [
         'name',
         'email',
@@ -48,4 +31,20 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function groups(): BelongsToMany
+    {
+        return $this->belongsToMany(Group::class, 'group_user', 'user_id', 'group_id');
+    }
+
+    public function posts(): BelongsToMany
+
+    {
+        return $this->belongsToMany(Post::class, 'post_user', 'user_id', 'post_id');
+    }
+
+    public function postusers(): HasMany
+    {
+        return $this->hasMany(PostUser::class);
+    }
 }

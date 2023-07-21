@@ -2,15 +2,31 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Scout\Searchable;
 
 class Post extends Model
 {
-    use HasFactory;
+    use Searchable, HasFactory;
+    protected $fillable = [
+        'name',
+        'content',
+        'type',
+        'deadline',
+    ];
+
+    public function toSearchableArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'content' => $this->content,
+        ];
+    }
 
     public function user(): BelongsTo
     {
@@ -36,11 +52,4 @@ class Post extends Model
     {
         return $this->hasMany(PostUser::class);
     }
-
-    protected $fillable = [
-        'name',
-        'content',
-        'type',
-        'deadline',
-    ];
 }
