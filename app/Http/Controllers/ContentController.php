@@ -70,6 +70,6 @@ class ContentController extends Controller
             }
             return view('posts', ['posts' => $posts])->render();
         }
-        return redirect()->route('home');
+        return redirect()->route('home')->with('error', 'Něco se pokazilo.');
     }
 }

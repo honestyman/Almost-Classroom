@@ -11,7 +11,12 @@ class GroupUserController extends Controller
 {
     public function index(Group $group)
     {
-        return view('users', ['group' => $group->with('users')]);
+        try {
+            return view('users', ['group' => $group->with('users')]);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+        }
+        return redirect()->back()->with('error', 'Něco se pokazilo.');
     }
 
     public function store(Request $request)
@@ -19,9 +24,10 @@ class GroupUserController extends Controller
         try {
             $group_id = Group::where('invite_key', $request->invite_key)->get('id');
             auth()->user()->groups()->attach($group_id);
+            return redirect()->back()->with('success', 'Úspěšně jste se připojili do skupiny.');
         } catch (Exception $e) {
             Log::error($e->getMessage());
         }
-        return redirect()->back();
+        return redirect()->back()->with('error', 'Něco se pokazilo.');
     }
 }

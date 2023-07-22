@@ -35,6 +35,11 @@
             </header>
         @endif
 
+        <!-- Flash Messages -->
+        <div class="mx-4 mt-4">
+            @include('components.flash-message')
+        </div>
+
         <!-- Page Content -->
         <main class="flex-grow">
             {{ $slot }}
