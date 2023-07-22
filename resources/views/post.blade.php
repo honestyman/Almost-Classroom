@@ -111,7 +111,7 @@
                     </div>
                 </div>
             </div>
-            @if ($post->type != 0)
+            @if ($post->type !== 0)
                 <div class="py-6 sm:pt-8">
                     <div class="mx-0 sm:mx-5">
                         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -253,7 +253,7 @@
                                     </div>
                                 </div>
 
-                                @if ($post->type != 0)
+                                @if ($post->type !== 0)
                                     <div class="my-3 max-h-80 sm:max-h-100 sm:h-80 sm:col-span-2">
                                         <div class="max-h-80 sm:h-80 overflow-auto">
                                             <div class="sm:mr-6 flex">
@@ -261,25 +261,27 @@
                                                     action="{{ route('group.post.finish', [$post->group, $post]) }}"
                                                     class="w-full">
                                                     @csrf
-                                                    @if ($post->type == 1)
+                                                    @if ($post->type === 1)
                                                         <div class="flex justify-center md:justify-end mt-2">
                                                             @forelse ($post_user as $postuser)
-                                                                @if ($postuser->finished == 1)
-                                                                    <input type="hidden" id="finished"
-                                                                        name="finished" value="0">
-                                                                    <button type="submit"
-                                                                        class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
-                                                                        onChange="this.form.submit()">
-                                                                        Zrušit odevzdání
-                                                                    </button>
-                                                                @else
-                                                                    <input type="hidden" id="finished"
-                                                                        name="finished" value="1">
-                                                                    <button type="submit"
-                                                                        class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
-                                                                        onChange="this.form.submit()">
-                                                                        Odevzdat
-                                                                    </button>
+                                                                @if ($postuser->user_id === auth()->id() && $postuser->post_id === $post->id)
+                                                                    @if ($postuser->finished == 1)
+                                                                        <input type="hidden" id="finished"
+                                                                            name="finished" value="0">
+                                                                        <button type="submit"
+                                                                            class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+                                                                            onChange="this.form.submit()">
+                                                                            Zrušit odevzdání
+                                                                        </button>
+                                                                    @else
+                                                                        <input type="hidden" id="finished"
+                                                                            name="finished" value="1">
+                                                                        <button type="submit"
+                                                                            class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+                                                                            onChange="this.form.submit()">
+                                                                            Odevzdat
+                                                                        </button>
+                                                                    @endif
                                                                 @endif
                                                             @empty
                                                                 <input type="hidden" id="finished" name="finished"
@@ -317,12 +319,13 @@
                                 </div>
                                 <div class="text-slate-600 italic text-right">
                                     @if (isset($post->deadline))
-                                        Termín odevzdání je
+                                        Termín odevzdání
+                                        {{ date('Y-m-d-H-i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('Y-m-d-H-i') ? 'byl' : 'je' }}
                                         {{ date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y ') }}
                                         ve
                                         {{ date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('H:i') }}
                                         @if (date('d. m. Y H:i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
-                                            pozdě
+                                            <span class="font-bold">(pozdě)</span>
                                         @endif
                                     @else
                                         Bez termínu odevzdání

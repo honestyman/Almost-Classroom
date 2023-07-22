@@ -4,7 +4,7 @@
             <div class="mx-0 sm:mx-5">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-2 sm:p-4 bg-white border-b border-gray-200" onmouseover="this.style.cursor='pointer'"
-                        onclick="window.location='/group/{{ $post->group->id }}/post/{{ $post->id }}'"">
+                        onclick="window.location='/group/{{ $post->group->id }}/post/{{ $post->id }}'">
                         <div class="grid grid-cols-1 md:grid-cols-3">
                             <div class="flex justify-start p-3">
                                 <span class="text-sm pt-1 capitalise mx-1">{{ $post->group->name }}</span>
@@ -14,11 +14,7 @@
                             <div class="text-slate-600 italic p-3 align-middle flex justify-center">
                                 @if (isset($post->deadline) || $post->deadline != null)
                                     Termín odevzdání
-                                    @if (date('Y-m-d-H-i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('Y-m-d-H-i'))
-                                        byl
-                                    @else
-                                        je
-                                    @endif
+                                    {{ date('Y-m-d-H-i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('Y-m-d-H-i') ? 'byl' : 'je' }}
                                     {{ date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y ') }}
                                     ve
                                     {{ date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('H:i') }}
@@ -28,12 +24,12 @@
                             </div>
 
                             <div class="flex justify-end align-middle">
-                                @if ($post->user_id == Auth::id() || Auth::user()->admin == 1 || $post->type == 0)
+                                @if ($post->user_id === auth()->id() || auth()->user()->admin === 1 || $post->type === 0)
                                     <i class="fa-solid fa-square-up-right text-5xl text-blue-500 mr-2"></i>
                                 @else
-                                    @foreach ($post->postusers as $postuser)
-                                        @if ($postuser->user_id == Auth::id() and $postuser->post_id == $post->id)
-                                            @if ($postuser->finished == 1)
+                                    @forelse ($post->postusers as $postuser)
+                                        @if ($postuser->user_id === auth()->id() && $postuser->post_id === $post->id)
+                                            @if ($postuser->finished === 1)
                                                 @if (isset($post->deadline) || $post->deadline != null)
                                                     @if (date_create_from_format('Y-m-d H:i:s', $postuser->updated_at)->format('d. m. Y H:i') >
                                                             date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('d. m. Y H:i'))
@@ -50,21 +46,19 @@
                                             @else
                                                 <i class="fa-solid fa-square-xmark text-5xl text-red-600 mr-2"></i>
                                             @endif
-                                        @break
-                                    @endif
-                                    @if ($loop->remaining == 0 and $postuser->user_id != Auth::id())
+                                        @endif
+                                    @empty
                                         <i class="fa-solid fa-square-xmark text-5xl text-red-600 mr-2"></i>
-                                    @endif
-                                @endforeach
-                            @endif
+                                    @endforelse
+                                @endif
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    @endforeach
+    <div class="p-8" id="pagination">
+        {{ $posts->links() }}
     </div>
-@endforeach
-<div class="p-8" id="pagination">
-    {{ $posts->links() }}
-</div>
 @endif

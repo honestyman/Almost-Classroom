@@ -48,24 +48,40 @@ class ContentController extends Controller
             }
             switch ($groups) {
                 case 1:
-                    $posts = Post::search($search)->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count);
+                    $posts = Post::search($search)->query(function ($builder) {
+                        $builder->whereHas('group', function ($builder) {
+                            $builder->whereHas('groupusers', function ($builder) {
+                                $builder->where('user_id', auth()->id());
+                            });
+                        });
+                    })->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count);
                     break;
                 case 2:
                     $posts = Post::search($search)->query(function ($builder) {
                         $builder->whereHas('group', function ($builder) {
-                            $builder->where('public', 0);
+                            $builder->whereHas('groupusers', function ($builder) {
+                                $builder->where('user_id', auth()->id());
+                            })->where('public', 0);
                         });
                     })->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count);
                     break;
                 case 3:
                     $posts = Post::search($search)->query(function ($builder) {
                         $builder->whereHas('group', function ($builder) {
-                            $builder->where('public', 1);
+                            $builder->whereHas('groupusers', function ($builder) {
+                                $builder->where('user_id', auth()->id());
+                            })->where('public', 1);
                         });
                     })->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count);
                     break;
                 default:
-                    $posts = Post::search($search)->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count);
+                    $posts = Post::search($search)->query(function ($builder) {
+                        $builder->whereHas('group', function ($builder) {
+                            $builder->whereHas('groupusers', function ($builder) {
+                                $builder->where('user_id', auth()->id());
+                            });
+                        });
+                    })->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count);
                     break;
             }
             return view('posts', ['posts' => $posts])->render();

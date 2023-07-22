@@ -12,6 +12,13 @@ class Group extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'user_id',
+        'invite_key',
+        'public',
+    ];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -31,11 +38,4 @@ class Group extends Model
     {
         return $this->hasMany(GroupUser::class);
     }
-
-    protected $fillable = [
-        'name',
-        'user_id',
-        'invite_key',
-        'public',
-    ];
 }

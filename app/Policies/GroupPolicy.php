@@ -12,7 +12,7 @@ class GroupPolicy
 
     public function before(User $user): bool|null
     {
-        if ($user->is_admin) {
+        if ($user->admin) {
             return true;
         }
         return null;
