@@ -4,7 +4,7 @@
             <div class="flex justify-between">
                 <div>
                     <div>
-                        @if ($user->groups_count >= 5)
+                        @if ($group_count >= 5)
                             <x-dropdown align="left" width="40">
                                 <x-slot name="trigger">
                                     <button
@@ -13,7 +13,7 @@
                                     </button>
                                 </x-slot>
                                 <x-slot name="content">
-                                    @foreach ($user->groups as $group)
+                                    @foreach ($groups as $group)
                                         <x-dropdown-link href="{{ route('group.show', $group->id) }}">
                                             <div class="flex justify-between hover:cursor-pointer">
                                                 <p class="flex justify-between">
@@ -31,7 +31,7 @@
                                 </h2>
                             </div>
                             <div class="flex flex-col md:flex-row py-4">
-                                @foreach ($user->groups as $group)
+                                @foreach ($groups as $group)
                                     <div class="flex justify-center p-2 items-center">
                                         <form action="{{ route('group.show', $group->id) }}">
                                             @csrf
@@ -96,7 +96,7 @@
     </x-slot>
     <x-slot name="slot">
         <div class="obsah" id="orderContent">
-            @include('posts')
+            @include('app.post.index')
         </div>
         <div class="w-screen mt-20 text-center align-center">
             <div class="lds-ring" id="loadingImage">

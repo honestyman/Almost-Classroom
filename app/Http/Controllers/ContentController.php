@@ -84,7 +84,7 @@ class ContentController extends Controller
                     })->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count);
                     break;
             }
-            return view('posts', ['posts' => $posts])->render();
+            return view('app.post.index', ['posts' => $posts])->render();
         }
         return redirect()->route('home')->with('error', 'Něco se pokazilo.');
     }

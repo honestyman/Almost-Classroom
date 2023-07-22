@@ -155,7 +155,7 @@
                                                         placeholder="Název úkolu" required maxlength="32">
                                                     <textarea name="content" id="content" rows="10" cols="20"
                                                         class="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none"
-                                                        placeholder="Úkol" maxlength="256"></textarea>
+                                                        placeholder="Úkol" maxlength="1023"></textarea>
                                                 </div>
                                                 <div class="flex flex-col ml-4">
                                                     <select required name="type" id="type"
@@ -193,7 +193,7 @@
             @endcan
 
             <div class="obsah" id="orderContent">
-                @include('posts')
+                @include('app.post.index')
             </div>
             <center>
                 <div class="lds-ring mt-32 sm:mt-40 md:mt-56" id="loadingImage">

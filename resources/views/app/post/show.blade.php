@@ -10,7 +10,7 @@
                         class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
                             <li>
-                                <a href="/"
+                                <a href="{{ route('home') }}"
                                     class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Všechny
                                     skupiny</a>
                             </li>
@@ -117,22 +117,22 @@
                         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                             <div class="bg-white border-b border-gray-200">
                                 <div class="grid grid-cols-1 sm:grid-cols-3">
-                                    @forelse ($post_user as $postuser)
-                                        @if ($postuser->finished)
+                                    @forelse ($post_user as $post_user)
+                                        @if ($post_user->finished)
                                             <div class="p-4 sm:p-6 odd:bg-white even:bg-slate-50">
-                                                <a href="/user/{{ $postuser->user->id }}" class="flex justify-center">
-                                                    <img src="{{ $postuser->user->image ? asset('storage/images/' . $postuser->user->image) : asset('storage/images/default.svg') }}"
+                                                <a href="/user/{{ $post_user->user->id }}" class="flex justify-center">
+                                                    <img src="{{ $post_user->user->image ? asset('storage/images/' . $post_user->user->image) : asset('storage/images/default.svg') }}"
                                                         class="h-10 w-10 mr-2 md:mr-3 rounded-full object-cover"
                                                         alt="username" />
                                                     <span class="my-auto text-lg">
-                                                        {{ $postuser->user->name }}
+                                                        {{ $post_user->user->name }}
                                                     </span>
                                                 </a>
                                                 <p class="pt-4 flex justify-center">
                                                     @if ($post->type === 1)
                                                         <span>Odevzdáno</span>
                                                     @else
-                                                        <span>{{ $postuser->post_answer }}</span>
+                                                        <span>{{ $post_user->post_answer }}</span>
                                                     @endif
                                                 </p>
                                             </div>
@@ -161,7 +161,7 @@
                     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <div class="bg-white border-b border-gray-200">
                             <div class="grid grid-cols-1">
-                                @foreach ($post->comments as $comment)
+                                @foreach ($comments as $comment)
                                     <div class="flex justify-start">
                                         <div class="px-6 py-3">
                                             <div class="flex">
@@ -263,27 +263,7 @@
                                                     @csrf
                                                     @if ($post->type === 1)
                                                         <div class="flex justify-center md:justify-end mt-2">
-                                                            @forelse ($post_user as $postuser)
-                                                                @if ($postuser->user_id === auth()->id() && $postuser->post_id === $post->id)
-                                                                    @if ($postuser->finished == 1)
-                                                                        <input type="hidden" id="finished"
-                                                                            name="finished" value="0">
-                                                                        <button type="submit"
-                                                                            class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
-                                                                            onChange="this.form.submit()">
-                                                                            Zrušit odevzdání
-                                                                        </button>
-                                                                    @else
-                                                                        <input type="hidden" id="finished"
-                                                                            name="finished" value="1">
-                                                                        <button type="submit"
-                                                                            class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
-                                                                            onChange="this.form.submit()">
-                                                                            Odevzdat
-                                                                        </button>
-                                                                    @endif
-                                                                @endif
-                                                            @empty
+                                                            @if (!$post_user)
                                                                 <input type="hidden" id="finished" name="finished"
                                                                     value="1">
                                                                 <button type="submit"
@@ -291,16 +271,76 @@
                                                                     onChange="this.form.submit()">
                                                                     Odevzdat
                                                                 </button>
-                                                            @endforelse
+                                                            @else
+                                                                @if ($post_user->finished == 1)
+                                                                    <input type="hidden" id="finished"
+                                                                        name="finished" value="0">
+                                                                    <button type="submit"
+                                                                        class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+                                                                        onChange="this.form.submit()">
+                                                                        Zrušit odevzdání
+                                                                    </button>
+                                                                @else
+                                                                    <input type="hidden" id="finished"
+                                                                        name="finished" value="1">
+                                                                    <button type="submit"
+                                                                        class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+                                                                        onChange="this.form.submit()">
+                                                                        Odevzdat
+                                                                    </button>
+                                                                @endif
+                                                            @endif
                                                         </div>
                                                     @elseif ($post->type === 2)
-                                                        <div class="flex justify-center md:justify-end">
-                                                            <textarea name="post_answer" rows="6"
-                                                                class="block p-2.5 mt-4 w-10/12 text-sm bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                                                {{ $post_user->finished ? 'disabled' : '' }}
-                                                                placeholder="{{ $postuser->post_answer != '' ? $postuser->post_answer : 'Odpověď k úkolu...' }}" required>
-                                                        </textarea>
-                                                        </div>
+                                                        @if (!$post_user)
+                                                            <div class="flex justify-center md:justify-end">
+                                                                <textarea name="post_answer" rows="6"
+                                                                    class="block p-2.5 mt-4 w-10/12 text-sm bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                                    placeholder="Odpověď k úkolu..." required>
+                                                                </textarea>
+                                                            </div>
+                                                            <div class="flex justify-end mt-4">
+                                                                <input type="hidden" id="finished" name="finished"
+                                                                    value="1">
+                                                                <button type="submit"
+                                                                    class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+                                                                    onChange="this.form.submit()">
+                                                                    Odevzdat
+                                                                </button>
+                                                            </div>
+                                                        @elseif ($post_user->finished == 1)
+                                                            <div class="flex justify-center md:justify-end">
+                                                                <textarea name="post_answer" rows="6"
+                                                                    class="block p-2.5 mt-4 w-10/12 text-sm bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                                    required {{ $post_user->finished ? 'disabled' : '' }}>{{ $post_user->post_answer ? $post_user->post_answer : 'Odpověď k úkolu...' }}
+                                                                </textarea>
+                                                            </div>
+                                                            <div class="flex justify-end mt-4">
+                                                                <input type="hidden" id="finished" name="finished"
+                                                                    value="0">
+                                                                <button type="submit"
+                                                                    class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+                                                                    onChange="this.form.submit()">
+                                                                    Zrušit odevzdání
+                                                                </button>
+                                                            </div>
+                                                        @else
+                                                            <div class="flex justify-center md:justify-end">
+                                                                <textarea name="post_answer" rows="6"
+                                                                    class="block p-2.5 mt-4 w-10/12 text-sm bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                                    required {{ $post_user->finished ? 'disabled' : '' }}>{{ $post_user->post_answer ? $post_user->post_answer : 'Odpověď k úkolu...' }}
+                                                            </textarea>
+                                                            </div>
+                                                            <div class="flex justify-end mt-4">
+                                                                <input type="hidden" id="finished" name="finished"
+                                                                    value="1">
+                                                                <button type="submit"
+                                                                    class="text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2"
+                                                                    onChange="this.form.submit()">
+                                                                    Odevzdat
+                                                                </button>
+                                                            </div>
+                                                        @endif
                                                     @endif
                                                 </form>
                                             </div>
@@ -337,7 +377,7 @@
                         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                             <div class="p-4 sm:p-6 pb-6 sm:pb-8 bg-white border-b border-gray-200">
                                 <!-- KOMENTÁŘOVÁ ČÁST POSTU -->
-                                @foreach ($post->comments as $comment)
+                                @foreach ($comments as $comment)
                                     <div class="flex justify-start">
                                         <div class="pb-4 ">
                                             <div class="flex">

@@ -12,7 +12,7 @@ class GroupUserController extends Controller
     public function index(Group $group)
     {
         try {
-            return view('users', ['group' => $group->with('users')]);
+            return view('app.group.users', ['group' => $group->with('users')]);
         } catch (Exception $e) {
             Log::error($e->getMessage());
         }

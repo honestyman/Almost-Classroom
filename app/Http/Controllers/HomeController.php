@@ -12,8 +12,10 @@ class HomeController extends Controller
     public function index(Request $request)
     {
         try {
-            return view('home', [
-                'user' => $request->user()->with('groups')->withCount('groups')->first(),
+            return view('app.home.index', [
+                'user' => $request->user(),
+                'groups' => $request->user()->groups,
+                'group_count' => $request->user()->groups()->count(),
             ]);
         } catch (Exception $e) {
             Log::error($e->getMessage());

@@ -41,7 +41,7 @@ class GroupController extends Controller
     public function show(Group $group)
     {
         try {
-            return view('group', [
+            return view('app.group.index', [
                 'group' => $group,
                 'user' => User::where('id', auth()->id())->with('groups')->withCount('groups')->first()
             ]);

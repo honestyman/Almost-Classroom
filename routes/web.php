@@ -23,8 +23,13 @@ use App\Http\Controllers\UserImageController;
 |
 */
 
+Route::get('/', function () {
+    return view('welcome');
+});
+
+require __DIR__ . '/auth.php';
 Route::group(['middleware' => ['auth', 'verified']], function () {
-    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/sort', [ContentController::class, 'sort'])->name('sort');
 
     Route::resource('group', GroupController::class)->only(['store', 'show', 'update']);
@@ -38,6 +43,8 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::resource('user', UserController::class)->only(['show']);
     Route::put('user/{user}/bio', [UserBioController::class, 'update'])->name('user.bio.update');
     Route::put('user/{user}/image', [UserImageController::class, 'update'])->name('user.image.update');
-});
 
-require __DIR__ . '/auth.php';
+    Route::fallback(function () {
+        return view('notfound');
+    });
+});

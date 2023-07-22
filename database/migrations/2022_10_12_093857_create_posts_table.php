@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 32);
-            $table->string('content', 256)->nullable();
+            $table->string('content', 1024)->nullable();
             $table->unsignedTinyInteger('type');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('group_id')->constrained()->onDelete('cascade');
