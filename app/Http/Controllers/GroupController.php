@@ -9,6 +9,11 @@ use Illuminate\Support\Str;
 
 class GroupController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Group::class, 'group');
+    }
+
     public function store(Request $request)
     {
         Group::make([
@@ -28,13 +33,14 @@ class GroupController extends Controller
 
     public function show(Group $group)
     {
-        $user = User::where('id', auth()->id())->with('groups')->withCount('groups')->first();
-        return view('group', ['group' => $group, 'user' => $user]);
+        return view('group', [
+            'group' => $group,
+            'user' => User::where('id', auth()->id())->with('groups')->withCount('groups')->first()
+        ]);
     }
 
     public function destroy(Group $group)
     {
-        $this->authorize('destroy', $group);
         $group->delete();
         return redirect()->route('home');
     }

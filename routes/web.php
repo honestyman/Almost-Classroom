@@ -29,11 +29,12 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
 
     Route::resource('group', GroupController::class)->only(['store', 'show', 'update']);
     Route::post('group/join', [GroupUserController::class, 'store'])->name('group.join');
+
     Route::resource('group.post', PostController::class)->only(['store', 'show', 'update', 'destroy']);
     Route::post('group/{group}/post/{post}/finish', [PostController::class, 'finish'])->name('group.post.finish');
     Route::resource('post.comment', PostCommentController::class)->only(['store', 'update', 'destroy']);
-    Route::resource('group.user', GroupUserController::class)->only(['index']);
 
+    Route::resource('group.user', GroupUserController::class)->only(['index']);
     Route::resource('user', UserController::class)->only(['show']);
     Route::put('user/{user}/bio', [UserBioController::class, 'update'])->name('user.bio.update');
     Route::put('user/{user}/image', [UserImageController::class, 'update'])->name('user.image.update');

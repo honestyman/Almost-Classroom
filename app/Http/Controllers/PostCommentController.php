@@ -8,19 +8,23 @@ use Illuminate\Http\Request;
 
 class PostCommentController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->authorizeResource(Comment::class, 'comment');
+    }
+
     public function store(Request $request, Post $post)
     {
-        Comment::make(
-            [
-                'content' => $request->content,
-            ]
-        )->user()->associate(auth()->user())->post()->associate($post)->save();
+        $this->authorize('store', [Comment::class, $post]);
+        Comment::make([
+            'content' => $request->content,
+        ])->user()->associate(auth()->user())->post()->associate($post)->save();
         return redirect()->back();
     }
 
     public function update(Request $request, Post $post, Comment $comment)
     {
-        $this->authorize('edit', $comment);
         $comment->update(
             ['content' => $request->content]
         );
@@ -29,7 +33,6 @@ class PostCommentController extends Controller
 
     public function destroy(Post $post, Comment $comment)
     {
-        $this->authorize('destroy', $comment);
         $comment->delete();
         return redirect()->back();
     }

@@ -167,7 +167,7 @@
                                             <div class="flex">
                                                 <b class="mr-2">{{ $comment->user->name }}</b>
                                                 <!-- TADY JE ROZKLIKAVACI MENU NA MAZANI & UPRAVU KOMENTÁŘŮ-->
-                                                @can('edit', $comment)
+                                                @can('update', $comment)
                                                     <div class="sm:flex items-center pt-1 sm:pt-0 sm:m-1">
                                                         <x-dropdown align="left" width="48">
                                                             <x-slot name="trigger">
@@ -340,7 +340,7 @@
                                             <div class="flex">
                                                 <b class="mr-2">{{ $comment->user->name }}</b>
                                                 <!-- TADY JE ROZKLIKAVACI MENU NA MAZANI & UPRAVU KOMENTÁŘŮ-->
-                                                @can('edit', $comment)
+                                                @can('update', $comment)
                                                     <div class="sm:flex items-center pt-1 sm:pt-0 sm:m-1">
                                                         <x-dropdown align="left" width="48">
                                                             <x-slot name="trigger">

@@ -42,11 +42,8 @@ class RegisteredUserController extends Controller
         foreach (Group::where('public', 1)->get() as $group) {
             $user->groups()->attach($group->id);
         }
-
         event(new Registered($user));
-
         Auth::login($user);
-
         return redirect(RouteServiceProvider::HOME);
     }
 }

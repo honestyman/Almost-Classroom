@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Group;
-use App\Models\User;
 use App\Models\Post;
 use App\Models\PostUser;
-use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {

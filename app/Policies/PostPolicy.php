@@ -39,7 +39,7 @@ class PostPolicy
      */
     public function view(User $user, Post $post)
     {
-        return true;
+        return $post->group->public || $user->groups->contains($post->group->id);
     }
 
     /**

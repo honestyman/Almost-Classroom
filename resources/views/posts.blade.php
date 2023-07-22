@@ -1,5 +1,5 @@
-@if (isset($prispevky))
-    @foreach ($prispevky as $post)
+@if (isset($posts))
+    @foreach ($posts as $post)
         <div class="pt-6 sm:pt-8 pb-6">
             <div class="mx-0 sm:mx-5">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -65,6 +65,6 @@
     </div>
 @endforeach
 <div class="p-8" id="pagination">
-    {{ $prispevky->links() }}
+    {{ $posts->links() }}
 </div>
 @endif

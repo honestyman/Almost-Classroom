@@ -9,9 +9,9 @@ class UserBioController extends Controller
 {
     public function update(Request $request, User $user)
     {
-        $user->update([
-            'bio' => $request->bio,
-        ]);
+        $user->update($request->validate([
+            'bio' => 'required|string|max:256'
+        ]));
         return redirect()->back();
     }
 }

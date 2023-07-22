@@ -3,12 +3,8 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\Group;
 use App\Models\Post;
-use App\Models\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class ContentController extends Controller
 {
@@ -72,7 +68,7 @@ class ContentController extends Controller
                     $posts = Post::search($search)->orderBy($tridit_dle, $tridit_jak)->paginate($paginate_count);
                     break;
             }
-            return view('posts', ['prispevky' => $posts])->render();
+            return view('posts', ['posts' => $posts])->render();
         }
         return redirect()->route('home');
     }
