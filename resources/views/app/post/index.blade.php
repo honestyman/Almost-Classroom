@@ -2,8 +2,8 @@
     @foreach ($posts as $post)
         <div class="pt-6 sm:pt-8 pb-6">
             <div class="mx-0 sm:mx-5">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-2 sm:p-4 bg-white border-b border-gray-200" onmouseover="this.style.cursor='pointer'"
+                <div class="bg-gray-50 dark:bg-gray-800 overflow-hidden sm:rounded-lg shadow-md">
+                    <div class="p-2 sm:p-4" onmouseover="this.style.cursor='pointer'"
                         onclick="window.location='/group/{{ $post->group->id }}/post/{{ $post->id }}'">
                         <div class="grid grid-cols-1 md:grid-cols-3">
                             <div class="flex justify-start p-3">
@@ -11,7 +11,7 @@
                                 <b class="text-xl uppercase mx-1">{{ $post->name }}</b>
                             </div>
 
-                            <div class="text-slate-600 italic p-3 align-middle flex justify-center">
+                            <div class="italic p-3 align-middle flex justify-center">
                                 @if (isset($post->deadline) || $post->deadline != null)
                                     Termín odevzdání
                                     {{ date('Y-m-d-H-i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('Y-m-d-H-i') ? 'byl' : 'je' }}
@@ -59,6 +59,6 @@
         </div>
     @endforeach
     <div class="p-8" id="pagination">
-        {{ $posts->links() }}
+        {{ $posts->onEachSide(1)->links() }}
     </div>
 @endif

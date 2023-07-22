@@ -22,13 +22,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 </head>
 
-<body class="font-sans antialiased">
-    <div class="flex flex-col min-h-screen bg-gray-100">
+<body class="font-sans antialiased bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-300">
+    <div class="flex flex-col min-h-screen">
         @include('layouts.navigation')
 
         <!-- Page Heading -->
         @if (isset($header))
-            <header class="bg-white shadow">
+            <header class="shadow-md dark:shadow-none">
                 <div class="mx-2 sm:mx-6 md:mx-10 py-6 px-4 sm:px-6 lg:px-8">
                     {{ $header }}
                 </div>

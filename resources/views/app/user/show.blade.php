@@ -4,7 +4,7 @@
             <div class="flex justify-between">
                 <div>
                     <button id="dropdownDefault" data-dropdown-toggle="dropdownGroups"
-                        class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
+                        class="flex items-center text-sm font-medium hover:text-white hover:border-gray-300 focus:outline-none focus:text-white focus:border-gray-300 transition duration-150 ease-in-out"
                         type="button">Skupiny <i class="fa-solid fa-caret-down ml-2"></i></button>
                     <div id="dropdownGroups"
                         class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
@@ -28,8 +28,8 @@
 
         <div class="py-6 sm:pt-8 max-w-xs sm:max-w-4xl md:max-w-7xl mx-auto">
             <div class="mx-0 sm:mx-5">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-4 sm:p-8 bg-white border-b border-gray-200">
+                <div class="overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-4 sm:p-8">
                         <div class="flex flex-col-reverse sm:flex-row justify-start p-1 md:p-10">
                             <div class="flex justify-center">
                                 @if (Auth::id() == $user->id || Auth::user()->admin == 1)
@@ -53,7 +53,7 @@
                             </div>
                             <div class="sm:mx-auto my-2 md:my-8 px-4">
                                 <div class="flex justify-center md:justify-start items-center">
-                                    <h2 class="block leading-relaxed font-light text-gray-700 text-4xl md:text-5xl">
+                                    <h2 class="block leading-relaxed font-light text-4xl md:text-5xl">
                                         <a href="mailto:{{ $user->email }}">{{ $user->name }}</a>
                                     </h2>
                                 </div>

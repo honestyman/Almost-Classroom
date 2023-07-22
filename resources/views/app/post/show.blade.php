@@ -4,11 +4,11 @@
             <div class="flex justify-between">
                 <div>
                     <button id="dropdownDefault" data-dropdown-toggle="dropdownGroups"
-                        class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
+                        class="flex items-center text-sm font-medium hover:text-gray-700 dark:hover:text-white hover:border-gray-300 focus:outline-none focus:text-gray-700 dark:focus:text-white focus:border-gray-300 transition duration-150 ease-in-out"
                         type="button"><i class="fa-solid fa-caret-down mr-2"></i>Skupiny</button>
                     <div id="dropdownGroups"
-                        class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
-                        <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
+                        class="hidden z-10 w-44  rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
+                        <ul class="py-1 text-sm dark:text-gray-200" aria-labelledby="dropdownDefault">
                             <li>
                                 <a href="{{ route('home') }}"
                                     class="block py-2 px-4 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Všechny
@@ -32,10 +32,10 @@
                 </div>
                 <div>
                     <button id="dropdownDefault" data-dropdown-toggle="dropdownThisGroup"
-                        class="flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out"
+                        class="flex items-center text-sm font-medium hover:text-gray-700 dark:hover:text-white hover:border-gray-300 focus:outline-none focus:text-gray-700 dark:focus:text-white focus:border-gray-300 transition duration-150 ease-in-out"
                         type="button">{{ $group->name }}<i class="fa-solid fa-caret-down ml-2"></i></button>
                     <div id="dropdownThisGroup"
-                        class="hidden z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
+                        class="hidden z-10 w-44  rounded divide-y divide-gray-100 shadow dark:bg-gray-700">
                         <ul class="py-1 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefault">
                             <li>
                                 <a href="/group/{{ $post->group->id }}"
@@ -60,8 +60,8 @@
             <!-- ČÁST PRO UŽIVATELE A JEJICH ÚKOLY-->
             <div class="py-6 sm:pt-8">
                 <div class="mx-0 sm:mx-5">
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="p-4 sm:p-6 bg-white border-b border-gray-200">
+                    <div class=" overflow-hidden shadow-sm sm:rounded-lg bg-grey-50 dark:bg-gray-800">
+                        <div class="p-4 sm:p-6 border-b dark:border-0 border-gray-200">
                             <div class="sm:grid sm:grid-cols-5">
                                 <!-- HLAVNÍ ČÁST POSTU -->
                                 <div class="sm:col-span-3">
@@ -102,7 +102,7 @@
                                         </p>
                                     </div>
                                     <div
-                                        class="p-2 border-b-2 sm:border-b-0 border-slate-500 text-lg text-justify break-all">
+                                        class="p-2 border-b dark:border-0-2 sm:border-b dark:border-0-0 border-slate-500 text-lg text-justify break-all">
                                         {{ $post->content }}
                                     </div>
                                 </div>
@@ -114,12 +114,12 @@
             @if ($post->type !== 0)
                 <div class="py-6 sm:pt-8">
                     <div class="mx-0 sm:mx-5">
-                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                            <div class="bg-white border-b border-gray-200">
+                        <div class=" overflow-hidden shadow-sm sm:rounded-lg bg-grey-50 dark:bg-gray-800">
+                            <div class=" border-b dark:border-0 border-gray-200">
                                 <div class="grid grid-cols-1 sm:grid-cols-3">
                                     @forelse ($post_user as $post_user)
                                         @if ($post_user->finished)
-                                            <div class="p-4 sm:p-6 odd:bg-white even:bg-slate-50">
+                                            <div class="p-4 sm:p-6 odd: even:bg-grey-50">
                                                 <a href="/user/{{ $post_user->user->id }}" class="flex justify-center">
                                                     <img src="{{ $post_user->user->image ? asset('storage/images/' . $post_user->user->image) : asset('storage/images/default.svg') }}"
                                                         class="h-10 w-10 mr-2 md:mr-3 rounded-full object-cover"
@@ -141,11 +141,11 @@
                                     @endforelse
                                 </div>
                                 @if ($finished_user_count < 1)
-                                    <div class="flex justify-center p-4 sm:p-6 bg-white">
+                                    <div class="flex justify-center p-4 sm:p-6 ">
                                         <h2>Nikdo nic neodevzdal!</h2>
                                     </div>
                                     @if ($finished_user_count % 3 != 0)
-                                        <div class="p-4 sm:p-6 odd:bg-white even:bg-slate-50">
+                                        <div class="p-4 sm:p-6 odd: even:bg-grey-50">
                                         </div>
                                     @endif
                                 @endif
@@ -158,8 +158,8 @@
             <!-- ČÁST PRO KOMENTÁŘE-->
             <div class="py-6 sm:pt-8">
                 <div class="mx-0 sm:mx-5">
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="bg-white border-b border-gray-200">
+                    <div class=" overflow-hidden shadow-sm sm:rounded-lg bg-grey-50 dark:bg-gray-800">
+                        <div class=" border-b dark:border-0 border-gray-200">
                             <div class="grid grid-cols-1">
                                 @foreach ($comments as $comment)
                                     <div class="flex justify-start">
@@ -217,7 +217,7 @@
                                                 class="block p-2.5 w-full text-sm bg-gray-50 text-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                 placeholder="Přidejte komentář"></textarea>
                                             <button type="submit"
-                                                class="inline-flex justify-center p-2 text-slate-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
+                                                class="inline-flex justify-center p-2  rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
                                                 <svg aria-hidden="true" class="w-6 h-6 rotate-90" fill="currentColor"
                                                     viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                                     <path
@@ -237,8 +237,8 @@
         @else
             <div class="py-6 sm:pt-8">
                 <div class="mx-0 sm:mx-5">
-                    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                        <div class="p-4 sm:p-6 bg-white border-b border-gray-200">
+                    <div class=" overflow-hidden shadow-sm sm:rounded-lg bg-grey-50 dark:bg-gray-800">
+                        <div class="p-4 sm:p-6  border-b dark:border-0 border-gray-200">
                             <div class="sm:grid sm:grid-cols-5">
                                 <!-- HLAVNÍ ČÁST POSTU -->
                                 <div class="sm:col-span-3">
@@ -248,7 +248,7 @@
                                         </p>
                                     </div>
                                     <div
-                                        class="p-2 border-b-2 sm:border-b-0 border-slate-500 text-lg text-justify break-all">
+                                        class="p-2 border-b dark:border-0-2 sm:border-b dark:border-0-0 border-slate-500 text-lg text-justify break-all">
                                         {{ $post->content }}
                                     </div>
                                 </div>
@@ -349,7 +349,7 @@
                                 @endif
                             </div>
                             <div class="flex justify-between">
-                                <div class="text-slate-600 italic text-left">
+                                <div class=" italic text-left">
                                     {{ $post->user->name }} zveřejnil {{ $post->created_at->format('d. m. Y ') }}
                                     v
                                     {{ $post->created_at->format('H:i') }} @if ($post->created_at != $post->updated_at)
@@ -357,7 +357,7 @@
                                         {{ $post->updated_at->format('H:i') }})
                                     @endif
                                 </div>
-                                <div class="text-slate-600 italic text-right">
+                                <div class=" italic text-right">
                                     @if (isset($post->deadline))
                                         Termín odevzdání
                                         {{ date('Y-m-d-H-i') > date_create_from_format('Y-m-d H:i:s', $post->deadline)->format('Y-m-d-H-i') ? 'byl' : 'je' }}
@@ -374,8 +374,8 @@
                             </div>
                         </div>
 
-                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                            <div class="p-4 sm:p-6 pb-6 sm:pb-8 bg-white border-b border-gray-200">
+                        <div class=" overflow-hidden shadow-sm sm:rounded-lg bg-grey-50 dark:bg-gray-800">
+                            <div class="p-4 sm:p-6 pb-6 sm:pb-8  border-b dark:border-0 border-gray-200">
                                 <!-- KOMENTÁŘOVÁ ČÁST POSTU -->
                                 @foreach ($comments as $comment)
                                     <div class="flex justify-start">
@@ -423,10 +423,10 @@
                                     @csrf
                                     <div class="flex items-center py-2 rounded-lg dark:bg-gray-700">
                                         <textarea name="content" id="content" rows="1"
-                                            class="block p-2.5 w-full text-sm bg-gray-50 text-gray-900 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                            class="block p-2.5 w-full text-sm bg-gray-50 text-gray-900 rounded-lg border dark:border-0 border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                             placeholder="Přidejte komentář"></textarea>
                                         <button type="submit"
-                                            class="inline-flex justify-center p-2 text-slate-600 rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
+                                            class="inline-flex justify-center p-2  rounded-full cursor-pointer hover:bg-blue-100 dark:text-blue-500 dark:hover:bg-gray-600">
                                             <svg aria-hidden="true" class="w-6 h-6 rotate-90" fill="currentColor"
                                                 viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                                 <path
@@ -445,7 +445,7 @@
         @endif
 
         <div id="toast-bottom-right"
-            class="transition ease-in-out duration-400 absolute flex items-center w-full max-w-xs p-4 space-x-4 text-gray-500 bg-white divide-x divide-gray-200 rounded-lg shadow right-5 bottom-5 dark:text-gray-400 dark:divide-gray-700 space-x dark:bg-gray-800"
+            class="transition ease-in-out duration-400 absolute flex items-center w-full max-w-xs p-4 space-x-4 text-gray-500  divide-x divide-gray-200 rounded-lg shadow right-5 bottom-5 dark:text-gray-400 dark:divide-gray-700 space-x dark:bg-gray-800"
             role="alert" style="visibility: hidden; transition: visibility 0s, opacity 0.5s linear; opacity: 0;">
             <div class="flex w-full">
                 <div class="text-sm font-normal">
@@ -454,7 +454,7 @@
                 </div>
                 <div class="flex items-center ml-auto space-x-2">
                     <button type="button"
-                        class="bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+                        class=" text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
                         onclick="hideInvite()" aria-label="Zavřít">
                         <span class="sr-only">Zavřít</span>
                         <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
