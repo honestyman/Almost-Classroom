@@ -77,7 +77,7 @@
                                 @can('delete', $group)
                                     <x-dropdown-link>
                                         <div class="flex justify-between hover:cursor-pointer" type="button"
-                                        onclick="Livewire.emit('openModal', 'destroy-group', {{ json_encode(['group' => $group]) }})">
+                                            onclick="Livewire.emit('openModal', 'destroy-group', {{ json_encode(['group' => $group]) }})">
                                             <p class="flex justify-between">
                                                 {{ __('Smazat') }}
                                             </p>

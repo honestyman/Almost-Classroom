@@ -11,6 +11,7 @@ class UserImageController extends Controller
 {
     public function update(Request $request, User $user)
     {
+        $this->authorize('update', $user);
         try {
             if ($request->hasFile('image')) {
                 $filename = $user->id . $request->image->getClientOriginalName();

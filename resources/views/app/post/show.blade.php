@@ -25,9 +25,9 @@
                 </div>
                 <div>
                     <h2>
-                        @if (auth()->id() === $post->group->user_id || auth()->user()->admin == 1)
+                        @can('update', $group)
                             {{ $post->group->invite_key }}
-                        @endif
+                        @endcan
                     </h2>
                 </div>
                 <div>

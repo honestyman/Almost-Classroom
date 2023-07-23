@@ -32,7 +32,7 @@
                     <div class="p-4 sm:p-8">
                         <div class="flex flex-col-reverse sm:flex-row justify-start p-1 md:p-10">
                             <div class="flex justify-center">
-                                @if (Auth::id() == $user->id || Auth::user()->admin == 1)
+                                @can('update', $user)
                                     <form action="{{ route('user.image.update', $user->id) }}" method="POST"
                                         enctype="multipart/form-data">
                                         @csrf
@@ -49,7 +49,7 @@
                                     <img src="{{ $user->image ? asset('storage/images/' . $user->image) : asset('storage/images/default.svg') }}"
                                         class="h-48 sm:h-60 md:h-80 w-48 sm:w-60 md:w-80 rounded-full object-cover mt-6"
                                         alt="username" />
-                                @endif
+                                @endcan
                             </div>
                             <div class="sm:mx-auto my-2 md:my-8 px-4">
                                 <div class="flex justify-center md:justify-start items-center">
@@ -61,11 +61,11 @@
                                     <li>
                                         <span class="block text-base"><span
                                                 class="font-bold mr-1">{{ $finished_post_count }}</span>
-                                            @if ($finished_post_count == 1)
+                                            @if ($finished_post_count === 1)
                                                 hotový úkol
                                             @elseif ($finished_post_count >= 2 && $finished_post_count <= 4)
                                                 hotové úkoly
-                                            @elseif ($finished_post_count > 4 || $finished_post_count == 0)
+                                            @elseif ($finished_post_count > 4 || $finished_post_count === 0)
                                                 hotových úkolů
                                             @endif
                                         </span>
@@ -73,17 +73,17 @@
                                     <li>
                                         <span class="block text-base ml-5"><span
                                                 class="font-bold mr-1">{{ $private_group_count }}</span>
-                                            @if ($private_group_count == 1)
+                                            @if ($private_group_count === 1)
                                                 soukromá skupina
                                             @elseif ($private_group_count >= 2 && $private_group_count <= 4)
                                                 soukromé skupiny
-                                            @elseif ($private_group_count > 4 || $private_group_count == 0)
+                                            @elseif ($private_group_count > 4 || $private_group_count === 0)
                                                 soukromých skupin
                                             @endif
                                         </span>
                                     </li>
                                 </ul>
-                                @if (Auth::id() == $user->id || Auth::user()->admin == 1)
+                                @can('update', $user)
                                     <div class="flex flex-row hover:cursor-pointer mt-4 mx-2" type="button"
                                         onclick="Livewire.emit('openModal', 'edit-user-bio', {{ json_encode(['user' => $user]) }})">
                                         <i class="fa-solid fa-pen pr-4 pt-2"></i>
@@ -91,7 +91,7 @@
                                     </div>
                                 @else
                                     <span class="text-base block max-w-xs overflow-clip">{{ $user->bio }}</span>
-                                @endif
+                                @endcan
                             </div>
                         </div>
 

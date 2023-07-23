@@ -10,6 +10,7 @@ class UserController extends Controller
 {
     public function show(User $user)
     {
+        $this->authorize('view', $user);
         try {
             return view('app.user.show', [
                 'user' => $user,
