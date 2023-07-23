@@ -55,7 +55,7 @@ class CommentPolicy
 
     public function store(User $user, Post $post)
     {
-        return $post->group->public || $user->post->groups->contains($post->group->id);
+        return $post->group->public || $user->groups->contains($post->group->id);
     }
 
     /**

@@ -36,12 +36,11 @@ class PostController extends Controller
     public function show(Group $group, Post $post)
     {
         try {
-            $post_user = PostUser::where('post_id', $post->id)->where('user_id', auth()->id())->first();
             return view('app.post.show', [
                 'post' => $post,
                 'comments' => $post->comments,
                 'group' => $group,
-                'post_user' => $post_user,
+                'post_user' => PostUser::where('post_id', $post->id)->where('user_id', auth()->id())->get(),
                 'finished_user_count' => PostUser::where('post_id', $post->id)->where('user_id', auth()->id())->where('finished', 1)->count(),
             ]);
         } catch (Exception $e) {

@@ -32,7 +32,7 @@ Route::group(['middleware' => ['auth', 'verified']], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
     Route::get('/sort', [ContentController::class, 'sort'])->name('sort');
 
-    Route::resource('group', GroupController::class)->only(['store', 'show', 'update']);
+    Route::resource('group', GroupController::class)->only(['store', 'show', 'destroy']);
     Route::post('group/join', [GroupUserController::class, 'store'])->name('group.join');
 
     Route::resource('group.post', PostController::class)->only(['store', 'show', 'update', 'destroy']);
