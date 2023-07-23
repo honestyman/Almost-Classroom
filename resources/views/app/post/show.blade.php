@@ -101,8 +101,7 @@
                                         @endcan
                                         </p>
                                     </div>
-                                    <div
-                                        class="p-2 border-b dark:border-0-2 sm:border-b dark:border-0-0 border-slate-500 text-lg text-justify break-all">
+                                    <div class="p-2  text-lg text-justify break-all">
                                         {{ $post->content }}
                                     </div>
                                 </div>
@@ -247,8 +246,7 @@
                                             <b>{{ $post->name }}</b>
                                         </p>
                                     </div>
-                                    <div
-                                        class="p-2 border-b dark:border-0-2 sm:border-b dark:border-0-0 border-slate-500 text-lg text-justify break-all">
+                                    <div class="p-2 text-lg text-justify break-all">
                                         {{ $post->content }}
                                     </div>
                                 </div>
