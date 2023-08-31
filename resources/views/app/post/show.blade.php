@@ -270,7 +270,7 @@
                                                                     Odevzdat
                                                                 </button>
                                                             @else
-                                                                @if ($post_user->finished == 1)
+                                                                @if (isset($post_user->finished) && $post_user->finished == 1)
                                                                     <input type="hidden" id="finished"
                                                                         name="finished" value="0">
                                                                     <button type="submit"
