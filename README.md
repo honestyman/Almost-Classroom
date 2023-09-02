@@ -24,11 +24,22 @@ After that you need to setup an .env file (use the .env.example as a template)
 
     copy .env.example .env
 
+
+
 Generate a new application key
 
     php artisan key:generate
+ 
+ Install front-end packages
 
-Create your database table.
+    npm install
+
+ Compile front-end assets in real-time
+
+    npm run dev
+       
+**Now, you must leave this terminal window running and open a new one!**
+<p>Create your database table.</p>
 
     php artisan migrate
 
